@@ -13,9 +13,8 @@ import org.telegram.telegrambots.ApiContextInitializer;
 @EnableTransactionManagement
 public class DecimaApplication {
 
-	public static void main(String[] args) {
-		ApiContextInitializer.init();
-		SpringApplication.run(DecimaApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        ApiContextInitializer.init();
+        SpringApplication.run(DecimaApplication.class, args);
+    }
 }
