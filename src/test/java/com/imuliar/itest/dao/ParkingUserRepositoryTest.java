@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>Integration test for {@link ParkingUserRepository}</p>
@@ -36,5 +37,12 @@ public class ParkingUserRepositoryTest extends AbstractRepositoryTest {
         List<ParkingUser> resultNeighbours = parkingUserRepository.findNeighbours(max.getId(), TODAY);
         Assert.assertFalse(CollectionUtils.isEmpty(resultNeighbours));
         Assert.assertEquals(1, resultNeighbours.size());
+    }
+
+    @Test
+    public void findByTelegramUserId() {
+        Optional<ParkingUser> result = parkingUserRepository.findByTelegramUserId(markus.getTelegramUserId());
+        Assert.assertTrue(result.isPresent());
+        Assert.assertEquals(markus.getId(), result.get().getId());
     }
 }

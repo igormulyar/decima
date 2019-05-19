@@ -2,6 +2,7 @@ package com.imuliar.decima.dao;
 
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Role;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>{@link ParkingUser} repository access</p>
@@ -22,6 +24,9 @@ import java.util.List;
 public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> {
 
     List<ParkingUser> findByRole(Role role);
+
+    @Cacheable("ParkingUsers")
+    Optional<ParkingUser> findByTelegramUserId(Integer telegramUserId);
 
     @Query("SELECT neighbour FROM Booking booking " +
             "JOIN booking.user neighbour " +
