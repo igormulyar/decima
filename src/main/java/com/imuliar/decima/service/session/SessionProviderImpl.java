@@ -22,7 +22,7 @@ public abstract class SessionProviderImpl implements SessionProvider {
     /**
      * Time of session being alive
      */
-    private static final Duration sessionAliveDuration = Duration.ofSeconds(45);
+    private static final Duration SESSION_TTL = Duration.ofSeconds(45);
 
     /**
      * All sessions in-memory storage
@@ -37,7 +37,7 @@ public abstract class SessionProviderImpl implements SessionProvider {
         if (session != null) {
             session.setUpdateTime(LocalDateTime.now());
         } else {
-            session = initSession();
+            session = getUserSession();
             userSessionPool.put(chatId, session);
         }
         return session;
@@ -45,15 +45,12 @@ public abstract class SessionProviderImpl implements SessionProvider {
 
     private void clearExpiredSessions() {
         Predicate<Map.Entry<Long, UserSession>> notExpired = entry -> Duration.between(entry.getValue().getUpdateTime(),
-                LocalDateTime.now()).compareTo(sessionAliveDuration) < 0;
+                LocalDateTime.now()).compareTo(SESSION_TTL) < 0;
         userSessionPool = userSessionPool.entrySet().stream()
                 .filter(notExpired)
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (v1, v2) -> v1,
-                        ConcurrentHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1, ConcurrentHashMap::new));
     }
 
     @Lookup
-    abstract UserSession initSession();
+    public abstract UserSession getUserSession();
 }

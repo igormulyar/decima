@@ -1,5 +1,7 @@
 package com.imuliar.decima.service.session;
 
+import org.springframework.stereotype.Service;
+
 /**
  * <p>Service provides a new or existent {@link UserSession} if not expired yet</p>
  *

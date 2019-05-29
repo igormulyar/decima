@@ -4,9 +4,9 @@ import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.ResponseStrategy;
 import com.imuliar.decima.service.session.SessionProvider;
 import com.imuliar.decima.service.session.UserSession;
+import com.imuliar.decima.service.state.AbstractState;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -19,17 +19,24 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 @Setter
 @Service
-public class AbstractResponseStrategy implements ResponseStrategy {
+public abstract class AbstractResponseStrategy implements ResponseStrategy {
 
-    @Autowired
     protected SessionProvider sessionProvider;
+
+    public AbstractResponseStrategy(SessionProvider sessionProvider) {
+        this.sessionProvider = sessionProvider;
+    }
 
     @Override
     public void response(Long chatId, ParkingUser parkingUser, Update update) {
-
-        UserSession userSession = sessionProvider.provideSession(chatId);
-
-        userSession.getContext().getCurrentState();
-
+        UserSession session = sessionProvider.provideSession(chatId);
+        if(session.getCurrentState() == null){
+            AbstractState initialState = generateInitialState();
+            session.setCurrentState(initialState);
+            initialState.setUserSession(session);
+        }
+        session.getCurrentState().processUpdate(chatId, parkingUser, update);
     }
+
+    protected abstract AbstractState generateInitialState();
 }

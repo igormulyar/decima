@@ -1,4 +1,4 @@
-package com.imuliar;
+package com.imuliar.decima;
 
 import com.imuliar.decima.service.UpdateHandler;
 import org.slf4j.Logger;
@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.io.Serializable;
 
 /**
  * <p>Main bot class</p>
@@ -40,6 +43,14 @@ public class DecimaBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         updateHandler.handle(update);
+    }
+
+    public <T extends Serializable, M extends BotApiMethod<T>> void sendBotResponse(M method) {
+        try {
+            execute(method);
+        } catch (Exception e) {
+            LOGGER.error("Bot execute method exception!", e);
+        }
     }
 
     @Override

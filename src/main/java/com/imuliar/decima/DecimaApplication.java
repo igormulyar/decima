@@ -1,4 +1,4 @@
-package com.imuliar;
+package com.imuliar.decima;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

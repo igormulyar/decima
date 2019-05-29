@@ -25,7 +25,6 @@ public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> 
 
     List<ParkingUser> findByRole(Role role);
 
-    @Cacheable("ParkingUsers")
     Optional<ParkingUser> findByTelegramUserId(Integer telegramUserId);
 
     @Query("SELECT neighbour FROM Booking booking " +

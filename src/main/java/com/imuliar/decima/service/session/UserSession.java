@@ -1,5 +1,6 @@
 package com.imuliar.decima.service.session;
 
+import com.imuliar.decima.service.state.AbstractState;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,5 @@ public class UserSession {
 
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @Autowired
-    private UserContext context;
+    private AbstractState currentState;
 }
