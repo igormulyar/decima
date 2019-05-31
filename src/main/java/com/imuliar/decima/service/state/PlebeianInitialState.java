@@ -1,9 +1,12 @@
 package com.imuliar.decima.service.state;
 
 import com.google.common.collect.Lists;
+import com.imuliar.decima.dao.BookingRepository;
 import com.imuliar.decima.dao.SlotRepository;
+import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -30,10 +33,15 @@ public class PlebeianInitialState extends AbstractState {
 
     private static final String REQUEST_FREE_SLOTS_CALLBACK = "get_free_slots";
 
+    private static final String DROP_BOOKING_CALLBACK = "drop_booking:%d";
+
     private static final String CANCEL_BOOKING = "cancel_booking";
 
     @Autowired
     private SlotRepository slotRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
@@ -42,22 +50,21 @@ public class PlebeianInitialState extends AbstractState {
                 case REQUEST_FREE_SLOTS_CALLBACK:
                     displayFreeSlots(chatId, update);
                     break;
-
-                case CANCEL_BOOKING:
-                    cancellBooking();
-                    displayInitialMessage(chatId);
+                case DROP_BOOKING_CALLBACK:
+                    dropBooking(chatId);
                     break;
                 default:
-                    displayInitialMessage(chatId);
-
+                    displayWithBookingCheck(chatId, parkingUser);
             }
         } else {
-            displayInitialMessage(chatId);
+            displayWithBookingCheck(chatId, parkingUser);
         }
     }
 
-    private void cancellBooking() {
+    private void dropBooking(Long chatId) {
 
+        //DO THE BOOKING DROP STUFF
+        displayInitialMessage(chatId);
     }
 
     private void displayFreeSlots(Long chatId, Update update) {
@@ -75,17 +82,37 @@ public class PlebeianInitialState extends AbstractState {
         getMessageSender().sendMessageWithKeyboard(chatId, "There are some parking slots available. Select one you'd like to book for today.", markupInline);
     }
 
+    private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser){
+        Optional<Booking> bookingFound = bookingRepository.findByUserAndDate(parkingUser, LocalDate.now());
+        if(bookingFound.isPresent()){
+            Integer bookedSlotNumber = bookingFound.get().getSlot().getNumber();
+            String callback = String.format(DROP_BOOKING_CALLBACK, bookedSlotNumber);
+            displayTwoButtonsMessage(chatId, new InlineKeyboardButton().setText("Find parking slot").setCallbackData(callback));
+        } else {
+            displayInitialMessage(chatId);
+        }
+    }
 
+    private void displayInitialMessage(Long chatId){
+        displayTwoButtonsMessage(chatId, new InlineKeyboardButton().setText("Find parking slot").setCallbackData(REQUEST_FREE_SLOTS_CALLBACK));
+    }
 
-    private void displayInitialMessage(Long chatId) {
+    /**
+     * First button should be passed via mainActionButton param,
+     * second is a "Cancel" action button hardcoded
+     */
+    private void displayTwoButtonsMessage(Long chatId, InlineKeyboardButton mainActionButton) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         markupInline.setKeyboard(keyboard);
 
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(REQUEST_FREE_SLOTS_CALLBACK));
+        buttons.add(mainActionButton);
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING_CALLBACK));
         keyboard.add(buttons);
-        getMessageSender().sendMessageWithKeyboard(chatId, "Choose the action, please.", markupInline);
+        String message = "  ----------------------------------------\n" +
+                "*Choose the action, please.*\n" +
+                "----------------------------------------";
+        getMessageSender().sendMessageWithKeyboard(chatId, message, markupInline);
     }
 }
