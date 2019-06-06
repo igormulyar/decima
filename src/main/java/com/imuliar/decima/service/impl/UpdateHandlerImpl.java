@@ -36,7 +36,7 @@ public class UpdateHandlerImpl implements UpdateHandler {
 
     @PostConstruct
     public void loadFakeData() {
-        fakeDataLoader.loadDataFull();
+        //fakeDataLoader.loadDataFull();
     }
 
     @Override

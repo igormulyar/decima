@@ -1,0 +1,52 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="1" author="imuliar">
+        <comment>Define parking plan</comment>
+        <insert tableName="SLOT">
+            <column name="NUMBER">1</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">2</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">3</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">4</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">5</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">6</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">7</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">8</column>
+            <column name="MAX_LOADING">1</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">9</column>
+            <column name="MAX_LOADING">3</column>
+        </insert>
+        <insert tableName="SLOT">
+            <column name="NUMBER">10</column>
+            <column name="MAX_LOADING">3</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

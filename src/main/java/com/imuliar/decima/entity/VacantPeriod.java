@@ -1,5 +1,7 @@
 package com.imuliar.decima.entity;
 
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,6 @@ public class VacantPeriod extends EntityFrame {
     private LocalDate periodEnd;
 
     @ManyToOne
+    @JoinColumn(name = "SLOT_ID", foreignKey = @ForeignKey(name = "FK_VACANT_PERIOD_SLOT"))
     private Slot slot;
 }
