@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.Serializable;
@@ -46,6 +48,14 @@ public class DecimaBot extends TelegramLongPollingBot {
     }
 
     public <T extends Serializable, M extends BotApiMethod<T>> void sendBotResponse(M method) {
+        try {
+            execute(method);
+        } catch (Exception e) {
+            LOGGER.error("Bot execute method exception!", e);
+        }
+    }
+
+    public void sendPhoto(SendPhoto method) {
         try {
             execute(method);
         } catch (Exception e) {

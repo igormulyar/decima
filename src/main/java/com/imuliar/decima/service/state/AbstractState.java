@@ -1,9 +1,10 @@
 package com.imuliar.decima.service.state;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.MessageSender;
+import com.imuliar.decima.service.impl.MessageSender;
 import com.imuliar.decima.service.session.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -14,7 +15,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public abstract class AbstractState {
 
-    protected static final String TO_BEGINNING_CALLBACK = "get_free_slots";
+    protected static final String TO_BEGINNING_CALLBACK = "go_to_beginning";
+
+    @Value("${decima.plan}")
+    private String planImageUrl;
 
     @Autowired
     private MessageSender messageSender;
@@ -33,5 +37,13 @@ public abstract class AbstractState {
 
     public void setUserSession(UserSession userSession) {
         this.userSession = userSession;
+    }
+
+    public String getPlanImageUrl() {
+        return planImageUrl;
+    }
+
+    public void setPlanImageUrl(String planImageUrl) {
+        this.planImageUrl = planImageUrl;
     }
 }

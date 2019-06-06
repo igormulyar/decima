@@ -1,6 +1,5 @@
 package com.imuliar.decima.itest.dao;
 
-import com.imuliar.decima.dao.ParkingPlaceRepository;
 import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.entity.EntityFrame;
 import com.imuliar.decima.entity.Slot;
@@ -25,9 +24,6 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class SlotRepositoryTest extends AbstractRepositoryTest {
-
-    @Autowired
-    private ParkingPlaceRepository parkingPlaceRepository;
 
     //TEST OBJECT
     @Autowired

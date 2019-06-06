@@ -29,8 +29,5 @@ public class ParkingUser extends EntityFrame {
 
     private String firstName;
 
-    private String secondName;
-
-    @Enumerated(STRING)
-    private Role role;
+    private String lastName;
 }

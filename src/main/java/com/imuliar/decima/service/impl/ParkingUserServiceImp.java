@@ -2,7 +2,6 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.dao.ParkingUserRepository;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.entity.Role;
 import com.imuliar.decima.service.ParkingUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,6 @@ public class ParkingUserServiceImp implements ParkingUserService {
         Optional<ParkingUser> savedParkingUser = userRepository.findByTelegramUserId(user.getId());
         return savedParkingUser.isPresent()
                 ? savedParkingUser.get()
-                : userRepository.save(new ParkingUser(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), Role.PLEBEIAN));
+                : userRepository.save(new ParkingUser(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName()));
     }
 }

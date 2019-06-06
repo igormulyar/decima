@@ -31,14 +31,14 @@ public class AbstractRepositoryTest {
     Slot reservedForFerdinand = new Slot(8, 1);
     Slot reservedForPlutarch = new Slot(9, 1);
 
-    ParkingUser john = new ParkingUser(1, "johnDoe", "John", "Doe", Role.PLEBEIAN);
-    ParkingUser gavrilo = new ParkingUser(2, "gprincip", "Gavrilo", "Princip", Role.PLEBEIAN);
-    ParkingUser franz = new ParkingUser(3, "fferdinand", "Franz", "Ferdinand", Role.PATRICIAN);
-    ParkingUser mary = new ParkingUser(4, "mberry", "Mary", "Berry", Role.PLEBEIAN);
-    ParkingUser max = new ParkingUser(5, "mmad", "Max", "Mad", Role.PLEBEIAN);
-    ParkingUser ivan = new ParkingUser(6, "iivanov", "Ivan", "Ivanov", Role.PLEBEIAN);
-    ParkingUser markus = new ParkingUser(7, "mavrely", "Markus", "Aurelius", Role.PATRICIAN);
-    ParkingUser plutarch = new ParkingUser(8, "plutarch", null, null, Role.PATRICIAN);
+    ParkingUser john = new ParkingUser(1, "johnDoe", "John", "Doe");
+    ParkingUser gavrilo = new ParkingUser(2, "gprincip", "Gavrilo", "Princip");
+    ParkingUser franz = new ParkingUser(3, "fferdinand", "Franz", "Ferdinand");
+    ParkingUser mary = new ParkingUser(4, "mberry", "Mary", "Berry");
+    ParkingUser max = new ParkingUser(5, "mmad", "Max", "Mad");
+    ParkingUser ivan = new ParkingUser(6, "iivanov", "Ivan", "Ivanov");
+    ParkingUser markus = new ParkingUser(7, "mavrely", "Markus", "Aurelius");
+    ParkingUser plutarch = new ParkingUser(8, "plutarch", null, null);
 
     protected void loadDataFull() {
         loadSlotsAnsUsers();

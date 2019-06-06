@@ -1,8 +1,6 @@
 package com.imuliar.decima.dao;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.entity.Role;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,8 +20,6 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> {
-
-    List<ParkingUser> findByRole(Role role);
 
     Optional<ParkingUser> findByTelegramUserId(Integer telegramUserId);
 
