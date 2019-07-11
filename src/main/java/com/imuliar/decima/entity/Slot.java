@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
- * <p>Represents the batch of Parking Places, which have single access gateway</p>
+ * <p>Represents the batch of {@link ParkingPlace}s, which have single access gateway</p>
  *
  * @author imuliar
  * @since 0.0.1

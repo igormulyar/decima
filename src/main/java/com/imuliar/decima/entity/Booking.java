@@ -1,13 +1,13 @@
 package com.imuliar.decima.entity;
 
-import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import java.time.LocalDate;
 
 /**
  * <p>Represents the record about booking a slot by user for specified date</p>
@@ -21,12 +21,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Booking extends EntityFrame {
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_BOOKING_PARKING_USER"))
+    @OneToOne
     private ParkingUser user;
 
     @ManyToOne
-    @JoinColumn(name = "SLOT_ID", foreignKey = @ForeignKey(name = "FK_BOOKING_SLOT"))
     private Slot slot;
 
     private LocalDate date;
