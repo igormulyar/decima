@@ -34,4 +34,9 @@ public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> 
             "AND neighbour <> :id " +
             "AND booking.date = :date")
     List<ParkingUser> findNeighbours(@Param("id") Long id, @Param("date") LocalDate date);
+
+    @Query("SELECT user FROM ParkingUser user " +
+            "JOIN user.pollingProfile profile " +
+            "WHERE :now >= profile.startPollingHour AND :now <= (profile.startPollingHour + 2)")
+    List<ParkingUser> findByStartPollingHour(@Param("now") int currentHour);
 }

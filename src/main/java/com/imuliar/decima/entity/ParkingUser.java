@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -30,4 +28,8 @@ public class ParkingUser extends EntityFrame {
     private String firstName;
 
     private String lastName;
+
+    @JoinColumn(name = "POLLING_PROFILE_ID",
+            foreignKey = @ForeignKey(name = "FK_PARKING_USER_POLLING_PROFILE"))
+    private PollingProfile pollingProfile;
 }

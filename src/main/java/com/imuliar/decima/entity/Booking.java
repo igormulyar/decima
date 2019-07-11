@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -21,11 +19,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Booking extends EntityFrame {
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @JoinColumn(name = "PARKING_USER_ID",
+            foreignKey = @ForeignKey(name = "FK_BOOKING_PARKING_USER"))
     private ParkingUser user;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "SLOT_ID", foreignKey = @ForeignKey(name = "FK_BOOKING_SLOT"))
     private Slot slot;
 
+    @Column(nullable = false)
     private LocalDate date;
+
+    @Column(nullable = false)
+    private Integer priority;
 }
