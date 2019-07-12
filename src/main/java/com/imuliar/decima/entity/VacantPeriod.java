@@ -1,13 +1,8 @@
 package com.imuliar.decima.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import java.time.LocalDate;
 
 /**
  * <p>Represents the period of time, when parking user with role PATRICIAN won't use his parking place</p>
@@ -16,9 +11,6 @@ import java.time.LocalDate;
  * @since 0.0.1
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class VacantPeriod extends EntityFrame {
 
     private LocalDate periodStart;
@@ -27,4 +19,37 @@ public class VacantPeriod extends EntityFrame {
 
     @ManyToOne
     private Slot slot;
+
+    public VacantPeriod() {
+    }
+
+    public VacantPeriod(LocalDate periodStart, LocalDate periodEnd, Slot slot) {
+        this.periodStart = periodStart;
+        this.periodEnd = periodEnd;
+        this.slot = slot;
+    }
+
+    public LocalDate getPeriodStart() {
+        return periodStart;
+    }
+
+    public void setPeriodStart(LocalDate periodStart) {
+        this.periodStart = periodStart;
+    }
+
+    public LocalDate getPeriodEnd() {
+        return periodEnd;
+    }
+
+    public void setPeriodEnd(LocalDate periodEnd) {
+        this.periodEnd = periodEnd;
+    }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
 }

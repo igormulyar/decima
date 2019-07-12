@@ -36,7 +36,7 @@ public class FakeDataLoader {
     VacantPeriodRepository vacantPeriodRepository;
 
 
-    Slot singlePlaceSlotFree = new Slot(1, 1);
+    /*Slot singlePlaceSlotFree = new Slot(1, 1);
     Slot dualPlaceSlotFree = new Slot(2, 2);
     Slot dualPlaceSlotPartiallyBooked = new Slot(3, 2);
     Slot triplePlaceSlotPartiallyBooked = new Slot(4, 3);
@@ -53,9 +53,9 @@ public class FakeDataLoader {
     ParkingUser max = new ParkingUser(5, "mmad", "Max", "Mad");
     ParkingUser ivan = new ParkingUser(6, "iivanov", "Ivan", "Ivanov");
     ParkingUser markus = new ParkingUser(7, "mavrely", "Markus", "Aurelius");
-    ParkingUser plutarch = new ParkingUser(8, "plutarch", null, null);
+    ParkingUser plutarch = new ParkingUser(8, "plutarch", null, null);*/
 
-    public void loadDataFull() {
+    /*public void loadDataFull() {
         loadSlotsAnsUsers();
 
         Reserve aureliusReserve = new Reserve(markus, reservedForAurelius);
@@ -87,5 +87,5 @@ public class FakeDataLoader {
         Stream.of(singlePlaceSlotFree, dualPlaceSlotFree, dualPlaceSlotPartiallyBooked, triplePlaceSlotPartiallyBooked, singlePlaceSlotFullBooked, dualPlaceSlotFullBooked,
                 reservedForAurelius, reservedForFerdinand, reservedForPlutarch).forEach(slot -> slotRepository.save(slot));
         Stream.of(john, gavrilo, franz, mary, max, ivan, markus, plutarch).forEach(user -> parkingUserRepository.save(user));
-    }
+    }*/
 }

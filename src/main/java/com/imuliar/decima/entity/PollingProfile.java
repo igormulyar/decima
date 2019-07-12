@@ -14,11 +14,23 @@ import javax.persistence.Entity;
  * @since //TODO specify version
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PollingProfile extends EntityFrame {
 
     @Column(nullable = false)
     private Integer startPollingHour;
+
+    public PollingProfile() {
+    }
+
+    public PollingProfile(Integer startPollingHour) {
+        this.startPollingHour = startPollingHour;
+    }
+
+    public Integer getStartPollingHour() {
+        return startPollingHour;
+    }
+
+    public void setStartPollingHour(Integer startPollingHour) {
+        this.startPollingHour = startPollingHour;
+    }
 }

@@ -34,10 +34,10 @@ public class UpdateHandlerImpl implements UpdateHandler {
         this.fakeDataLoader = fakeDataLoader;
     }
 
-    @PostConstruct
+/*    @PostConstruct
     public void loadFakeData() {
         fakeDataLoader.loadDataFull();
-    }
+    }*/
 
     @Override
     public void handle(Update update) {

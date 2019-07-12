@@ -1,12 +1,11 @@
 package com.imuliar.decima.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
-import static javax.persistence.EnumType.STRING;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  * <p>Represents the bot user who is allowed periodEnd use parking</p>
@@ -15,9 +14,6 @@ import static javax.persistence.EnumType.STRING;
  * @since 0.0.1
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ParkingUser extends EntityFrame {
 
     @Column(unique = true)
@@ -29,7 +25,59 @@ public class ParkingUser extends EntityFrame {
 
     private String lastName;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "POLLING_PROFILE_ID",
             foreignKey = @ForeignKey(name = "FK_PARKING_USER_POLLING_PROFILE"))
     private PollingProfile pollingProfile;
+
+    public ParkingUser() {
+    }
+
+    public ParkingUser(Integer telegramUserId, String telegramUsername, String firstName, String lastName, PollingProfile pollingProfile) {
+        this.telegramUserId = telegramUserId;
+        this.telegramUsername = telegramUsername;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pollingProfile = pollingProfile;
+    }
+
+    public Integer getTelegramUserId() {
+        return telegramUserId;
+    }
+
+    public void setTelegramUserId(Integer telegramUserId) {
+        this.telegramUserId = telegramUserId;
+    }
+
+    public String getTelegramUsername() {
+        return telegramUsername;
+    }
+
+    public void setTelegramUsername(String telegramUsername) {
+        this.telegramUsername = telegramUsername;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public PollingProfile getPollingProfile() {
+        return pollingProfile;
+    }
+
+    public void setPollingProfile(PollingProfile pollingProfile) {
+        this.pollingProfile = pollingProfile;
+    }
 }

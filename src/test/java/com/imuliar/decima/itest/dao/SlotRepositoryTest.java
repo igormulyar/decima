@@ -29,7 +29,7 @@ public class SlotRepositoryTest extends AbstractRepositoryTest {
     @Autowired
     private SlotRepository slotRepository;
 
-    @Before
+    /*@Before
     public void setup() {
         loadDataFull();
     }
@@ -46,5 +46,5 @@ public class SlotRepositoryTest extends AbstractRepositoryTest {
         Assert.assertEquals(dualPlaceSlotPartiallyBooked.getId(), resultSlots.get(2).getId());
         Assert.assertEquals(triplePlaceSlotPartiallyBooked.getId(), resultSlots.get(3).getId());
         Assert.assertEquals(reservedForFerdinand.getId(), resultSlots.get(4).getId());
-    }
+    }*/
 }

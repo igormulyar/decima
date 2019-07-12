@@ -1,11 +1,12 @@
 package com.imuliar.decima.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * <p>Represents the record about booking a slot by user for specified date</p>
@@ -14,9 +15,6 @@ import java.time.LocalDate;
  * @since 0.0.1
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Booking extends EntityFrame {
 
     @OneToOne(optional = false)
@@ -33,4 +31,46 @@ public class Booking extends EntityFrame {
 
     @Column(nullable = false)
     private Integer priority;
+
+    public Booking() {
+    }
+
+    public Booking(ParkingUser user, Slot slot, LocalDate date, Integer priority) {
+        this.user = user;
+        this.slot = slot;
+        this.date = date;
+        this.priority = priority;
+    }
+
+    public ParkingUser getUser() {
+        return user;
+    }
+
+    public void setUser(ParkingUser user) {
+        this.user = user;
+    }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
 }

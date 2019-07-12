@@ -92,7 +92,7 @@ public class PlebeianInitialState extends AbstractState {
     private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser){
         Optional<Booking> bookingFound = bookingRepository.findByUserAndDate(parkingUser, LocalDate.now());
         if(bookingFound.isPresent()){
-            Integer bookedSlotNumber = bookingFound.get().getSlot().getNumber();
+            String bookedSlotNumber = bookingFound.get().getSlot().getNumber();
             displayForAlreadyBooked(chatId, bookedSlotNumber);
         } else {
             displayInitialMessage(chatId);
@@ -110,7 +110,7 @@ public class PlebeianInitialState extends AbstractState {
         displayGeneralInitMessage(chatId, message, buttons);
     }
 
-    private void displayForAlreadyBooked(Long chatId, Integer bookedSlotNumber){
+    private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber){
         String msg = String.format("You have booked the slot #%d. What are you going to do?", bookedSlotNumber);
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(new InlineKeyboardButton().setText("Find neighbours").setCallbackData(FIND_NEIGHBOURS_CALLBACK));

@@ -1,9 +1,5 @@
 package com.imuliar.decima.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -14,9 +10,6 @@ import javax.persistence.OneToOne;
  * @since 0.0.1
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Reserve extends EntityFrame {
 
     @OneToOne
@@ -24,4 +17,28 @@ public class Reserve extends EntityFrame {
 
     @OneToOne
     private Slot slot;
+
+    public Reserve() {
+    }
+
+    public Reserve(ParkingUser user, Slot slot) {
+        this.user = user;
+        this.slot = slot;
+    }
+
+    public ParkingUser getUser() {
+        return user;
+    }
+
+    public void setUser(ParkingUser user) {
+        this.user = user;
+    }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
 }

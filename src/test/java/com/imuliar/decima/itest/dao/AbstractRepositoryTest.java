@@ -21,7 +21,7 @@ public class AbstractRepositoryTest {
     @Autowired
     EntityManager sharedEntityManager;
 
-    Slot singlePlaceSlotFree = new Slot(1, 1);
+    /*Slot singlePlaceSlotFree = new Slot(1, 1);
     Slot dualPlaceSlotFree = new Slot(2, 2);
     Slot dualPlaceSlotPartiallyBooked = new Slot(3, 2);
     Slot triplePlaceSlotPartiallyBooked = new Slot(4, 3);
@@ -72,6 +72,6 @@ public class AbstractRepositoryTest {
         Stream.of(singlePlaceSlotFree, dualPlaceSlotFree, dualPlaceSlotPartiallyBooked, triplePlaceSlotPartiallyBooked, singlePlaceSlotFullBooked, dualPlaceSlotFullBooked,
                 reservedForAurelius, reservedForFerdinand, reservedForPlutarch).forEach(slot -> sharedEntityManager.persist(slot));
         Stream.of(john, gavrilo, franz, mary, max, ivan, markus, plutarch).forEach(user -> sharedEntityManager.persist(user));
-    }
+    }*/
 
 }
