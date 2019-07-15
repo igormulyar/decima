@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
  * @author imuliar
  * @since 0.0.1
  */
-@Getter
-@Setter
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class UserSession {
@@ -25,4 +23,20 @@ public class UserSession {
     private LocalDateTime updateTime = LocalDateTime.now();
 
     private AbstractState currentState;
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public AbstractState getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(AbstractState currentState) {
+        this.currentState = currentState;
+    }
 }

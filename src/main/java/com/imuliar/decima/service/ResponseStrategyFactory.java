@@ -10,5 +10,5 @@ import com.imuliar.decima.entity.ParkingUser;
  */
 public interface ResponseStrategyFactory {
 
-    ResponseStrategy getStrategy(ParkingUser parkingUser);
+    ResponseStrategy getStrategy(ParkingUser parkingUser, Long chatId);
 }

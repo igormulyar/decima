@@ -6,36 +6,48 @@ import com.imuliar.decima.service.ResponseStrategy;
 import com.imuliar.decima.service.ResponseStrategyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * //TODO add description <p></p>
+ * <p>Resolves appropriate strategy for processing update</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 @Service
 public class ResponseStrategyFactoryImpl implements ResponseStrategyFactory {
 
-    @Qualifier("plebeianResponseStrategy")
-    private ResponseStrategy plebeianResponseStrategy;
+    @Value("${decima.groupChatId}")
+    private Long groupChatId;
 
-    @Qualifier("patricianResponseStrategy")
-    private ResponseStrategy patricianResponseStrategy;
+    @Qualifier("ordinaryResponseStrategy")
+    private ResponseStrategy ordinaryResponseStrategy;
+
+    @Qualifier("slotOwnerResponseStrategy")
+    private ResponseStrategy slotOwnerResponseStrategy;
+
+    @Qualifier("groupChatResponseStrategy")
+    private ResponseStrategy groupChatResponseStrategy;
 
     private ReserveRepository reserveRepository;
 
     @Autowired
-    public ResponseStrategyFactoryImpl(ResponseStrategy plebeianResponseStrategy, ResponseStrategy patricianResponseStrategy, ReserveRepository reserveRepository) {
-        this.plebeianResponseStrategy = plebeianResponseStrategy;
-        this.patricianResponseStrategy = patricianResponseStrategy;
+    public ResponseStrategyFactoryImpl(ResponseStrategy ordinaryResponseStrategy, ResponseStrategy slotOwnerResponseStrategy,
+                                       ResponseStrategy groupChatResponseStrategy, ReserveRepository reserveRepository) {
+        this.ordinaryResponseStrategy = ordinaryResponseStrategy;
+        this.slotOwnerResponseStrategy = slotOwnerResponseStrategy;
+        this.groupChatResponseStrategy = groupChatResponseStrategy;
         this.reserveRepository = reserveRepository;
     }
 
     @Override
-    public ResponseStrategy getStrategy(ParkingUser parkingUser) {
+    public ResponseStrategy getStrategy(ParkingUser parkingUser, Long chatId) {
+        if(chatId.longValue() == groupChatId.longValue()){
+            return groupChatResponseStrategy;
+        }
         return reserveRepository.findByUser(parkingUser).isPresent()
-                ? patricianResponseStrategy
-                : plebeianResponseStrategy;
+                ? slotOwnerResponseStrategy
+                : ordinaryResponseStrategy;
     }
 }

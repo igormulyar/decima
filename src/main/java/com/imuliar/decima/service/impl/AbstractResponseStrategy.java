@@ -35,6 +35,7 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
             session.setCurrentState(initialState);
             initialState.setUserSession(session);
         }
+
         session.getCurrentState().processUpdate(chatId, parkingUser, update);
     }
 

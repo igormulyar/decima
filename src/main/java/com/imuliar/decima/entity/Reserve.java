@@ -18,6 +18,12 @@ public class Reserve extends EntityFrame {
     @OneToOne
     private Slot slot;
 
+    /**
+     * <p>Represents the priority level of reservation</p>
+     * <p> 0 is the highest priority.</p>
+     */
+    private Integer priority = 0;
+
     public Reserve() {
     }
 
@@ -40,5 +46,13 @@ public class Reserve extends EntityFrame {
 
     public void setSlot(Slot slot) {
         this.slot = slot;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }

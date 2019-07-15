@@ -27,7 +27,7 @@ public class PollingServiceImpl implements PollingService {
 
     private static final String POLLING_MSG = "Are you going to park your car today?";
 
-    private static final String YES_CALLBACK = "dummy_callback";
+    private static final String YES_CALLBACK = "yes_callback";
 
     private final ParkingUserRepository userRepository;
 

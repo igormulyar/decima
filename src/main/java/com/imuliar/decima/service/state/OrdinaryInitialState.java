@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class PlebeianInitialState extends AbstractState {
+public class OrdinaryInitialState extends AbstractState {
 
     private static final String REQUEST_FREE_SLOTS_CALLBACK = "get_free_slots";
 

@@ -7,20 +7,19 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
- * //TODO add description <p></p>
+ * <p>Process updates come from users who don't own parking slot</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 @Service
-public abstract class PatricianResponseStrategy extends AbstractResponseStrategy {
+public abstract class OrdinaryResponseStrategy extends AbstractResponseStrategy {
 
     @Autowired
-    public PatricianResponseStrategy(SessionProvider sessionProvider) {
+    public OrdinaryResponseStrategy(SessionProvider sessionProvider) {
         super(sessionProvider);
     }
 
-    @Lookup
+    @Lookup("ordinaryInitialState")
     protected abstract AbstractState generateInitialState();
-
 }
