@@ -18,7 +18,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 @Getter
 @Setter
-@Service
 public abstract class AbstractResponseStrategy implements ResponseStrategy {
 
     protected SessionProvider sessionProvider;

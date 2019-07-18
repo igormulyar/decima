@@ -21,20 +21,19 @@ public class ResponseStrategyFactoryImpl implements ResponseStrategyFactory {
     @Value("${decima.groupChatId}")
     private Long groupChatId;
 
-    @Qualifier("ordinaryResponseStrategy")
     private ResponseStrategy ordinaryResponseStrategy;
 
-    @Qualifier("slotOwnerResponseStrategy")
     private ResponseStrategy slotOwnerResponseStrategy;
 
-    @Qualifier("groupChatResponseStrategy")
     private ResponseStrategy groupChatResponseStrategy;
 
     private ReserveRepository reserveRepository;
 
     @Autowired
-    public ResponseStrategyFactoryImpl(ResponseStrategy ordinaryResponseStrategy, ResponseStrategy slotOwnerResponseStrategy,
-                                       ResponseStrategy groupChatResponseStrategy, ReserveRepository reserveRepository) {
+    public ResponseStrategyFactoryImpl(@Qualifier("ordinaryResponseStrategy") ResponseStrategy ordinaryResponseStrategy,
+                                       @Qualifier("slotOwnerResponseStrategy") ResponseStrategy slotOwnerResponseStrategy,
+                                       @Qualifier("groupChatResponseStrategy") ResponseStrategy groupChatResponseStrategy,
+                                       ReserveRepository reserveRepository) {
         this.ordinaryResponseStrategy = ordinaryResponseStrategy;
         this.slotOwnerResponseStrategy = slotOwnerResponseStrategy;
         this.groupChatResponseStrategy = groupChatResponseStrategy;
