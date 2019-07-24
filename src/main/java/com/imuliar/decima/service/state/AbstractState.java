@@ -1,5 +1,6 @@
 package com.imuliar.decima.service.state;
 
+import com.imuliar.decima.dao.ReserveRepository;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.impl.MessageSender;
 import com.imuliar.decima.service.session.UserSession;
@@ -23,12 +24,19 @@ public abstract class AbstractState {
     @Autowired
     private MessageSender messageSender;
 
+    @Autowired
+    private ReserveRepository reserveRepository;
+
     UserSession userSession;
 
     public abstract void processUpdate(Long chatId, ParkingUser parkingUser, Update update);
 
     public MessageSender getMessageSender() {
         return messageSender;
+    }
+
+    public ReserveRepository getReserveRepository() {
+        return reserveRepository;
     }
 
     public UserSession getUserSession() {
@@ -46,4 +54,6 @@ public abstract class AbstractState {
     public void setPlanImageUrl(String planImageUrl) {
         this.planImageUrl = planImageUrl;
     }
+
+
 }

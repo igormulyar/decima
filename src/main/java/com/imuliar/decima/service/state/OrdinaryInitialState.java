@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * //TODO add description <p></p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

@@ -1,6 +1,14 @@
 package com.imuliar.decima.service.state;
 
+import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
+import com.imuliar.decima.entity.Reserve;
+import com.imuliar.decima.entity.VacantPeriod;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,12 +24,25 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SlotOwnerInitialState extends AbstractState {
 
+    private static final Pattern SET_FREE_MATCHING_PATTERN = Pattern.compile(""); //TODO provide pattern
+
     @Override
     public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
-        if(update.hasCallbackQuery()){
-            String callbackData = update.getCallbackQuery().getData();
-
+        if (update.hasCallbackQuery()) {
+            String callbackString = update.getCallbackQuery().getData();
+            if (SET_FREE_MATCHING_PATTERN.matcher(callbackString).matches()) {
+                VacantPeriod vacantPeriod = parseSetFreeCallbackData(callbackString);
+            }
         }
 
+    }
+
+    private VacantPeriod parseSetFreeCallbackData(String callbackString) {
+        List<String> splitStringData = Arrays.asList(callbackString.split("#"));
+        Integer userTelegramId = Integer.valueOf(splitStringData.get(1));
+        LocalDate vacantDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
+        Reserve reserve = getReserveRepository().findByTelegramUserId(userTelegramId)
+                .orElseThrow(() -> new IllegalStateException("Reservation should exist for user who has set slot free."));
+        return new VacantPeriod(vacantDate, vacantDate, reserve.getSlot());
     }
 }

@@ -58,7 +58,7 @@ public class PollingServiceImpl implements PollingService {
         messageSender.sendMessageWithKeyboard(Long.valueOf(user.getTelegramUserId()), POLLING_MSG, markupInline);
     }
 
-    private String buildNoCallbackData(Integer userId){
-        return String.format("user_absent#%d#%s", userId, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
+    private String buildNoCallbackData(Integer userTelegramId){
+        return String.format("#free#%d#%s", userTelegramId, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
     }
 }
