@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
- * //TODO add description <p></p>
+ * <p>Access to {@link Reserve} records</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
+@Repository
 public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 
     Optional<Reserve> findByUser(ParkingUser parkingUser);

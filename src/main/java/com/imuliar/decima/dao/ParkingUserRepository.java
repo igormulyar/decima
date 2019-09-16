@@ -23,20 +23,13 @@ public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> 
 
     Optional<ParkingUser> findByTelegramUserId(Integer telegramUserId);
 
-    @Query("SELECT neighbour FROM Booking booking " +
-            "JOIN booking.user neighbour " +
-            "WHERE booking.slot IN " +
-            "(SELECT slot FROM Booking b " +
-            "JOIN b.slot slot " +
-            "JOIN b.user user " +
-            "WHERE user.id = :id " +
-            "AND b.date = :date) " +
-            "AND neighbour <> :id " +
-            "AND booking.date = :date")
-    List<ParkingUser> findNeighbours(@Param("id") Long id, @Param("date") LocalDate date);
-
     @Query("SELECT user FROM ParkingUser user " +
             "JOIN user.pollingProfile profile " +
-            "WHERE :now >= profile.startPollingHour AND :now <= (profile.startPollingHour + 2)")
+            "WHERE :now >= profile.startPollingHour AND :now <= (profile.startPollingHour + 2) ")
     List<ParkingUser> findByStartPollingHour(@Param("now") int currentHour);
+
+    @Query("SELECT user FROM AnswerLogRecord answerLogRecord " +
+            "JOIN answerLogRecord.user user " +
+            "WHERE answerLogRecord.date = :date ")
+    List<ParkingUser> findAnsweredAtDate(@Param("date") LocalDate date);
 }

@@ -6,9 +6,12 @@ import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -17,13 +20,6 @@ import org.springframework.util.CollectionUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * //TODO add description <p></p>
@@ -74,8 +70,9 @@ public class OrdinaryInitialState extends AbstractState {
     }
 
     private void displayFreeSlots(Long chatId, Update update) {
-        List<Slot> freeSlots = slotRepository.findFreeSlots(LocalDate.now());
-        if(CollectionUtils.isEmpty(freeSlots)){
+        /*List<Slot> freeSlots = slotRepository.findFreeSlots(LocalDate.now());*/
+        List<Slot> freeSlots = Collections.emptyList(); //TODO replace with proper call
+        if (CollectionUtils.isEmpty(freeSlots)) {
             getMessageSender().popUpNotify(update.getCallbackQuery().getId(), "Can't find free slot for parking :(");
         }
 
@@ -89,9 +86,9 @@ public class OrdinaryInitialState extends AbstractState {
         getMessageSender().sendMessageWithKeyboard(chatId, "There are some parking slots available. Select one you'd like to book for today.", markupInline);
     }
 
-    private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser){
+    private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser) {
         Optional<Booking> bookingFound = bookingRepository.findByUserAndDate(parkingUser, LocalDate.now());
-        if(bookingFound.isPresent()){
+        if (bookingFound.isPresent()) {
             String bookedSlotNumber = bookingFound.get().getSlot().getNumber();
             displayForAlreadyBooked(chatId, bookedSlotNumber);
         } else {
@@ -99,7 +96,7 @@ public class OrdinaryInitialState extends AbstractState {
         }
     }
 
-    private void displayInitialMessage(Long chatId){
+    private void displayInitialMessage(Long chatId) {
         String message =
                 "----------------------------------------\n" +
                         "*Choose the action, please.*\n" +
@@ -110,7 +107,7 @@ public class OrdinaryInitialState extends AbstractState {
         displayGeneralInitMessage(chatId, message, buttons);
     }
 
-    private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber){
+    private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
         String msg = String.format("You have booked the slot #%d. What are you going to do?", bookedSlotNumber);
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(new InlineKeyboardButton().setText("Find neighbours").setCallbackData(FIND_NEIGHBOURS_CALLBACK));

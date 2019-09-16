@@ -30,10 +30,7 @@ public class ParkingUserServiceImp implements ParkingUserService {
     @Nonnull
     public ParkingUser findOrCreateParkingUser(@Nonnull User user) {
         Assert.notNull(user, "user is null");
-
-        Optional<ParkingUser> savedParkingUser = userRepository.findByTelegramUserId(user.getId());
-        return savedParkingUser.isPresent()
-                ? savedParkingUser.get()
-                : userRepository.save(new ParkingUser(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), new PollingProfile(8)));
+        return userRepository.findByTelegramUserId(user.getId())
+                .orElseGet(() -> userRepository.save(new ParkingUser(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), new PollingProfile(8))));
     }
 }

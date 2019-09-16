@@ -24,6 +24,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SlotOwnerInitialState extends AbstractState {
 
+    private static final Pattern LEAVE_RESERVED_MATCHING_PATTERN = Pattern.compile("");
     private static final Pattern SET_FREE_MATCHING_PATTERN = Pattern.compile(""); //TODO provide pattern
 
     @Override

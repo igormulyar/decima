@@ -4,15 +4,13 @@ import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.ParkingUserService;
 import com.imuliar.decima.service.ResponseStrategyFactory;
 import com.imuliar.decima.service.UpdateHandler;
-import lombok.AllArgsConstructor;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-
-import javax.annotation.PostConstruct;
 
 /**
  * <p>Handle input updates from telegram server and forward for appropriate processing</p>
@@ -36,6 +34,11 @@ public class UpdateHandlerImpl implements UpdateHandler {
         this.parkingUserService = parkingUserService;
         this.responseStrategyFactory = responseStrategyFactory;
         this.fakeDataLoader = fakeDataLoader;
+    }
+
+    @PostConstruct
+    void loadFakeData(){
+        fakeDataLoader.loadData();
     }
 
     @Override

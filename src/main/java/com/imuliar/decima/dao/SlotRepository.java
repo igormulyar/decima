@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 public interface SlotRepository extends JpaRepository<Slot, Long> {
 
-    @Query("SELECT slot FROM Slot slot " +
+/*    @Query("SELECT slot FROM Slot slot " +
             "WHERE slot NOT IN " +
             "(SELECT bookedSlot FROM Booking b " +
             "JOIN b.slot bookedSlot " +
@@ -34,5 +34,5 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
             "(SELECT vacantSlot FROM VacantPeriod vacantPeriod " +
             "JOIN vacantPeriod.slot vacantSlot " +
             "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd))")
-    List<Slot> findFreeSlots(@Param("date") LocalDate date);
+    List<Slot> findFreeSlots(@Param("date") LocalDate date);*/
 }

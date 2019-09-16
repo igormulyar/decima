@@ -1,24 +1,23 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.DecimaBot;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * //TODO add description <p></p>
+ * <p>Facade for sending the messages</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 @Service
 public class MessageSender {
@@ -26,6 +25,7 @@ public class MessageSender {
     private DecimaBot bot;
 
     @Autowired
+    @Lazy
     public MessageSender(DecimaBot decimaBot) {
         this.bot = decimaBot;
     }

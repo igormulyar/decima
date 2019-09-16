@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 @EntityScan("com.imuliar.decima.entity")
 @EnableJpaRepositories
 @EnableTransactionManagement

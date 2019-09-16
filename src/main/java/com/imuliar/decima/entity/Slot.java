@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
- * <p>Represents the batch of {@link ParkingPlace}s, which have single access gateway</p>
+ * <p>Represents the place for parking the car</p>
  *
  * @author imuliar
  * @since 0.0.1
@@ -15,15 +15,11 @@ public class Slot extends EntityFrame {
     @Column(nullable = false)
     private String number;
 
-    @Column(nullable = false)
-    private Integer maxLoading;
-
     public Slot() {
     }
 
-    public Slot(String number, Integer maxLoading) {
+    public Slot(String number) {
         this.number = number;
-        this.maxLoading = maxLoading;
     }
 
     public String getNumber() {
@@ -32,13 +28,5 @@ public class Slot extends EntityFrame {
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public Integer getMaxLoading() {
-        return maxLoading;
-    }
-
-    public void setMaxLoading(Integer maxLoading) {
-        this.maxLoading = maxLoading;
     }
 }
