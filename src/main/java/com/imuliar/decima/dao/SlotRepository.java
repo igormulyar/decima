@@ -28,7 +28,7 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
             "HAVING COUNT(b) = bookedSlot.maxLoading " +
             "AND b.date = :date) " +
             "AND slot NOT IN " +
-            "(SELECT reservedSlot FROM Reserve reserve " +
+            "(SELECT reservedSlot FROM Reservation reserve " +
             "JOIN reserve.slot reservedSlot " +
             "WHERE reservedSlot NOT IN " +
             "(SELECT vacantSlot FROM VacantPeriod vacantPeriod " +

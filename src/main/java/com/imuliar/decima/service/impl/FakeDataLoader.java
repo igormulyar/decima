@@ -7,7 +7,7 @@ import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.PollingProfile;
-import com.imuliar.decima.entity.Reserve;
+import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.Slot;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ public class FakeDataLoader {
             parkingUserRepository.save(aUser);
             parkingUserRepository.save(iUser);
 
-            Reserve iUserReserve = new Reserve(iUser, iSlot);
-            reserveRepository.save(iUserReserve);
+            Reservation iUserReservation = new Reservation(iUser, iSlot);
+            reserveRepository.save(iUserReservation);
         }
     }
 }

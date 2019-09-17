@@ -43,9 +43,9 @@ public class AbstractRepositoryTest {
     protected void loadDataFull() {
         loadSlotsAnsUsers();
 
-        Reserve aureliusReserve = new Reserve(markus, reservedForAurelius);
-        Reserve ferdinandReserve = new Reserve(franz, reservedForFerdinand);
-        Reserve plutarchReserve = new Reserve(plutarch, reservedForPlutarch);
+        Reservation aureliusReserve = new Reservation(markus, reservedForAurelius);
+        Reservation ferdinandReserve = new Reservation(franz, reservedForFerdinand);
+        Reservation plutarchReserve = new Reservation(plutarch, reservedForPlutarch);
 
         Booking johnsBooking = new Booking(john, dualPlaceSlotPartiallyBooked, TODAY);
         Booking gavrilosBooking = new Booking(gavrilo, triplePlaceSlotPartiallyBooked, TODAY);

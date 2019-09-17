@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
  * @since 0.0.1
  */
 @Entity
-public class Reserve extends EntityFrame {
+public class Reservation extends EntityFrame {
 
     @OneToOne
     private ParkingUser user;
@@ -24,10 +24,10 @@ public class Reserve extends EntityFrame {
      */
     private Integer priority = 0;
 
-    public Reserve() {
+    public Reservation() {
     }
 
-    public Reserve(ParkingUser user, Slot slot) {
+    public Reservation(ParkingUser user, Slot slot) {
         this.user = user;
         this.slot = slot;
     }

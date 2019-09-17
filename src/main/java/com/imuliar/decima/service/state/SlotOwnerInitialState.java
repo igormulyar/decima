@@ -1,8 +1,7 @@
 package com.imuliar.decima.service.state;
 
-import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.entity.Reserve;
+import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.VacantPeriod;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,8 +41,8 @@ public class SlotOwnerInitialState extends AbstractState {
         List<String> splitStringData = Arrays.asList(callbackString.split("#"));
         Integer userTelegramId = Integer.valueOf(splitStringData.get(1));
         LocalDate vacantDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
-        Reserve reserve = getReserveRepository().findByTelegramUserId(userTelegramId)
+        Reservation reservation = getReserveRepository().findByTelegramUserId(userTelegramId)
                 .orElseThrow(() -> new IllegalStateException("Reservation should exist for user who has set slot free."));
-        return new VacantPeriod(vacantDate, vacantDate, reserve.getSlot());
+        return new VacantPeriod(vacantDate, vacantDate, reservation.getSlot());
     }
 }
