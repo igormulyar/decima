@@ -1,5 +1,6 @@
 package com.imuliar.decima.entity;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -15,6 +16,8 @@ public class PollingProfile extends EntityFrame {
     @Column(nullable = false)
     private Integer startPollingHour;
 
+    private LocalDate lastAnswerReceived;
+
     public PollingProfile() {
     }
 
@@ -28,5 +31,13 @@ public class PollingProfile extends EntityFrame {
 
     public void setStartPollingHour(Integer startPollingHour) {
         this.startPollingHour = startPollingHour;
+    }
+
+    public LocalDate getLastAnswerReceived() {
+        return lastAnswerReceived;
+    }
+
+    public void setLastAnswerReceived(LocalDate lastAnswerReceived) {
+        this.lastAnswerReceived = lastAnswerReceived;
     }
 }

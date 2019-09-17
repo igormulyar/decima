@@ -47,11 +47,8 @@ public class PollingServiceImpl implements PollingService {
     @Override
     public void runPoll() {
         LOGGER.debug("START POLLING TASK.");
-        List<ParkingUser> usersAnsweredToday = userRepository.findAnsweredAtDate(LocalDate.now());
         userRepository
-                .findByStartPollingHour(LocalTime.now().getHour())
-                .stream()
-                .filter(user -> !usersAnsweredToday.contains(user))
+                .findByStartPollingHour(LocalTime.now().getHour(), LocalDate.now())
                 .forEach(this::poll);
         LOGGER.debug("FINISH POLLING TASK.");
     }
