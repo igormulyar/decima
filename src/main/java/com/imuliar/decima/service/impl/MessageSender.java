@@ -4,6 +4,7 @@ import com.imuliar.decima.DecimaBot;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
@@ -24,6 +25,9 @@ public class MessageSender {
 
     private DecimaBot bot;
 
+    @Value("{decima.groupChatId}")
+    private Long groupChatId;
+
     @Autowired
     @Lazy
     public MessageSender(DecimaBot decimaBot) {
@@ -36,6 +40,10 @@ public class MessageSender {
                 .setChatId(chatId)
                 .setText(message)
                 .setReplyMarkup(keyboardMarkup));
+    }
+
+    public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup){
+        sendMessageWithKeyboard(groupChatId, message, keyboardMarkup);
     }
 
     public void popUpNotify(String callbackQueryId, String messageText) {

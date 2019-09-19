@@ -1,6 +1,9 @@
 package com.imuliar.decima.service.state;
 
-import com.imuliar.decima.dao.ReserveRepository;
+import com.imuliar.decima.dao.ParkingUserRepository;
+import com.imuliar.decima.dao.ReservationRepository;
+import com.imuliar.decima.dao.SlotRepository;
+import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.impl.MessageSender;
 import com.imuliar.decima.service.session.UserSession;
@@ -9,10 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
- * //TODO add description <p></p>
+ * <p>Encapsulates common properties and behavior for child states</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 public abstract class AbstractState {
 
@@ -25,7 +28,16 @@ public abstract class AbstractState {
     private MessageSender messageSender;
 
     @Autowired
-    private ReserveRepository reserveRepository;
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private VacantPeriodRepository vacantPeriodRepository;
+
+    @Autowired
+    private SlotRepository slotRepository;
+
+    @Autowired
+    private ParkingUserRepository userRepository;
 
     UserSession userSession;
 
@@ -35,8 +47,8 @@ public abstract class AbstractState {
         return messageSender;
     }
 
-    public ReserveRepository getReserveRepository() {
-        return reserveRepository;
+    public ReservationRepository getReservationRepository() {
+        return reservationRepository;
     }
 
     public UserSession getUserSession() {
@@ -55,5 +67,15 @@ public abstract class AbstractState {
         this.planImageUrl = planImageUrl;
     }
 
+    public VacantPeriodRepository getVacantPeriodRepository() {
+        return vacantPeriodRepository;
+    }
 
+    public SlotRepository getSlotRepository() {
+        return slotRepository;
+    }
+
+    public ParkingUserRepository getUserRepository() {
+        return userRepository;
+    }
 }

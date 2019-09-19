@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 
 /**
- * //TODO add description <p></p>
+ * <p></p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 @Service
 public interface PollingService {
@@ -18,4 +18,10 @@ public interface PollingService {
      * <p>Drop all existent tasks and schedule new ones</p>
      */
     void runPoll();
+
+    /**
+     * Ask single user
+     * @param parkingUser user to be polled
+     */
+    void poll(ParkingUser parkingUser);
 }

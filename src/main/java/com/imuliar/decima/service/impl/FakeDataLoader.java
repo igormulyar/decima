@@ -2,7 +2,7 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.dao.BookingRepository;
 import com.imuliar.decima.dao.ParkingUserRepository;
-import com.imuliar.decima.dao.ReserveRepository;
+import com.imuliar.decima.dao.ReservationRepository;
 import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.ParkingUser;
@@ -42,7 +42,7 @@ public class FakeDataLoader {
     BookingRepository bookingRepository;
 
     @Autowired
-    ReserveRepository reserveRepository;
+    ReservationRepository reservationRepository;
 
     @Autowired
     VacantPeriodRepository vacantPeriodRepository;
@@ -60,7 +60,7 @@ public class FakeDataLoader {
             parkingUserRepository.save(iUser);
 
             Reservation iUserReservation = new Reservation(iUser, iSlot);
-            reserveRepository.save(iUserReservation);
+            reservationRepository.save(iUserReservation);
         }
     }
 }

@@ -53,7 +53,8 @@ public class PollingServiceImpl implements PollingService {
         LOGGER.debug("FINISH POLLING TASK.");
     }
 
-    private void poll(ParkingUser user) {
+    @Override
+    public void poll(ParkingUser user) {
         List<InlineKeyboardButton> buttonsLine = new ArrayList<>();
         buttonsLine.add(new InlineKeyboardButton().setText("Yes!").setCallbackData(YES_CALLBACK));
         buttonsLine.add(new InlineKeyboardButton().setText("No, my place is free today").setCallbackData(buildNoCallbackData(user.getTelegramUserId())));

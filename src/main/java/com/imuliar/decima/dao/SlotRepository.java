@@ -1,6 +1,8 @@
 package com.imuliar.decima.dao;
 
+import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +37,6 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
             "JOIN vacantPeriod.slot vacantSlot " +
             "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd))")
     List<Slot> findFreeSlots(@Param("date") LocalDate date);*/
+
+    Optional<Slot> findByParkingUser(ParkingUser parkingUser);
 }

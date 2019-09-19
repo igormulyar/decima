@@ -2,10 +2,11 @@ package com.imuliar.decima.entity;
 
 import java.time.LocalDate;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * <p>Represents the period of time, when parking user with role PATRICIAN won't use his parking place</p>
+ * <p>Represents the period of time, when parking user won't use his parking place</p>
  *
  * @author imuliar
  * @since 0.0.1
@@ -18,15 +19,16 @@ public class VacantPeriod extends EntityFrame {
     private LocalDate periodEnd;
 
     @ManyToOne
-    private Slot slot;
+    @JoinColumn(name="USER_ID", nullable = false)
+    private ParkingUser user;
 
     public VacantPeriod() {
     }
 
-    public VacantPeriod(LocalDate periodStart, LocalDate periodEnd, Slot slot) {
+    public VacantPeriod(LocalDate periodStart, LocalDate periodEnd, ParkingUser user) {
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
-        this.slot = slot;
+        this.user = user;
     }
 
     public LocalDate getPeriodStart() {
@@ -45,11 +47,11 @@ public class VacantPeriod extends EntityFrame {
         this.periodEnd = periodEnd;
     }
 
-    public Slot getSlot() {
-        return slot;
+    public ParkingUser getUser() {
+        return user;
     }
 
-    public void setSlot(Slot slot) {
-        this.slot = slot;
+    public void setUser(ParkingUser user) {
+        this.user = user;
     }
 }

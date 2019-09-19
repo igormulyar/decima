@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  * @since 0.0.1
  */
 @Repository
-public interface ReserveRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     Optional<Reservation> findByUser(ParkingUser parkingUser);
 
