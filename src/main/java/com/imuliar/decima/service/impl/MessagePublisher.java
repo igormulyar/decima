@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
  * @since 0.0.1
  */
 @Service
-public class MessageSender {
+public class MessagePublisher {
 
     private DecimaBot bot;
 
@@ -30,7 +30,7 @@ public class MessageSender {
 
     @Autowired
     @Lazy
-    public MessageSender(DecimaBot decimaBot) {
+    public MessagePublisher(DecimaBot decimaBot) {
         this.bot = decimaBot;
     }
 
@@ -51,22 +51,6 @@ public class MessageSender {
                 .setCallbackQueryId(callbackQueryId)
                 .setShowAlert(true)
                 .setText(messageText));
-    }
-
-    public void sendMessageWithClassicKeyboard(Long chatId, String message, List<KeyboardRow> keyboardRows) {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        keyboardRows.forEach(keyboard::add);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-
-        bot.sendBotResponse(new SendMessage()
-                .enableMarkdown(true)
-                .setChatId(chatId)
-                .setText(message)
-                .setReplyMarkup(replyKeyboardMarkup));
     }
 
     public void sendImage(Long chatId, String caption, String imageUrl){

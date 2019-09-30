@@ -73,7 +73,7 @@ public class OrdinaryInitialState extends AbstractState {
         /*List<Slot> freeSlots = slotRepository.findFreeSlots(LocalDate.now());*/
         List<Slot> freeSlots = Collections.emptyList(); //TODO replace with proper call
         if (CollectionUtils.isEmpty(freeSlots)) {
-            getMessageSender().popUpNotify(update.getCallbackQuery().getId(), "Can't find free slot for parking :(");
+            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Can't find free slot for parking :(");
         }
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -82,8 +82,8 @@ public class OrdinaryInitialState extends AbstractState {
                 .collect(Collectors.toList());
         List<List<InlineKeyboardButton>> keyboard = Lists.partition(buttons, 6);
         markupInline.setKeyboard(keyboard);
-        getMessageSender().sendImage(chatId, null, getPlanImageUrl());
-        getMessageSender().sendMessageWithKeyboard(chatId, "There are some parking slots available. Select one you'd like to book for today.", markupInline);
+        getMessagePublisher().sendImage(chatId, null, getPlanImageUrl());
+        getMessagePublisher().sendMessageWithKeyboard(chatId, "There are some parking slots available. Select one you'd like to book for today.", markupInline);
     }
 
     private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser) {
@@ -121,6 +121,6 @@ public class OrdinaryInitialState extends AbstractState {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(buttonsLine);
         markupInline.setKeyboard(keyboard);
-        getMessageSender().sendMessageWithKeyboard(chatId, message, markupInline);
+        getMessagePublisher().sendMessageWithKeyboard(chatId, message, markupInline);
     }
 }

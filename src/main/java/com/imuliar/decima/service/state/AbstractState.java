@@ -1,11 +1,8 @@
 package com.imuliar.decima.service.state;
 
-import com.imuliar.decima.dao.ParkingUserRepository;
-import com.imuliar.decima.dao.ReservationRepository;
-import com.imuliar.decima.dao.SlotRepository;
-import com.imuliar.decima.dao.VacantPeriodRepository;
+import com.imuliar.decima.dao.*;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.impl.MessageSender;
+import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.session.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +22,7 @@ public abstract class AbstractState {
     private String planImageUrl;
 
     @Autowired
-    private MessageSender messageSender;
+    private MessagePublisher messagePublisher;
 
     @Autowired
     private ReservationRepository reservationRepository;
@@ -39,12 +36,15 @@ public abstract class AbstractState {
     @Autowired
     private ParkingUserRepository userRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
     UserSession userSession;
 
     public abstract void processUpdate(Long chatId, ParkingUser parkingUser, Update update);
 
-    public MessageSender getMessageSender() {
-        return messageSender;
+    public MessagePublisher getMessagePublisher() {
+        return messagePublisher;
     }
 
     public ReservationRepository getReservationRepository() {
@@ -77,5 +77,9 @@ public abstract class AbstractState {
 
     public ParkingUserRepository getUserRepository() {
         return userRepository;
+    }
+
+    public BookingRepository getBookingRepository() {
+        return bookingRepository;
     }
 }

@@ -2,7 +2,7 @@ package com.imuliar.decima.service.scheduling.impl;
 
 import com.imuliar.decima.dao.ParkingUserRepository;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.impl.MessageSender;
+import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.scheduling.PollingService;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,12 +34,12 @@ public class PollingServiceImpl implements PollingService {
 
     private final ParkingUserRepository userRepository;
 
-    private final MessageSender messageSender;
+    private final MessagePublisher messagePublisher;
 
     @Autowired
-    public PollingServiceImpl(ParkingUserRepository userRepository, MessageSender messageSender) {
+    public PollingServiceImpl(ParkingUserRepository userRepository, MessagePublisher messagePublisher) {
         this.userRepository = userRepository;
-        this.messageSender = messageSender;
+        this.messagePublisher = messagePublisher;
     }
 
     //@Scheduled(cron = "2 0 6,7,8,9,10,11,12,13 ? * MON-FRI *")
@@ -62,7 +62,7 @@ public class PollingServiceImpl implements PollingService {
         keyboard.add(buttonsLine);
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(keyboard);
-        messageSender.sendMessageWithKeyboard(Long.valueOf(user.getTelegramUserId()), POLLING_MSG, markupInline);
+        messagePublisher.sendMessageWithKeyboard(Long.valueOf(user.getTelegramUserId()), POLLING_MSG, markupInline);
     }
 
     private String buildNoCallbackData(Integer userTelegramId) {

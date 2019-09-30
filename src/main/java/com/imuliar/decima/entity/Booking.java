@@ -29,17 +29,13 @@ public class Booking extends EntityFrame {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private Integer priority;
-
     public Booking() {
     }
 
-    public Booking(ParkingUser user, Slot slot, LocalDate date, Integer priority) {
+    public Booking(ParkingUser user, Slot slot, LocalDate date) {
         this.user = user;
         this.slot = slot;
         this.date = date;
-        this.priority = priority;
     }
 
     public ParkingUser getUser() {
@@ -64,13 +60,5 @@ public class Booking extends EntityFrame {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
     }
 }

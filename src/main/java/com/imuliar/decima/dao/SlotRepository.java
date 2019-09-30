@@ -39,4 +39,6 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
     List<Slot> findFreeSlots(@Param("date") LocalDate date);*/
 
     Optional<Slot> findByParkingUser(ParkingUser parkingUser);
-}
+
+    Optional<Slot> findByNumber(String number);
+ }
