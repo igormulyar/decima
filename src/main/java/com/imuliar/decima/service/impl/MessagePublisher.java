@@ -25,8 +25,8 @@ public class MessagePublisher {
 
     private DecimaBot bot;
 
-    @Value("{decima.groupChatId}")
-    private Long groupChatId;
+    @Value("${decima.groupChatId}")
+    private String groupChatId;
 
     @Autowired
     @Lazy
@@ -43,7 +43,7 @@ public class MessagePublisher {
     }
 
     public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup){
-        sendMessageWithKeyboard(groupChatId, message, keyboardMarkup);
+        sendMessageWithKeyboard(Long.valueOf(groupChatId), message, keyboardMarkup);
     }
 
     public void popUpNotify(String callbackQueryId, String messageText) {

@@ -66,6 +66,6 @@ public class PollingServiceImpl implements PollingService {
     }
 
     private String buildNoCallbackData(Integer userTelegramId) {
-        return String.format("#setfree#%d#%s", userTelegramId, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
+        return String.format("setfree#%d#%s", userTelegramId, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
     }
 }

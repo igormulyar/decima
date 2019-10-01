@@ -2,11 +2,6 @@ package com.imuliar.decima.service.state;
 
 import com.imuliar.decima.dao.PollingProfileRepository;
 import com.imuliar.decima.entity.*;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +9,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+import static com.imuliar.decima.service.util.RegexPatterns.BOOK_MATCHING_PATTERN;
+import static com.imuliar.decima.service.util.RegexPatterns.SET_FREE_MATCHING_PATTERN;
 
 /**
  * <p>Initial state in session for processing updates received from slot owner</p>
@@ -24,10 +26,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SlotOwnerInitialState extends AbstractState {
-
-    private static final Pattern LEAVE_RESERVED_MATCHING_PATTERN = Pattern.compile("");
-    private static final Pattern SET_FREE_MATCHING_PATTERN = Pattern.compile(""); //TODO provide pattern
-    private static final Pattern BOOK_MATCHING_PATTERN = Pattern.compile(""); //TODO provide pattern
 
     private static final String RELEASE_MESSAGE_PATTERN = "Slot # %s has been released by user %s.";
 
@@ -46,7 +44,6 @@ public class SlotOwnerInitialState extends AbstractState {
                 pollingProfile.setLastAnswerReceived(LocalDate.now());
                 pollingProfileRepository.save(pollingProfile); // update
                 //TODO updating with the save() need to be tested carefully
-
 
                 Reservation currentUserReservation = getReservationRepository().findByTelegramUserId(parkingUser.getTelegramUserId())
                         .orElseThrow(() -> new IllegalStateException("Reservation should exist for user who has set his slot to be free."));
@@ -69,6 +66,7 @@ public class SlotOwnerInitialState extends AbstractState {
                     }
                 }
                 publishReleaseMessage(releasedSlot, parkingUser);
+                return;
             }
             if(BOOK_MATCHING_PATTERN.matcher(callbackString).matches()){
                 List<String> splitStringData = Arrays.asList(callbackString.split("#"));
@@ -77,9 +75,30 @@ public class SlotOwnerInitialState extends AbstractState {
                 LocalDate bookingDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
                 Booking booking = new Booking(parkingUser, slot, bookingDate);
                 getBookingRepository().save(booking);
-                //TODO notify about successful booking;
+                getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Successfully booked!");
+                return;
             }
+            printInitialMessage(chatId, parkingUser, update);
         }
+    }
+
+    private void printInitialMessage(Long chatId, ParkingUser parkingUser, Update update) {
+        String messageLable = "As a parking slot owner I want to...";
+        String buttonLabel1 = "Share my parking slot for today";
+        String buttonLabel2 = "Set slot availability for others for period";
+        String buttonLabel3 = "Cancel slot sharing for today";
+        String buttonLabel4 = "See slot list";
+        String buttonLabel5 = "See parking plan";
+
+        InlineKeyboardMarkup inlineMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel1).setCallbackData("")));
+        keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel2).setCallbackData("")));
+        keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel3).setCallbackData("")));
+        keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel4).setCallbackData("")));
+        keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel5).setCallbackData("")));
+        inlineMarkup.setKeyboard(keyboard);
+        
     }
 
     private void publishReleaseMessage(Slot releasedSlot, ParkingUser parkingUser) {
