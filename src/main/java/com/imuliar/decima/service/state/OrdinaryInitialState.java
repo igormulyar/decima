@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -21,8 +22,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import static com.imuliar.decima.service.util.Callbacks.*;
+import static com.imuliar.decima.service.util.RegexPatterns.DROP_BOOKING_MATCHING_PATTERN;
+
 /**
- * //TODO add description <p></p>
+ * <p>Initial state for user who doesn't own a slot</p>
  *
  * @author imuliar
  * @since 0.0.1
@@ -31,13 +35,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OrdinaryInitialState extends AbstractState {
 
-    private static final String REQUEST_FREE_SLOTS_CALLBACK = "get_free_slots";
+    private static final String SHOW_ENGAGED_SLOTS = "list_engaged_slots_cbk";
 
-    private static final String DROP_BOOKING_CALLBACK = "drop_booking:%d";
-
-    private static final String FIND_NEIGHBOURS_CALLBACK = "find_neighbours";
-
-    private static final String BOOK_SLOT_CALLBACK = "book_slot:%d";
+    private static final String BOOK_SLOT_CALLBACK = "book_slot:%s";
 
     @Autowired
     private SlotRepository slotRepository;
@@ -48,15 +48,13 @@ public class OrdinaryInitialState extends AbstractState {
     @Override
     public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
         if (update.hasCallbackQuery()) {
-            switch (update.getCallbackQuery().getData()) {
-                case REQUEST_FREE_SLOTS_CALLBACK:
-                    displayFreeSlots(chatId, update);
-                    break;
-                case DROP_BOOKING_CALLBACK:
-                    dropBooking(chatId);
-                    break;
-                default:
-                    displayWithBookingCheck(chatId, parkingUser);
+            String callbackString = update.getCallbackQuery().getData();
+            if (callbackString.equals(FIND_FREE_SLOTS)) {
+                displayFreeSlots(chatId, update);
+            } else if (DROP_BOOKING_MATCHING_PATTERN.matcher(callbackString).matches()) {
+                //TODO drop the booking
+            } else {
+                displayWithBookingCheck(chatId, parkingUser);
             }
         } else {
             displayWithBookingCheck(chatId, parkingUser);
@@ -78,7 +76,7 @@ public class OrdinaryInitialState extends AbstractState {
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<InlineKeyboardButton> buttons = freeSlots.stream()
-                .map(slot -> new InlineKeyboardButton().setText(slot.getNumber().toString()).setCallbackData(String.format(BOOK_SLOT_CALLBACK, slot.getNumber())))
+                .map(slot -> new InlineKeyboardButton().setText(slot.getNumber()).setCallbackData(String.format(BOOK_SLOT_CALLBACK, slot.getNumber())))
                 .collect(Collectors.toList());
         List<List<InlineKeyboardButton>> keyboard = Lists.partition(buttons, 6);
         markupInline.setKeyboard(keyboard);
@@ -102,16 +100,16 @@ public class OrdinaryInitialState extends AbstractState {
                         "*Choose the action, please.*\n" +
                         "----------------------------------------";
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(REQUEST_FREE_SLOTS_CALLBACK));
+        buttons.add(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOTS));
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING_CALLBACK));
         displayGeneralInitMessage(chatId, message, buttons);
     }
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
-        String msg = String.format("You have booked the slot #%d. What are you going to do?", bookedSlotNumber);
+        String msg = String.format("You have booked the slot #%s. What are you going to do?", bookedSlotNumber);
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(new InlineKeyboardButton().setText("Find neighbours").setCallbackData(FIND_NEIGHBOURS_CALLBACK));
-        buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(String.format(DROP_BOOKING_CALLBACK, bookedSlotNumber)));
+        buttons.add(new InlineKeyboardButton().setText("Find neighbours").setCallbackData(SHOW_ENGAGED_SLOTS));
+        buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(String.format(DROP_BOOKING_TPL, bookedSlotNumber)));
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING_CALLBACK));
         displayGeneralInitMessage(chatId, msg, buttons);
     }

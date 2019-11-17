@@ -6,6 +6,7 @@ import com.imuliar.decima.entity.PollingProfile;
 import com.imuliar.decima.service.ParkingUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -26,6 +27,7 @@ public class ParkingUserServiceImp implements ParkingUserService {
     @Autowired
     private ParkingUserRepository userRepository;
 
+    @Cacheable(cacheNames = "parkingUser", key = "#p0")
     @Override
     @Nonnull
     public ParkingUser findOrCreateParkingUser(@Nonnull User user) {

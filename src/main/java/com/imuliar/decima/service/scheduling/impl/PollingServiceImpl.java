@@ -9,6 +9,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.imuliar.decima.service.util.Callbacks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class PollingServiceImpl implements PollingService {
         this.messagePublisher = messagePublisher;
     }
 
-    //@Scheduled(cron = "2 0 6,7,8,9,10,11,12,13 ? * MON-FRI *")
-    @Scheduled(cron = "0 * * ? * *")
+    //@Scheduled(cron = "2 0 6,7,8,9,10,11,12,13 ? * MON-FRI *") //prod schedule
+    //@Scheduled(cron = "0 * * ? * *") //test schedule
     @Override
     public void runPoll() {
         LOGGER.debug("START POLLING TASK.");
@@ -56,7 +58,7 @@ public class PollingServiceImpl implements PollingService {
     @Override
     public void poll(ParkingUser user) {
         List<InlineKeyboardButton> buttonsLine = new ArrayList<>();
-        buttonsLine.add(new InlineKeyboardButton().setText("Yes!").setCallbackData(YES_CALLBACK));
+        buttonsLine.add(new InlineKeyboardButton().setText("Yes!").setCallbackData(Callbacks.YES));
         buttonsLine.add(new InlineKeyboardButton().setText("No, my place is free today").setCallbackData(buildNoCallbackData(user.getTelegramUserId())));
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(buttonsLine);

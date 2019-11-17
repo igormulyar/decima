@@ -50,12 +50,13 @@ public class FakeDataLoader {
     public void loadData(){
         if(parkingUserRepository.findAll().isEmpty()){
             Slot iSlot = new Slot("5-FIVE-FAKE-PARKING-SLOT");
-            Slot slotNoReserve = new Slot("6-SIX-FAKE-PARKING-SLOT");
+            Slot freeSlot = new Slot("6-SIX-FAKE-PARKING-SLOT");
             slotRepository.save(iSlot);
-            slotRepository.save(slotNoReserve);
+            slotRepository.save(freeSlot);
 
             ParkingUser aUser = new ParkingUser(aUserId, null, null, null, null);
-            ParkingUser iUser = new ParkingUser(iUserId, null, null, null, new PollingProfile(18));
+            //aUser.setPollingProfile(new PollingProfile(22));
+            ParkingUser iUser = new ParkingUser(iUserId, null, null, null, new PollingProfile(22));
             parkingUserRepository.save(aUser);
             parkingUserRepository.save(iUser);
 

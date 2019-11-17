@@ -1,6 +1,5 @@
 package com.imuliar.decima.dao;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,21 +21,19 @@ import java.util.List;
 @Transactional
 public interface SlotRepository extends JpaRepository<Slot, Long> {
 
-/*    @Query("SELECT slot FROM Slot slot " +
+    @Query("SELECT slot FROM Slot slot " +
             "WHERE slot NOT IN " +
             "(SELECT bookedSlot FROM Booking b " +
             "JOIN b.slot bookedSlot " +
-            "GROUP BY bookedSlot.id, b.date " +
-            "HAVING COUNT(b) = bookedSlot.maxLoading " +
-            "AND b.date = :date) " +
+            "WHERE b.date = :date) " +
             "AND slot NOT IN " +
-            "(SELECT reservedSlot FROM Reservation reserve " +
-            "JOIN reserve.slot reservedSlot " +
-            "WHERE reservedSlot NOT IN " +
-            "(SELECT vacantSlot FROM VacantPeriod vacantPeriod " +
-            "JOIN vacantPeriod.slot vacantSlot " +
+            "(SELECT reservedSlot FROM Reservation reservation " +
+            "JOIN reservation.slot reservedSlot " +
+            "WHERE reservation.user NOT IN " +
+            "(SELECT parkingUser FROM VacantPeriod vacantPeriod " +
+            "JOIN vacantPeriod.user parkingUser " +
             "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd))")
-    List<Slot> findFreeSlots(@Param("date") LocalDate date);*/
+    List<Slot> findFreeSlots(@Param("date") LocalDate date);
 
     Optional<Slot> findByNumber(String number);
  }

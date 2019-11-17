@@ -25,7 +25,7 @@ public interface ParkingUserRepository extends JpaRepository<ParkingUser, Long> 
 
     @Query("SELECT user FROM ParkingUser user " +
             "JOIN user.pollingProfile profile " +
-            "WHERE :now >= profile.startPollingHour AND :now <= (profile.startPollingHour + 2) " +
-            "AND profile.lastAnswerReceived != :today" )
+            "WHERE (:now >= profile.startPollingHour AND :now <= (profile.startPollingHour + 2)) " +
+            "AND (profile.lastAnswerReceived <> :today OR profile.lastAnswerReceived IS NULL)" )
     List<ParkingUser> findByStartPollingHour(@Param("now") int currentHour, @Param("today") LocalDate today);
 }
