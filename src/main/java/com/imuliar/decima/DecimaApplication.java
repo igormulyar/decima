@@ -1,9 +1,16 @@
 package com.imuliar.decima;
 
+import com.imuliar.decima.service.UpdateProcessor;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -15,10 +22,45 @@ import org.telegram.telegrambots.ApiContextInitializer;
 @EntityScan("com.imuliar.decima.entity")
 @EnableJpaRepositories
 @EnableTransactionManagement
-public class DecimaApplication {
+public abstract class DecimaApplication {
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
         SpringApplication.run(DecimaApplication.class, args);
     }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public List<UpdateProcessor> ordinaryInitialStateProcessors() {
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(findRandomSlotPlebeianProcessor());
+        updateProcessors.add(defaultPlebeianProcessor());
+        return updateProcessors;
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public List<UpdateProcessor> slotOwnerInitialStateProcessors() {
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(setFreePatricianProcessor());
+        updateProcessors.add(bookSlotPatricianProcessor());
+        updateProcessors.add(defaultPatricianProcessor());
+        return updateProcessors;
+    }
+
+    /*Update processors lookups*/
+    @Lookup("defaultPlebeianProcessor")
+    abstract UpdateProcessor defaultPlebeianProcessor();
+
+    @Lookup("defaultPatricianProcessor")
+    abstract UpdateProcessor defaultPatricianProcessor();
+
+    @Lookup("bookSlotPatricianProcessor")
+    abstract UpdateProcessor bookSlotPatricianProcessor();
+
+    @Lookup("findRandomSlotPlebeianProcessor")
+    abstract UpdateProcessor findRandomSlotPlebeianProcessor();
+
+    @Lookup("setFreePatricianProcessor")
+    abstract UpdateProcessor setFreePatricianProcessor();
 }

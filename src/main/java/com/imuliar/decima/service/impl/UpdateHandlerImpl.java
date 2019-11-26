@@ -56,7 +56,7 @@ public class UpdateHandlerImpl implements UpdateHandler {
     }
 
     private Long resolveChatId(Update update) {
-        return update.getMessage() != null
+        return update.hasMessage()
                 ? update.getMessage().getChatId()
                 : update.getCallbackQuery().getMessage().getChatId();
     }

@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -24,6 +25,7 @@ import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
  * @author imuliar
  * @since 0.0.1
  */
+@Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
 

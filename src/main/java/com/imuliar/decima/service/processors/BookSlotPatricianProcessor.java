@@ -9,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.imuliar.decima.service.util.RegexPatterns.BOOK_MATCHING_PATTERN;
@@ -19,6 +22,8 @@ import static com.imuliar.decima.service.util.RegexPatterns.BOOK_MATCHING_PATTER
  * @author imuliar
  * @since 0.0.1
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
 
     @Override

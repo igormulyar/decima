@@ -15,6 +15,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -27,6 +30,8 @@ import static com.imuliar.decima.service.util.RegexPatterns.SET_FREE_MATCHING_PA
  * @author imuliar
  * @since 0.0.1
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SetFreePatricianProcessor extends AbstractUpdateProcessor {
 
     private static final String RELEASE_MESSAGE_PATTERN = "Slot # %s has been released by user %s.";

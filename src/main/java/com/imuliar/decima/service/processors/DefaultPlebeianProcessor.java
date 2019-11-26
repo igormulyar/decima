@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -24,6 +25,7 @@ import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
  * @author imuliar
  * @since 0.1.1
  */
+@Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
 
