@@ -2,7 +2,12 @@ package com.imuliar.decima.service.state;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
+import com.imuliar.decima.service.UpdateProcessor;
+import java.util.List;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -13,26 +18,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * @since 0.0.1
  */
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class GroupChatUpdateProcessingState extends AbstractState {
 
-    private static final Pattern BOOK_SLOT_MATCHING_PATTERN = Pattern.compile(""); //TODO provide pattern
+    @Autowired
+    private List<UpdateProcessor> updateProcessors;
 
     @Override
-    public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
-        //TODO implement processing
-
-        //parse callback
-        if (update.hasCallbackQuery()) {
-            String callbackString = update.getCallbackQuery().getData();
-            if (BOOK_SLOT_MATCHING_PATTERN.matcher(callbackString).matches()) {
-                Booking booking = parseBookingActionCallbackData(callbackString);
-            }
-        }
-
-    }
-
-    private Booking parseBookingActionCallbackData(String callbackString) {
-
-        return null;
+    List<UpdateProcessor> getUpdateProcessors() {
+        return updateProcessors;
     }
 }

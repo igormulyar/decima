@@ -1,11 +1,9 @@
 package com.imuliar.decima.service.state;
 
-import com.imuliar.decima.dao.*;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.impl.MessagePublisher;
+import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.session.UserSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.List;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -16,39 +14,22 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public abstract class AbstractState {
 
-    protected static final String TO_BEGINNING_CALLBACK = "go_to_beginning";
+    private UserSession userSession;
 
-    @Value("${decima.plan}")
-    private String planImageUrl;
+    abstract List<UpdateProcessor> getUpdateProcessors();
 
-    @Autowired
-    private MessagePublisher messagePublisher;
-
-    @Autowired
-    private ReservationRepository reservationRepository;
-
-    @Autowired
-    private VacantPeriodRepository vacantPeriodRepository;
-
-    @Autowired
-    private SlotRepository slotRepository;
-
-    @Autowired
-    private ParkingUserRepository userRepository;
-
-    @Autowired
-    private BookingRepository bookingRepository;
-
-    UserSession userSession;
-
-    public abstract void processUpdate(Long chatId, ParkingUser parkingUser, Update update);
-
-    public MessagePublisher getMessagePublisher() {
-        return messagePublisher;
+    public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
+        getUpdateProcessors().stream()
+                .filter(processor -> processor.isMatch(update))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cannot find applicable processor to handle input update!"))
+                .process(update, parkingUser)
+                .ifPresent(this::proceedToNextState);
     }
 
-    public ReservationRepository getReservationRepository() {
-        return reservationRepository;
+    private void proceedToNextState(AbstractState nextState) {
+        nextState.setUserSession(userSession);
+        userSession.setCurrentState(nextState);
     }
 
     public UserSession getUserSession() {
@@ -57,29 +38,5 @@ public abstract class AbstractState {
 
     public void setUserSession(UserSession userSession) {
         this.userSession = userSession;
-    }
-
-    public String getPlanImageUrl() {
-        return planImageUrl;
-    }
-
-    public void setPlanImageUrl(String planImageUrl) {
-        this.planImageUrl = planImageUrl;
-    }
-
-    public VacantPeriodRepository getVacantPeriodRepository() {
-        return vacantPeriodRepository;
-    }
-
-    public SlotRepository getSlotRepository() {
-        return slotRepository;
-    }
-
-    public ParkingUserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    public BookingRepository getBookingRepository() {
-        return bookingRepository;
     }
 }
