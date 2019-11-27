@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import static com.imuliar.decima.service.util.Callbacks.BOOK_SLOT_CALLBACK;
+import static com.imuliar.decima.service.util.Callbacks.BOOK_SLOT_CALLBACK_TPL;
 import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 
 /**
@@ -52,7 +52,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
     private void publishSlotList(Long chatId, List<Slot> freeSlots) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<InlineKeyboardButton> buttons = freeSlots.stream()
-                .map(slot -> new InlineKeyboardButton().setText(slot.getNumber()).setCallbackData(String.format(BOOK_SLOT_CALLBACK, slot.getNumber())))
+                .map(slot -> new InlineKeyboardButton().setText(slot.getNumber()).setCallbackData(String.format(BOOK_SLOT_CALLBACK_TPL, slot.getNumber())))
                 .collect(Collectors.toList());
         List<List<InlineKeyboardButton>> keyboard = Lists.partition(buttons, 6);
         markupInline.setKeyboard(keyboard);

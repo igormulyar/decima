@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import static com.imuliar.decima.service.util.Callbacks.DROP_BOOKING_TPL;
 import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 import static com.imuliar.decima.service.util.Callbacks.FIND_USER_BY_ENGAGED_SLOT;
+import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
@@ -54,16 +55,14 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
         String msg = String.format("You have booked the slot **#%s**. What are you going to do?", bookedSlotNumber);
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(new InlineKeyboardButton().setText("Find User by engaged slot").setCallbackData(FIND_USER_BY_ENGAGED_SLOT));
+        buttons.add(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN));
         buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(String.format(DROP_BOOKING_TPL, bookedSlotNumber)));
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING));
         displayGeneralInitMessage(chatId, msg, buttons);
     }
 
     private void displayInitialMessage(Long chatId) {
-        String message =
-                "----------------------------------------\n" +
-                        "*Choose the action, please.*\n" +
-                        "----------------------------------------";
+        String message = "*Choose the action, please.*";
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT));
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING));
