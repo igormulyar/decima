@@ -3,7 +3,7 @@ package com.imuliar.decima.service.processors;
 import com.google.common.collect.Lists;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +35,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<AbstractState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
         if (CollectionUtils.isEmpty(freeSlots)) {
             publishNotFoundPopupMessage(update);

@@ -1,9 +1,6 @@
 package com.imuliar.decima.service.session;
 
-import com.imuliar.decima.service.state.AbstractState;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.imuliar.decima.service.state.SessionState;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,7 +19,7 @@ public class UserSession {
 
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    private AbstractState currentState;
+    private SessionState currentState;
 
     public LocalDateTime getUpdateTime() {
         return updateTime;
@@ -32,11 +29,11 @@ public class UserSession {
         this.updateTime = updateTime;
     }
 
-    public AbstractState getCurrentState() {
+    public SessionState getCurrentState() {
         return currentState;
     }
 
-    public void setCurrentState(AbstractState currentState) {
+    public void setCurrentState(SessionState currentState) {
         this.currentState = currentState;
     }
 }

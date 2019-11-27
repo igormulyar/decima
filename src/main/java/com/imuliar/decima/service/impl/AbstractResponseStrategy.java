@@ -4,10 +4,9 @@ import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.ResponseStrategy;
 import com.imuliar.decima.service.session.SessionProvider;
 import com.imuliar.decima.service.session.UserSession;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -30,7 +29,7 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
     public void response(Long chatId, ParkingUser parkingUser, Update update) {
         UserSession session = sessionProvider.provideSession(chatId);
         if(session.getCurrentState() == null){
-            AbstractState initialState = generateInitialState();
+            SessionState initialState = generateInitialState();
             session.setCurrentState(initialState);
             initialState.setUserSession(session);
         }
@@ -38,5 +37,5 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
         session.getCurrentState().processUpdate(chatId, parkingUser, update);
     }
 
-    protected abstract AbstractState generateInitialState();
+    protected abstract SessionState generateInitialState();
 }

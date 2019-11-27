@@ -2,8 +2,7 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.session.SessionProvider;
-import com.imuliar.decima.service.state.AbstractState;
-import com.imuliar.decima.service.state.GroupChatUpdateProcessingState;
+import com.imuliar.decima.service.state.SessionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,10 +16,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
 public class GroupChatResponseStrategy extends AbstractResponseStrategy {
 
-    private final GroupChatUpdateProcessingState groupChatUpdateProcessingState;
+    private final SessionState groupChatUpdateProcessingState;
 
     @Autowired
-    public GroupChatResponseStrategy(SessionProvider sessionProvider, GroupChatUpdateProcessingState groupChatUpdateProcessingState) {
+    public GroupChatResponseStrategy(SessionProvider sessionProvider, SessionState groupChatUpdateProcessingState) {
         super(sessionProvider);
         this.groupChatUpdateProcessingState = groupChatUpdateProcessingState;
     }
@@ -31,7 +30,7 @@ public class GroupChatResponseStrategy extends AbstractResponseStrategy {
     }
 
     @Override
-    protected AbstractState generateInitialState() {
+    protected SessionState generateInitialState() {
         return groupChatUpdateProcessingState;
     }
 }

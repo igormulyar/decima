@@ -1,18 +1,20 @@
 package com.imuliar.decima;
 
 import com.imuliar.decima.service.UpdateHandler;
+import java.io.Serializable;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.io.Serializable;
 
 /**
  * <p>Main bot class</p>
@@ -60,6 +62,16 @@ public class DecimaBot extends TelegramLongPollingBot {
             execute(method);
         } catch (Exception e) {
             LOGGER.error("Bot execute method exception!", e);
+        }
+    }
+
+    public Optional<ChatMember> requestChatMember(BotApiMethod<ChatMember> method) {
+        Assert.isTrue(GetChatMember.class.isInstance(method), "method should be the instance of GetChatMember class");
+        try {
+            return Optional.ofNullable(execute(method));
+        } catch (Exception e) {
+            LOGGER.error("Bot execute method exception!", e);
+            return Optional.empty();
         }
     }
 

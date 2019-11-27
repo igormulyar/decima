@@ -4,6 +4,7 @@ import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.session.UserSession;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -12,11 +13,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * @author imuliar
  * @since 0.0.1
  */
-public abstract class AbstractState {
+public class SessionState {
+
+    private List<UpdateProcessor> updateProcessors;
 
     private UserSession userSession;
 
-    abstract List<UpdateProcessor> getUpdateProcessors();
+    @Autowired
+    public SessionState(List<UpdateProcessor> updateProcessors) {
+        this.updateProcessors = updateProcessors;
+    }
 
     public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
         getUpdateProcessors().stream()
@@ -27,7 +33,7 @@ public abstract class AbstractState {
                 .ifPresent(this::proceedToNextState);
     }
 
-    private void proceedToNextState(AbstractState nextState) {
+    private void proceedToNextState(SessionState nextState) {
         nextState.setUserSession(userSession);
         userSession.setCurrentState(nextState);
     }
@@ -38,5 +44,9 @@ public abstract class AbstractState {
 
     public void setUserSession(UserSession userSession) {
         this.userSession = userSession;
+    }
+
+    List<UpdateProcessor> getUpdateProcessors() {
+        return updateProcessors;
     }
 }

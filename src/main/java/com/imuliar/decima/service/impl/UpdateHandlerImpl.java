@@ -1,6 +1,7 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.entity.ParkingUser;
+import com.imuliar.decima.service.AccessProvider;
 import com.imuliar.decima.service.ParkingUserService;
 import com.imuliar.decima.service.ResponseStrategyFactory;
 import com.imuliar.decima.service.UpdateHandler;
@@ -29,28 +30,40 @@ public class UpdateHandlerImpl implements UpdateHandler {
 
     private FakeDataLoader fakeDataLoader;
 
+    private AccessProvider accessProvider;
+
+    private MessagePublisher messagePublisher;
+
     @Autowired
-    public UpdateHandlerImpl(ParkingUserService parkingUserService, ResponseStrategyFactory responseStrategyFactory, FakeDataLoader fakeDataLoader) {
+    public UpdateHandlerImpl(ParkingUserService parkingUserService, ResponseStrategyFactory responseStrategyFactory,
+                             FakeDataLoader fakeDataLoader, AccessProvider accessProvider, MessagePublisher messagePublisher) {
         this.parkingUserService = parkingUserService;
         this.responseStrategyFactory = responseStrategyFactory;
         this.fakeDataLoader = fakeDataLoader;
+        this.accessProvider = accessProvider;
+        this.messagePublisher = messagePublisher;
     }
 
     @PostConstruct
-    void loadFakeData(){
+    void loadFakeData() {
         fakeDataLoader.loadData();
     }
 
     @Override
     public void handle(Update update) {
         LOGGER.info("TELEGRAM UPDATE RECEIVED.");
+
         User telegramUser = resolveTelegramUser(update);
         Long chatId = resolveChatId(update);
-        ParkingUser parkingUser = parkingUserService.findOrCreateParkingUser(telegramUser);
 
-        responseStrategyFactory
-                .getStrategy(parkingUser, chatId)
-                .response(chatId, parkingUser, update);
+        if (accessProvider.isPermitted(telegramUser)) {
+            ParkingUser parkingUser = parkingUserService.findOrCreateParkingUser(telegramUser);
+            responseStrategyFactory
+                    .getStrategy(parkingUser, chatId)
+                    .response(chatId, parkingUser, update);
+        } else {
+            messagePublisher.sendSimpleMessage(chatId, "ACCESS DENIED");
+        }
 
         LOGGER.info("TELEGRAM UPDATE PROCESSED");
     }

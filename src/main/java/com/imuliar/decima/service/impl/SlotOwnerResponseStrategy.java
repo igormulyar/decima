@@ -1,7 +1,7 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.service.session.SessionProvider;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
@@ -21,5 +21,5 @@ public abstract class SlotOwnerResponseStrategy extends AbstractResponseStrategy
     }
 
     @Lookup("slotOwnerInitialState")
-    protected abstract AbstractState generateInitialState();
+    protected abstract SessionState generateInitialState();
 }

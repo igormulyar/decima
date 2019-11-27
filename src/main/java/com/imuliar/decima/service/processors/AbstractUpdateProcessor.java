@@ -8,7 +8,7 @@ import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.impl.MessagePublisher;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
@@ -51,7 +51,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
     private BookingRepository bookingRepository;
 
     @Override
-    public Optional<AbstractState> process(@Nonnull Update update, @Nonnull ParkingUser parkingUser) {
+    public Optional<SessionState> process(@Nonnull Update update, @Nonnull ParkingUser parkingUser) {
         Assert.notNull(update, "update is NULL");
         Assert.notNull(update, "parkingUser is NULL");
         Long chatId = resolveChatId(update);
@@ -64,7 +64,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
                 : update.getCallbackQuery().getMessage().getChatId();
     }
 
-    abstract Optional<AbstractState> doProcess(Update update, ParkingUser parkingUser, Long chatId);
+    abstract Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId);
 
     public String getPlanImageUrl() {
         return planImageUrl;

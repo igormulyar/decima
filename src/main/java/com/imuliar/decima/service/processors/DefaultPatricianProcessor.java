@@ -1,7 +1,7 @@
 package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<AbstractState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         String messageLable = "*As a parking slot owner I want to...*";
         String buttonLabel1 = "Share my parking slot for today";
         String buttonLabel2 = "Set slot availability period";

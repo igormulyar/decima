@@ -2,7 +2,7 @@ package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<AbstractState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         displayWithBookingCheck(chatId, parkingUser);
         return Optional.empty();
     }

@@ -1,8 +1,6 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.DecimaBot;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -11,8 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 /**
  * <p>Facade for sending the messages</p>
@@ -23,15 +19,24 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 @Service
 public class MessagePublisher {
 
-    private DecimaBot bot;
-
     @Value("${decima.groupChatId}")
     private String groupChatId;
 
     @Autowired
     @Lazy
+    private DecimaBot bot;
+
+    @Autowired
+    @Lazy
     public MessagePublisher(DecimaBot decimaBot) {
         this.bot = decimaBot;
+    }
+
+    public void sendSimpleMessage(Long chatId, String message) {
+        bot.sendBotResponse(new SendMessage()
+                .enableMarkdown(true)
+                .setChatId(chatId)
+                .setText(message));
     }
 
     public void sendMessageWithKeyboard(Long chatId, String message, InlineKeyboardMarkup keyboardMarkup) {
@@ -42,7 +47,7 @@ public class MessagePublisher {
                 .setReplyMarkup(keyboardMarkup));
     }
 
-    public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup){
+    public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup) {
         sendMessageWithKeyboard(Long.valueOf(groupChatId), message, keyboardMarkup);
     }
 
@@ -53,7 +58,7 @@ public class MessagePublisher {
                 .setText(messageText));
     }
 
-    public void sendImage(Long chatId, String caption, String imageUrl){
+    public void sendImage(Long chatId, String caption, String imageUrl) {
         bot.sendPhoto(new SendPhoto()
                 .setChatId(chatId)
                 .setCaption(caption)

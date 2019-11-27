@@ -3,7 +3,7 @@ package com.imuliar.decima.service.processors;
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
-import com.imuliar.decima.service.state.AbstractState;
+import com.imuliar.decima.service.state.SessionState;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<AbstractState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         String callbackString = update.getCallbackQuery().getData();
         List<String> splitStringData = Arrays.asList(callbackString.split("#"));
         Slot slot = getSlotRepository().findByNumber(splitStringData.get(0))

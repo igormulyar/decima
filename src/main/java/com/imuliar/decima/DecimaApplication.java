@@ -1,7 +1,9 @@
 package com.imuliar.decima;
 
 import com.imuliar.decima.service.UpdateProcessor;
+import com.imuliar.decima.service.state.SessionState;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -29,23 +31,32 @@ public abstract class DecimaApplication {
         SpringApplication.run(DecimaApplication.class, args);
     }
 
+    /*Session states*/
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public List<UpdateProcessor> ordinaryInitialStateProcessors() {
+    public SessionState ordinaryInitialState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(findRandomSlotPlebeianProcessor());
         updateProcessors.add(defaultPlebeianProcessor());
-        return updateProcessors;
+
+        return new SessionState(updateProcessors);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public List<UpdateProcessor> slotOwnerInitialStateProcessors() {
+    public SessionState slotOwnerInitialState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(setFreePatricianProcessor());
         updateProcessors.add(bookSlotPatricianProcessor());
         updateProcessors.add(defaultPatricianProcessor());
-        return updateProcessors;
+
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState groupChatUpdateProcessingState(){
+        return new SessionState(Collections.emptyList());
     }
 
     /*Update processors lookups*/
