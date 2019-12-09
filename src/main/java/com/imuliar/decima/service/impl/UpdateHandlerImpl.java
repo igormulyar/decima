@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -51,7 +52,7 @@ public class UpdateHandlerImpl implements UpdateHandler {
 
     @Override
     public void handle(Update update) {
-        LOGGER.info("TELEGRAM UPDATE RECEIVED.");
+        Assert.notNull(update, "update is NULL");
 
         User telegramUser = resolveTelegramUser(update);
         Long chatId = resolveChatId(update);
