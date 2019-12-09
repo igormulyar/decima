@@ -1,12 +1,6 @@
 package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.SessionState;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -14,10 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import static com.imuliar.decima.service.util.Callbacks.CANCEL_SLOT_SHARING_TPL;
-import static com.imuliar.decima.service.util.Callbacks.SET_AVAILABILITY;
-import static com.imuliar.decima.service.util.Callbacks.SET_FREE_TPL;
-import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static com.imuliar.decima.service.util.Callbacks.*;
 
 /**
  * <p></p>
@@ -35,7 +31,7 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         String messageLable = "*As a parking slot owner I want to...*";
         String buttonLabel1 = "Share my parking slot for today";
         String buttonLabel2 = "Set slot availability period";
@@ -50,7 +46,6 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
         keyboard.add(Collections.singletonList(new InlineKeyboardButton().setText(buttonLabel5).setCallbackData(SHOW_PLAN)));
         inlineMarkup.setKeyboard(keyboard);
         getMessagePublisher().sendMessageWithKeyboard(chatId, messageLable, inlineMarkup);
-        return Optional.empty();
     }
 
 }

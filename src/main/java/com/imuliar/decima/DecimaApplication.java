@@ -37,6 +37,7 @@ public abstract class DecimaApplication {
     public SessionState ordinaryInitialState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(findRandomSlotPlebeianProcessor());
+        updateProcessors.add(cancelBookingProcessor());
         updateProcessors.add(defaultPlebeianProcessor());
 
         return new SessionState(updateProcessors);
@@ -74,4 +75,7 @@ public abstract class DecimaApplication {
 
     @Lookup("setFreePatricianProcessor")
     abstract UpdateProcessor setFreePatricianProcessor();
+
+    @Lookup("cancelBookingProcessor")
+    abstract UpdateProcessor cancelBookingProcessor();
 }

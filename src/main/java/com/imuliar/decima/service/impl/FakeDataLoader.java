@@ -60,8 +60,8 @@ public class FakeDataLoader {
             parkingUserRepository.save(aUser);
             parkingUserRepository.save(iUser);
 
-            Reservation iUserReservation = new Reservation(iUser, iSlot);
-            reservationRepository.save(iUserReservation);
+            //Reservation iUserReservation = new Reservation(iUser, iSlot);
+            //reservationRepository.save(iUserReservation);
         }
     }
 }

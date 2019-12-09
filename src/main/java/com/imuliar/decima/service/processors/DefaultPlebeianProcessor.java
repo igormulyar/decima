@@ -2,11 +2,6 @@ package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.SessionState;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -14,11 +9,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import static com.imuliar.decima.service.util.Callbacks.DROP_BOOKING_TPL;
-import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
-import static com.imuliar.decima.service.util.Callbacks.FIND_USER_BY_ENGAGED_SLOT;
-import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
-import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.imuliar.decima.service.util.Callbacks.*;
 
 /**
  * <p>Default update processor for ordinary user</p>
@@ -36,12 +32,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    Optional<SessionState> doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        displayWithBookingCheck(chatId, parkingUser);
-        return Optional.empty();
-    }
-
-    private void displayWithBookingCheck(Long chatId, ParkingUser parkingUser) {
+    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         Optional<Booking> bookingFound = getBookingRepository().findByUserAndDate(parkingUser, LocalDate.now());
         if (bookingFound.isPresent()) {
             String bookedSlotNumber = bookingFound.get().getSlot().getNumber();
@@ -56,7 +47,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(new InlineKeyboardButton().setText("Find User by engaged slot").setCallbackData(FIND_USER_BY_ENGAGED_SLOT));
         buttons.add(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN));
-        buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(String.format(DROP_BOOKING_TPL, bookedSlotNumber)));
+        buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(CANCEL_MY_BOOKING));
         buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING));
         displayGeneralInitMessage(chatId, msg, buttons);
     }

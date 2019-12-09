@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 public class PollingProfile extends EntityFrame {
 
     @Column(nullable = false)
-    private Integer startPollingHour;
+    private Integer startPollingHour = 8;
 
     private LocalDate lastAnswerReceived;
 
