@@ -6,6 +6,9 @@ import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.session.UserSession;
 import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.util.StateFactory;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
@@ -22,15 +25,21 @@ import java.util.regex.Pattern;
  * @author imuliar
  * @since 0.0.1
  */
+@Getter
+@Setter
 public abstract class AbstractUpdateProcessor implements UpdateProcessor {
 
     BiFunction<Update, String, Boolean> callbackMatching = (update, callback) -> update.hasCallbackQuery() && update.getCallbackQuery().getData().equals(callback);
     BiFunction<Update, Pattern, Boolean> regexpEvaluating = (update, matchingPattern) -> update.hasCallbackQuery() && matchingPattern.matcher(update.getCallbackQuery().getData()).matches();
+    BiFunction<Update, Pattern, Boolean> regexpMsgEvaluating = (update, matchingPattern) -> update.hasMessage() && matchingPattern.matcher(update.getMessage().getText()).matches();
 
     protected UserSession session;
 
     @Value("${decima.plan}")
     private String planImageUrl;
+
+    @Autowired
+    private StateFactory stateFactory;
 
     @Autowired
     private MessagePublisher messagePublisher;
@@ -59,7 +68,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
         Assert.notNull(update, "parkingUser is NULL");
         Long chatId = resolveChatId(update);
         doProcess(update, parkingUser, chatId);
-        return goToNextState();
+        return getNextState();
     }
 
     /**
@@ -67,7 +76,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
      *
      * @return appropriate state implementation OR empty if not required. Empty by default
      */
-    Optional<SessionState> goToNextState() {
+    Optional<SessionState> getNextState() {
         return Optional.empty();
     }
 
@@ -78,42 +87,4 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
     }
 
     abstract void doProcess(Update update, ParkingUser parkingUser, Long chatId);
-
-    public String getPlanImageUrl() {
-        return planImageUrl;
-    }
-
-    public MessagePublisher getMessagePublisher() {
-        return messagePublisher;
-    }
-
-    public ReservationRepository getReservationRepository() {
-        return reservationRepository;
-    }
-
-    public VacantPeriodRepository getVacantPeriodRepository() {
-        return vacantPeriodRepository;
-    }
-
-    public SlotRepository getSlotRepository() {
-        return slotRepository;
-    }
-
-    public ParkingUserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    public BookingRepository getBookingRepository() {
-        return bookingRepository;
-    }
-
-    @Override
-    public UserSession getUserSession() {
-        return session;
-    }
-
-    @Override
-    public void setUserSession(UserSession userSession) {
-        this.session = userSession;
-    }
 }

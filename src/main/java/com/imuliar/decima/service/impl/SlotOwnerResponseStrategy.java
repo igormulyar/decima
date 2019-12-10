@@ -2,8 +2,8 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.service.session.SessionProvider;
 import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.util.StateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
  * @since 0.0.1
  */
 @Service
-public abstract class SlotOwnerResponseStrategy extends AbstractResponseStrategy {
+public class SlotOwnerResponseStrategy extends AbstractResponseStrategy {
 
     @Autowired
-    public SlotOwnerResponseStrategy(SessionProvider sessionProvider) {
-        super(sessionProvider);
+    public SlotOwnerResponseStrategy(SessionProvider sessionProvider, StateFactory stateFactory) {
+        super(sessionProvider, stateFactory);
     }
 
-    @Lookup("slotOwnerInitialState")
-    protected abstract SessionState generateInitialState();
+    protected SessionState generateInitialState(){
+        return getStateFactory().getSlotOwnerInitialState();
+    }
 }

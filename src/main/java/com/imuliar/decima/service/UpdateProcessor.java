@@ -32,7 +32,7 @@ public interface UpdateProcessor {
      */
     Optional<SessionState> process(Update update, ParkingUser parkingUser);
 
-    void setUserSession(UserSession userSession);
+    void setSession(UserSession userSession);
 
-    UserSession getUserSession();
+    UserSession getSession();
 }

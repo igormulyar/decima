@@ -2,16 +2,14 @@ package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.*;
@@ -43,28 +41,20 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
-        String msg = String.format("You have booked the slot **#%s**. What are you going to do?", bookedSlotNumber);
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(new InlineKeyboardButton().setText("Find User by engaged slot").setCallbackData(FIND_USER_BY_ENGAGED_SLOT));
-        buttons.add(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN));
-        buttons.add(new InlineKeyboardButton().setText("Drop booking").setCallbackData(CANCEL_MY_BOOKING));
-        buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING));
-        displayGeneralInitMessage(chatId, msg, buttons);
+        String message = String.format("You have booked the slot **#%s**. What are you going to do?", bookedSlotNumber);
+        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton().setText("Find User by engaged slot").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
+                .addButton(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN))
+                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Drop booking").setCallbackData(CANCEL_MY_BOOKING))
+                .addButton(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING))
+                .build());
     }
 
     private void displayInitialMessage(Long chatId) {
         String message = "*Choose the action, please.*";
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT));
-        buttons.add(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING));
-        displayGeneralInitMessage(chatId, message, buttons);
-    }
-
-    private void displayGeneralInitMessage(Long chatId, String message, List<InlineKeyboardButton> buttonsLine) {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(buttonsLine);
-        markupInline.setKeyboard(keyboard);
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, markupInline);
+        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT))
+                .addButton(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING))
+                .build());
     }
 }

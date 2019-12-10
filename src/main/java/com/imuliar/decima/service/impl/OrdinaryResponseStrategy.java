@@ -2,6 +2,7 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.service.session.SessionProvider;
 import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.util.StateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Service;
  * @since 0.0.1
  */
 @Service
-public abstract class OrdinaryResponseStrategy extends AbstractResponseStrategy {
+public class OrdinaryResponseStrategy extends AbstractResponseStrategy {
 
     @Autowired
-    public OrdinaryResponseStrategy(SessionProvider sessionProvider) {
-        super(sessionProvider);
+    public OrdinaryResponseStrategy(SessionProvider sessionProvider, StateFactory stateFactory) {
+        super(sessionProvider, stateFactory);
     }
 
-    @Lookup("ordinaryInitialState")
-    protected abstract SessionState generateInitialState();
+    protected SessionState generateInitialState(){
+        return getStateFactory().getOrdinaryInitialState();
+    }
 }

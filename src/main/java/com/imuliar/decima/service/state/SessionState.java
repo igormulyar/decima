@@ -27,7 +27,7 @@ public class SessionState {
     public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
         getUpdateProcessors().stream()
                 .filter(processor -> processor.isMatch(update))
-                .peek(p -> p.setUserSession(userSession))
+                .peek(p -> p.setSession(userSession))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Cannot find applicable processor to handle input update!"))
                 .process(update, parkingUser)

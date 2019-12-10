@@ -38,6 +38,7 @@ public abstract class DecimaApplication {
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(findRandomSlotPlebeianProcessor());
         updateProcessors.add(cancelBookingProcessor());
+        updateProcessors.add(askSlotToFindUserProcessor());
         updateProcessors.add(defaultPlebeianProcessor());
 
         return new SessionState(updateProcessors);
@@ -51,6 +52,15 @@ public abstract class DecimaApplication {
         updateProcessors.add(bookSlotPatricianProcessor());
         updateProcessors.add(defaultPatricianProcessor());
 
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState engagingUserSearchState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+
+        updateProcessors.add(searchUserBySlotProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -78,4 +88,10 @@ public abstract class DecimaApplication {
 
     @Lookup("cancelBookingProcessor")
     abstract UpdateProcessor cancelBookingProcessor();
+
+    @Lookup("askSlotToFindUserProcessor")
+    abstract UpdateProcessor askSlotToFindUserProcessor();
+
+    @Lookup("searchUserBySlotProcessor")
+    abstract UpdateProcessor searchUserBySlotProcessor();
 }

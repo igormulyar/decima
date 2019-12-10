@@ -3,20 +3,18 @@ package com.imuliar.decima.service.processors;
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
-import static com.imuliar.decima.service.util.Callbacks.CANCEL_MY_BOOKING;
-import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
+import static com.imuliar.decima.service.util.Callbacks.*;
 
 /**
  * <p>Show free slots to ordinary user</p>
@@ -52,13 +50,9 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
         Booking booking = new Booking(parkingUser, slotToBeBooked, LocalDate.now());
         getBookingRepository().save(booking);
         String message = String.format("The slot # \"%s\" is booked for you. You can park your car there today.\n ***\n***\n %s", slotToBeBooked.getNumber(), getPlanImageUrl());
-
-        InlineKeyboardButton cancelBookingButton = new InlineKeyboardButton()
-                .setText("Cancel booking")
-                .setCallbackData(CANCEL_MY_BOOKING);
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        markupInline.setKeyboard(Collections.singletonList(Collections.singletonList(cancelBookingButton)));
-
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, markupInline);
+        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton().setText("Cancel booking").setCallbackData(CANCEL_MY_BOOKING))
+                .addButtonAtNewRaw(new InlineKeyboardButton().setText("To beginning").setCallbackData(TO_BEGINNING))
+                .build());
     }
 }

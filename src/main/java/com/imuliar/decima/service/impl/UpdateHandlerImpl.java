@@ -78,6 +78,6 @@ public class UpdateHandlerImpl implements UpdateHandler {
     private User resolveTelegramUser(Update update) {
         return update.getMessage() != null
                 ? update.getMessage().getFrom()
-                : update.getCallbackQuery().getMessage().getFrom();
+                : update.getCallbackQuery().getFrom();
     }
 }
