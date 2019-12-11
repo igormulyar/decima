@@ -39,6 +39,7 @@ public abstract class DecimaApplication {
         updateProcessors.add(findRandomSlotPlebeianProcessor());
         updateProcessors.add(cancelBookingProcessor());
         updateProcessors.add(askSlotToFindUserProcessor());
+        updateProcessors.add(showPlanProcessor());
         updateProcessors.add(defaultPlebeianProcessor());
 
         return new SessionState(updateProcessors);
@@ -94,4 +95,7 @@ public abstract class DecimaApplication {
 
     @Lookup("searchUserBySlotProcessor")
     abstract UpdateProcessor searchUserBySlotProcessor();
+
+    @Lookup("showPlanProcessor")
+    abstract UpdateProcessor showPlanProcessor();
 }

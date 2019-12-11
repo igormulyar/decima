@@ -39,7 +39,7 @@ public class SearchUserBySlotProcessor extends AbstractUpdateProcessor {
         String slotNumber = update.getMessage().getText().trim();
         Optional<ParkingUser> userFound = searchUser(slotNumber);
         if (userFound.isPresent()) {
-            publishMessage(chatId, String.format("Slot # %s is held by %s now", slotNumber, userFound.get().getTelegramUsername()));
+            publishMessage(chatId, String.format("Slot *# %s* now is held by [%s](tg://user?id=%d)", slotNumber, userFound.get().toString(), userFound.get().getTelegramUserId()));
         } else {
             publishMessage(chatId, "Cannot find any user. Probably this slot is free for now.");
         }
@@ -47,7 +47,7 @@ public class SearchUserBySlotProcessor extends AbstractUpdateProcessor {
 
     private void publishMessage(Long chatId, String msg) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, msg,
-                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Cancel").setCallbackData(TO_BEGINNING)).build());
+                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 
     private Optional<ParkingUser> searchUser(String slotNumberCriterion) {

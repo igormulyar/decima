@@ -41,12 +41,12 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
-        String message = String.format("You have booked the slot **#%s**. What are you going to do?", bookedSlotNumber);
+        String message = String.format("Today you hold the slot *# %s*. \nChoose the action.", bookedSlotNumber);
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton().setText("Find User by engaged slot").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
+                .addButton(new InlineKeyboardButton().setText("Find slot holder").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
                 .addButton(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("Drop booking").setCallbackData(CANCEL_MY_BOOKING))
-                .addButton(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING))
+                .addButton(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
                 .build());
     }
 
@@ -54,7 +54,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
         String message = "*Choose the action, please.*";
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT))
-                .addButton(new InlineKeyboardButton().setText("Cancel").setCallbackData(TO_BEGINNING))
+                .addButton(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
                 .build());
     }
 }

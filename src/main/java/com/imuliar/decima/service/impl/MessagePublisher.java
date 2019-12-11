@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -43,6 +44,7 @@ public class MessagePublisher {
         bot.sendBotResponse(new SendMessage()
                 .enableMarkdown(true)
                 .setChatId(chatId)
+                .setParseMode(ParseMode.MARKDOWN)
                 .setText(message)
                 .setReplyMarkup(keyboardMarkup));
     }

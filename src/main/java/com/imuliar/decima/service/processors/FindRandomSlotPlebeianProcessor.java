@@ -49,10 +49,10 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
         Slot slotToBeBooked = freeSlots.get(freeSlots.size() - 1);
         Booking booking = new Booking(parkingUser, slotToBeBooked, LocalDate.now());
         getBookingRepository().save(booking);
-        String message = String.format("The slot # \"%s\" is booked for you. You can park your car there today.\n ***\n***\n %s", slotToBeBooked.getNumber(), getPlanImageUrl());
+        String message = String.format("The slot *# %s* is booked for you. You can park your car there today.\n ***\n***\n %s", slotToBeBooked.getNumber(), getPlanImageUrl());
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Cancel booking").setCallbackData(CANCEL_MY_BOOKING))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("To beginning").setCallbackData(TO_BEGINNING))
+                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
                 .build());
     }
 }

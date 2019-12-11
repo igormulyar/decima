@@ -54,9 +54,9 @@ public class FakeDataLoader {
             slotRepository.save(iSlot);
             slotRepository.save(freeSlot);
 
-            ParkingUser aUser = new ParkingUser(aUserId, null, null, null, null);
+            ParkingUser aUser = new ParkingUser(aUserId, null, "alina", null, null);
             //aUser.setPollingProfile(new PollingProfile(22));
-            ParkingUser iUser = new ParkingUser(iUserId, null, null, null, new PollingProfile(22));
+            ParkingUser iUser = new ParkingUser(iUserId, null, "igor", null, new PollingProfile(22));
             parkingUserRepository.save(aUser);
             parkingUserRepository.save(iUser);
 

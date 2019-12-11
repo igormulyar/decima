@@ -32,7 +32,7 @@ public class AskSlotToFindUserProcessor extends AbstractUpdateProcessor {
     @Override
     void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, "Type the slot number (EN):", new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Cancel").setCallbackData(TO_BEGINNING)).build());
+                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 
     @Override

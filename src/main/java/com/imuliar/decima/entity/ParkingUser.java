@@ -80,4 +80,19 @@ public class ParkingUser extends EntityFrame {
     public void setPollingProfile(PollingProfile pollingProfile) {
         this.pollingProfile = pollingProfile;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("user: ");
+        if(telegramUsername != null){
+            builder.append(telegramUsername).append(" ");
+        }
+        if(firstName != null){
+            builder.append(firstName).append(" ");
+        }
+        if(lastName != null){
+            builder.append(lastName).append(" ");
+        }
+        return builder.toString();
+    }
 }

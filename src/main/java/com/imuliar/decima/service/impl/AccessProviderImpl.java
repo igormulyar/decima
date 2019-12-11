@@ -47,6 +47,6 @@ public class AccessProviderImpl implements AccessProvider {
                 .requestChatMember(method)
                 .map(ChatMember::getStatus)
                 .filter(PERMITTED_STATUSES::contains)
-                .isPresent();
+                .isPresent() && !telegramUser.getBot();
     }
 }
