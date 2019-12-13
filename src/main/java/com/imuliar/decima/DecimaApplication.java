@@ -38,8 +38,9 @@ public abstract class DecimaApplication {
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(findRandomSlotPlebeianProcessor());
         updateProcessors.add(cancelBookingProcessor());
-        updateProcessors.add(askSlotToFindUserProcessor());
+        updateProcessors.add(inputForUserSearchPlebeianProcessor());
         updateProcessors.add(showPlanProcessor());
+        updateProcessors.add(sharePatricianSlotProcessor());
         updateProcessors.add(defaultPlebeianProcessor());
 
         return new SessionState(updateProcessors);
@@ -49,8 +50,10 @@ public abstract class DecimaApplication {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public SessionState slotOwnerInitialState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
-        updateProcessors.add(setFreePatricianProcessor());
+        updateProcessors.add(sharePatricianSlotProcessor());
         updateProcessors.add(bookSlotPatricianProcessor());
+        updateProcessors.add(inputForUserSearchPatricianProcessor());
+        updateProcessors.add(showPlanProcessor());
         updateProcessors.add(defaultPatricianProcessor());
 
         return new SessionState(updateProcessors);
@@ -58,10 +61,17 @@ public abstract class DecimaApplication {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public SessionState engagingUserSearchState(){
+    public SessionState engagingUserSearchPlebeianState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(searchUserBySlotPlebeianProcessor());
+        return new SessionState(updateProcessors);
+    }
 
-        updateProcessors.add(searchUserBySlotProcessor());
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState engagingUserSearchPatricianState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(searchUserBySlotPatricianProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -84,17 +94,23 @@ public abstract class DecimaApplication {
     @Lookup("findRandomSlotPlebeianProcessor")
     abstract UpdateProcessor findRandomSlotPlebeianProcessor();
 
-    @Lookup("setFreePatricianProcessor")
-    abstract UpdateProcessor setFreePatricianProcessor();
+    @Lookup("sharePatricianSlotProcessor")
+    abstract UpdateProcessor sharePatricianSlotProcessor();
 
     @Lookup("cancelBookingProcessor")
     abstract UpdateProcessor cancelBookingProcessor();
 
-    @Lookup("askSlotToFindUserProcessor")
-    abstract UpdateProcessor askSlotToFindUserProcessor();
+    @Lookup("inputForUserSearchPlebeianProcessor")
+    abstract UpdateProcessor inputForUserSearchPlebeianProcessor();
 
-    @Lookup("searchUserBySlotProcessor")
-    abstract UpdateProcessor searchUserBySlotProcessor();
+    @Lookup("inputForUserSearchPatricianProcessor")
+    abstract UpdateProcessor inputForUserSearchPatricianProcessor();
+
+    @Lookup("searchUserBySlotPlebeianProcessor")
+    abstract UpdateProcessor searchUserBySlotPlebeianProcessor();
+
+    @Lookup("searchUserBySlotPatricianProcessor")
+    abstract UpdateProcessor searchUserBySlotPatricianProcessor();
 
     @Lookup("showPlanProcessor")
     abstract UpdateProcessor showPlanProcessor();

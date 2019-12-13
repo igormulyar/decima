@@ -24,7 +24,7 @@ public class ShowPlanProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         getMessagePublisher().sendSimpleMessage(chatId, getPlanImageUrl());
     }
 }

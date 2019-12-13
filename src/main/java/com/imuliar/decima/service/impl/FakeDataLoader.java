@@ -51,8 +51,10 @@ public class FakeDataLoader {
         if(parkingUserRepository.findAll().isEmpty()){
             Slot iSlot = new Slot("5f");
             Slot freeSlot = new Slot("6f");
+            Slot freeSlot2 = new Slot("7f");
             slotRepository.save(iSlot);
             slotRepository.save(freeSlot);
+            slotRepository.save(freeSlot2);
 
             ParkingUser aUser = new ParkingUser(aUserId, null, "alina", null, null);
             //aUser.setPollingProfile(new PollingProfile(22));
@@ -60,8 +62,8 @@ public class FakeDataLoader {
             parkingUserRepository.save(aUser);
             parkingUserRepository.save(iUser);
 
-            //Reservation iUserReservation = new Reservation(iUser, iSlot);
-            //reservationRepository.save(iUserReservation);
+            Reservation iUserReservation = new Reservation(iUser, iSlot);
+            reservationRepository.save(iUserReservation);
         }
     }
 }

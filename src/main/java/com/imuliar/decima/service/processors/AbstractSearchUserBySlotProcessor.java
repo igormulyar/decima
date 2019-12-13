@@ -1,11 +1,7 @@
 package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -16,14 +12,12 @@ import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 import static com.imuliar.decima.service.util.RegexPatterns.ALPHANUMERIC_SLOT_NUMBER_PATTERN;
 
 /**
- * <p>Search and display user by passed slot number</p>
+ * <p>Search user by slot and publish results</p>
  *
  * @author imuliar
  * @since 0.0.1
  */
-@Service
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SearchUserBySlotProcessor extends AbstractUpdateProcessor {
+public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdateProcessor {
 
     @Override
     public boolean isMatch(Update update) {
@@ -31,7 +25,7 @@ public class SearchUserBySlotProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         if (!regexpMsgEvaluating.apply(update, ALPHANUMERIC_SLOT_NUMBER_PATTERN)) {
             publishMessage(chatId, "Something wrong with input data format.");
         }
@@ -56,10 +50,5 @@ public class SearchUserBySlotProcessor extends AbstractUpdateProcessor {
             return booker;
         }
         return getUserRepository().findEngagingOwner(slotNumberCriterion, LocalDate.now());
-    }
-
-    @Override
-    Optional<SessionState> getNextState() {
-        return Optional.of(getStateFactory().getOrdinaryInitialState());
     }
 }

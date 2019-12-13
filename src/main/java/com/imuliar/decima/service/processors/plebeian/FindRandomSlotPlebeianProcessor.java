@@ -1,8 +1,9 @@
-package com.imuliar.decima.service.processors;
+package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
+import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -32,7 +33,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
         if (CollectionUtils.isEmpty(freeSlots)) {
             publishNotFoundPopupMessage(update);

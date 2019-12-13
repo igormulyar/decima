@@ -1,8 +1,9 @@
-package com.imuliar.decima.service.processors;
+package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
+import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
         String callbackString = update.getCallbackQuery().getData();
         List<String> splitStringData = Arrays.asList(callbackString.split("#"));
         Slot slot = getSlotRepository().findByNumber(splitStringData.get(0))

@@ -16,6 +16,8 @@ public class Callbacks {
     public static final String SET_AVAILABILITY = "set_availability_cbk";
     public static final String SHOW_PLAN = "show_plan_cbk";
     public static final String CANCEL_MY_BOOKING = "cancel_my_booking_cbk";
+    public static final String SHOW_VACANT_PERIODS = "show_vacant_list_cbk";
+    public static final String SET_FREE_TODAY = "set_free_today_cbk";
 
     public static final String BOOK_SLOT_CALLBACK_TPL = "book_slot:%s";
     public static final String CANCEL_SLOT_SHARING_TPL = "cancel_sharing:%d";

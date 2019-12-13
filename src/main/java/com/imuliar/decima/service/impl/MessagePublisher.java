@@ -37,6 +37,7 @@ public class MessagePublisher {
         bot.sendBotResponse(new SendMessage()
                 .enableMarkdown(true)
                 .setChatId(chatId)
+                .setParseMode(ParseMode.MARKDOWN)
                 .setText(message));
     }
 
@@ -51,6 +52,10 @@ public class MessagePublisher {
 
     public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup) {
         sendMessageWithKeyboard(Long.valueOf(groupChatId), message, keyboardMarkup);
+    }
+
+    public void sendSimpleMessageToGroup(String message) {
+        sendSimpleMessage(Long.valueOf(groupChatId), message);
     }
 
     public void popUpNotify(String callbackQueryId, String messageText) {

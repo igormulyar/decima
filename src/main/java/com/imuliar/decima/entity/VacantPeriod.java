@@ -1,5 +1,7 @@
 package com.imuliar.decima.entity;
 
+import org.springframework.util.Assert;
+
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -26,6 +28,8 @@ public class VacantPeriod extends EntityFrame {
     }
 
     public VacantPeriod(LocalDate periodStart, LocalDate periodEnd, ParkingUser user) {
+        Assert.isTrue(periodStart.isBefore(periodEnd) || periodStart.equals(periodEnd) ,
+                "Period start date cannot be later than period end date!");
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
         this.user = user;

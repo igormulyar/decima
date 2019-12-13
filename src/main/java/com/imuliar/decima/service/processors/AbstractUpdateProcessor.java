@@ -29,9 +29,12 @@ import java.util.regex.Pattern;
 @Setter
 public abstract class AbstractUpdateProcessor implements UpdateProcessor {
 
-    BiFunction<Update, String, Boolean> callbackMatching = (update, callback) -> update.hasCallbackQuery() && update.getCallbackQuery().getData().equals(callback);
-    BiFunction<Update, Pattern, Boolean> regexpEvaluating = (update, matchingPattern) -> update.hasCallbackQuery() && matchingPattern.matcher(update.getCallbackQuery().getData()).matches();
-    BiFunction<Update, Pattern, Boolean> regexpMsgEvaluating = (update, matchingPattern) -> update.hasMessage() && matchingPattern.matcher(update.getMessage().getText()).matches();
+    protected BiFunction<Update, String, Boolean> callbackMatching =
+            (update, callback) -> update.hasCallbackQuery() && update.getCallbackQuery().getData().equals(callback);
+    protected BiFunction<Update, Pattern, Boolean> regexpEvaluating =
+            (update, matchingPattern) -> update.hasCallbackQuery() && matchingPattern.matcher(update.getCallbackQuery().getData()).matches();
+    protected BiFunction<Update, Pattern, Boolean> regexpMsgEvaluating =
+            (update, matchingPattern) -> update.hasMessage() && matchingPattern.matcher(update.getMessage().getText()).matches();
 
     protected UserSession session;
 
@@ -76,7 +79,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
      *
      * @return appropriate state implementation OR empty if not required. Empty by default
      */
-    Optional<SessionState> getNextState() {
+    protected Optional<SessionState> getNextState() {
         return Optional.empty();
     }
 
@@ -86,5 +89,5 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
                 : update.getCallbackQuery().getMessage().getChatId();
     }
 
-    abstract void doProcess(Update update, ParkingUser parkingUser, Long chatId);
+    protected abstract void doProcess(Update update, ParkingUser parkingUser, Long chatId);
 }

@@ -19,8 +19,11 @@ public abstract class StateFactory {
     @Lookup("slotOwnerInitialState")
     public abstract SessionState getSlotOwnerInitialState();
 
-    @Lookup("engagingUserSearchState")
-    public abstract SessionState getEngagingUserSearchState();
+    @Lookup("engagingUserSearchPlebeianState")
+    public abstract SessionState engagingUserSearchPlebeianState();
+
+    @Lookup("engagingUserSearchPatricianState")
+    public abstract SessionState engagingUserSearchPatricianState();
 
     @Lookup("groupChatUpdateProcessingState")
     public abstract SessionState getGroupChatUpdateProcessingState();

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class RegexPatterns {
 
     public static final Pattern SET_FREE_MATCHING_PATTERN =
-            Pattern.compile("setfree#([0-9]{9})#((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])");
+            Pattern.compile("set_free:\\d{4}-\\d{2}-\\d{2}:\\d{4}-\\d{2}-\\d{2}");
 
     public static final Pattern BOOK_MATCHING_PATTERN =
             Pattern.compile("book#([0-9]{1,2}?[a-zA-Z])#((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])");
