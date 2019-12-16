@@ -80,7 +80,7 @@ public abstract class DecimaApplication {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public SessionState pickStartDateState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
-
+        updateProcessors.add(toPatricianBeginningProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -126,4 +126,7 @@ public abstract class DecimaApplication {
 
     @Lookup("setSharingPeriodProcessor")
     abstract UpdateProcessor setSharingPeriodProcessor();
+
+    @Lookup("toPatricianBeginningProcessor")
+    abstract UpdateProcessor toPatricianBeginningProcessor();
 }
