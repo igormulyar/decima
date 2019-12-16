@@ -19,6 +19,8 @@ public class RegexPatterns {
     public static final Pattern DROP_BOOKING_MATCHING_PATTERN =
             Pattern.compile("drop_booking:(\\w){2}");
 
+    private static final Pattern DATE_MATCHING_PATTERN = Pattern.compile("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
+
     public static final Pattern ALPHANUMERIC_SLOT_NUMBER_PATTERN = Pattern.compile("([a-zA-Z0-9_-]){1,3}");
 
 }

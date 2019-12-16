@@ -1,5 +1,7 @@
 package com.imuliar.decima.service.util;
 
+import java.util.regex.Pattern;
+
 /**
  * <p>Store callback strings constants</p>
  *
@@ -13,11 +15,16 @@ public class Callbacks {
     public static final String TO_BEGINNING = "to_beginning_cbk";
     public static final String FIND_FREE_SLOT = "find_free_slot_cbk";
     public static final String ASK_SLOT_FOR_USER_SEARCH = "slot_for_user_search_cbk";
-    public static final String SET_AVAILABILITY = "set_availability_cbk";
+    public static final String SET_SHARING_PERIOD = "set_shaering_period_cbk";
     public static final String SHOW_PLAN = "show_plan_cbk";
     public static final String CANCEL_MY_BOOKING = "cancel_my_booking_cbk";
     public static final String SHOW_VACANT_PERIODS = "show_vacant_list_cbk";
     public static final String SET_FREE_TODAY = "set_free_today_cbk";
+    public static final String YEAR_BACK_CALLBACK = "year_back_cbk";
+    public static final String YEAR_FORWARD_CALLBACK = "year_forward_cbk";
+    public static final String MONTH_BACK_CALLBACK = "month_back_cbk";
+    public static final String MONTH_FORWARD_CALLBACK = "month_forward_cbk";
+    public static final String EMPTY_CALLBACK = "do_nothing_cbk";
 
     public static final String BOOK_SLOT_CALLBACK_TPL = "book_slot:%s";
     public static final String CANCEL_SLOT_SHARING_TPL = "cancel_sharing:%d";

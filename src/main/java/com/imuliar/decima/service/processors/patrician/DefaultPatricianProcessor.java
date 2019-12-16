@@ -1,7 +1,6 @@
 package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
@@ -14,10 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.*;
 
@@ -44,7 +40,7 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
         if(CollectionUtils.isEmpty(sharingPeriods)){
             keyboardBuilder
                     .addButton(new InlineKeyboardButton().setText("Share my slot today").setCallbackData(SET_FREE_TODAY))
-                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_AVAILABILITY));
+                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD));
 
         } else {
             keyboardBuilder

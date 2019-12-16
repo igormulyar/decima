@@ -54,6 +54,7 @@ public abstract class DecimaApplication {
         updateProcessors.add(bookSlotPatricianProcessor());
         updateProcessors.add(inputForUserSearchPatricianProcessor());
         updateProcessors.add(showPlanProcessor());
+        updateProcessors.add(setSharingPeriodProcessor());
         updateProcessors.add(defaultPatricianProcessor());
 
         return new SessionState(updateProcessors);
@@ -72,6 +73,14 @@ public abstract class DecimaApplication {
     public SessionState engagingUserSearchPatricianState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(searchUserBySlotPatricianProcessor());
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState pickStartDateState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+
         return new SessionState(updateProcessors);
     }
 
@@ -114,4 +123,7 @@ public abstract class DecimaApplication {
 
     @Lookup("showPlanProcessor")
     abstract UpdateProcessor showPlanProcessor();
+
+    @Lookup("setSharingPeriodProcessor")
+    abstract UpdateProcessor setSharingPeriodProcessor();
 }

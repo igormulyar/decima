@@ -27,4 +27,7 @@ public abstract class StateFactory {
 
     @Lookup("groupChatUpdateProcessingState")
     public abstract SessionState getGroupChatUpdateProcessingState();
+
+    @Lookup("pickStartDateState")
+    public abstract SessionState getPickStartDateState();
 }
