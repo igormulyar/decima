@@ -30,4 +30,10 @@ public abstract class StateFactory {
 
     @Lookup("pickStartDateState")
     public abstract SessionState getPickStartDateState();
+
+    @Lookup("pickEndDateState")
+    public abstract SessionState getPickEndDateState();
+
+    @Lookup("confirmSharingPeriodState")
+    public abstract SessionState getConfirmSharingPeriodState();
 }

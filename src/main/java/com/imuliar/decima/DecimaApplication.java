@@ -81,6 +81,33 @@ public abstract class DecimaApplication {
     public SessionState pickStartDateState(){
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(toPatricianBeginningProcessor());
+        updateProcessors.add(yearBackProcessor());
+        updateProcessors.add(yearForwardProcessor());
+        updateProcessors.add(monthBackProcessor());
+        updateProcessors.add(monthForwardProcessor());
+        updateProcessors.add(pickStartDateProcessor());
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState pickEndDateState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(toPatricianBeginningProcessor());
+        updateProcessors.add(yearBackProcessor());
+        updateProcessors.add(yearForwardProcessor());
+        updateProcessors.add(monthBackProcessor());
+        updateProcessors.add(monthForwardProcessor());
+        updateProcessors.add(pickEndDateProcessor());
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState confirmSharingPeriodState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(toPatricianBeginningProcessor());
+        updateProcessors.add(saveVacantPeriodProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -129,4 +156,25 @@ public abstract class DecimaApplication {
 
     @Lookup("toPatricianBeginningProcessor")
     abstract UpdateProcessor toPatricianBeginningProcessor();
+
+    @Lookup("yearBackProcessor")
+    abstract UpdateProcessor yearBackProcessor();
+
+    @Lookup("yearForwardProcessor")
+    abstract UpdateProcessor yearForwardProcessor();
+
+    @Lookup("monthBackProcessor")
+    abstract UpdateProcessor monthBackProcessor();
+
+    @Lookup("monthForwardProcessor")
+    abstract UpdateProcessor monthForwardProcessor();
+
+    @Lookup("pickStartDateProcessor")
+    abstract UpdateProcessor pickStartDateProcessor();
+
+    @Lookup("pickEndDateProcessor")
+    abstract UpdateProcessor pickEndDateProcessor();
+
+    @Lookup("saveVacantPeriodProcessor")
+    abstract UpdateProcessor saveVacantPeriodProcessor();
 }

@@ -1,5 +1,6 @@
 package com.imuliar.decima.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -17,12 +18,6 @@ public class Reservation extends EntityFrame {
 
     @OneToOne
     private Slot slot;
-
-    /**
-     * <p>Represents the priority level of reservation</p>
-     * <p> 0 is the highest priority.</p>
-     */
-    private Integer priority = 0;
 
     public Reservation() {
     }
@@ -46,13 +41,5 @@ public class Reservation extends EntityFrame {
 
     public void setSlot(Slot slot) {
         this.slot = slot;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
     }
 }

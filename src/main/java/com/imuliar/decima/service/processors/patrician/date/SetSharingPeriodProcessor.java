@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static com.imuliar.decima.service.session.ContextPropertyNames.CALENDAR_VIEW_DATE_PROP;
+import static com.imuliar.decima.service.session.ContextPropertyNames.PICK_DATE_MSG_PROP;
 import static com.imuliar.decima.service.util.Callbacks.SET_SHARING_PERIOD;
 
 /**
@@ -30,7 +32,10 @@ public class SetSharingPeriodProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        getMessagePublisher().publishCalendar(chatId, "Select the start date of slot sharing period", LocalDate.now());
+        getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, LocalDate.now());
+        String msg = "Select the start date of slot sharing period";
+        getSession().getContext().put(PICK_DATE_MSG_PROP, msg);
+        getMessagePublisher().publishCalendar(chatId, msg, LocalDate.now());
     }
 
     @Override

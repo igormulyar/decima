@@ -37,10 +37,11 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
         List<VacantPeriod> sharingPeriods = getVacantPeriodRepository().findByUserAndDate(parkingUser.getId(), LocalDate.now());
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
-        if(CollectionUtils.isEmpty(sharingPeriods)){
+        if (CollectionUtils.isEmpty(sharingPeriods)) {
             keyboardBuilder
                     .addButton(new InlineKeyboardButton().setText("Share my slot today").setCallbackData(SET_FREE_TODAY))
-                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD));
+                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD))
+                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(SHOW_VACANT_PERIODS));
 
         } else {
             keyboardBuilder

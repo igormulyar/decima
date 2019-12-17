@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
@@ -38,6 +39,7 @@ public abstract class SessionProviderImpl implements SessionProvider {
             session.setUpdateTime(LocalDateTime.now());
         } else {
             session = getUserSession();
+            session.setContext(new HashMap<>());
             userSessionPool.put(chatId, session);
         }
         return session;

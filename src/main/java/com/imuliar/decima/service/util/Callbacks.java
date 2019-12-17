@@ -25,6 +25,7 @@ public class Callbacks {
     public static final String MONTH_BACK_CALLBACK = "month_back_cbk";
     public static final String MONTH_FORWARD_CALLBACK = "month_forward_cbk";
     public static final String EMPTY_CALLBACK = "do_nothing_cbk";
+    public static final String SAVE_VACANT_PERIOD = "save_vacantPerid";
 
     public static final String BOOK_SLOT_CALLBACK_TPL = "book_slot:%s";
     public static final String CANCEL_SLOT_SHARING_TPL = "cancel_sharing:%d";

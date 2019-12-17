@@ -28,6 +28,7 @@ public class ToPatricianBeginningProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+        getSession().getContext().clear();
         getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Action cancelled");
     }
 

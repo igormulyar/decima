@@ -49,7 +49,7 @@ public class ResponseStrategyFactoryImpl implements ResponseStrategyFactory {
             return groupChatResponseStrategy;
         }
         Optional<Reservation> reservation = reservationRepository.findByUser(parkingUser);
-        return reservation.isPresent() && reservation.get().getPriority() == 0
+        return reservation.isPresent()
                 ? slotOwnerResponseStrategy
                 : ordinaryResponseStrategy;
     }

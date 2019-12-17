@@ -27,7 +27,7 @@ import static com.imuliar.decima.service.util.Callbacks.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
 
-    private static final String RELEASE_MESSAGE_PATTERN = "BOT NOTIFICATION:\nSlot # *%s* has been shared by [%s](tg://user?id=%d).";
+    private static final String RELEASE_MESSAGE_PATTERN = "BOT NOTIFICATION:\n[%s](tg://user?id=%d) has shared their slot for today.";
 
     @Autowired
     private PollingProfileRepository pollingProfileRepository;
@@ -39,53 +39,23 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-
-        markAnswered(parkingUser);
-        publishNotificationToCurrentUser(chatId);
-
-        Reservation currentUserReservation = getReservationRepository().findByTelegramUserId(parkingUser.getTelegramUserId())
-                .orElseThrow(() -> new IllegalStateException("Reservation should exist for user who has set his slot to be free."));
-        Slot sharedSlot = currentUserReservation.getSlot();
-
-        List<Reservation> otherReservations = getOtherReservations(currentUserReservation);
-        if (CollectionUtils.isEmpty(otherReservations)) {
-            publishNotificationToGroupChat(sharedSlot, parkingUser);
+        if (getVacantPeriodRepository().hasIntersections(parkingUser.getTelegramUserId(), LocalDate.now(), LocalDate.now())) {
+            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Your slot is already shared today");
         } else {
-            //ask other user
-            for (Reservation candidateReservation : otherReservations) {
-                boolean hasNotBookedYet = !getBookingRepository().findByUserAndDate(candidateReservation.getUser(), LocalDate.now()).isPresent();
-                if (hasNotBookedYet) {
-                    long candidateChatId = candidateReservation.getUser().getTelegramUserId().longValue();
-                    getMessagePublisher().sendMessageWithKeyboard(candidateChatId, String.format("Slot # %s has been shared for today. Want to book it?", sharedSlot.getNumber()),
-                            new InlineKeyboardMarkupBuilder()
-                                    .addButton(new InlineKeyboardButton("Yes! Book it for me!").setCallbackData(String.format(BOOK_SLOT_CALLBACK_TPL, candidateReservation.getSlot().getNumber())))
-                                    .addButtonAtNewRaw(new InlineKeyboardButton("No. Share with others").setCallbackData(SET_FREE_TODAY)).build());
-                    return;
-                }
-            }
-        }
-    }
-
-    private List<Reservation> getOtherReservations(Reservation currentUserReservation) {
-        List<Reservation> allReservationsForSingleSlot = getReservationRepository().findBySlot(currentUserReservation.getSlot());
-        allReservationsForSingleSlot.removeIf(r -> r.getPriority() <= currentUserReservation.getPriority());
-        allReservationsForSingleSlot.sort(Comparator.comparing(Reservation::getPriority));
-        return allReservationsForSingleSlot;
-    }
-
-    private void markAnswered(ParkingUser parkingUser) {
-        PollingProfile pollingProfile = parkingUser.getPollingProfile();
-        if (pollingProfile != null) {
             VacantPeriod vacantPeriod = new VacantPeriod(LocalDate.now(), LocalDate.now(), parkingUser);
             getVacantPeriodRepository().save(vacantPeriod);
-            pollingProfile.setLastAnswerReceived(LocalDate.now());
-            pollingProfileRepository.save(pollingProfile); // update
+
+            publishNotificationToCurrentUser(chatId);
+            publishNotificationToGroupChat(parkingUser);
         }
+        PollingProfile pollingProfile = parkingUser.getPollingProfile();
+        pollingProfile.setLastAnswerReceived(LocalDate.now());
+        pollingProfileRepository.save(pollingProfile); // update
     }
 
-    private void publishNotificationToGroupChat(Slot sharedSlot, ParkingUser parkingUser) {
+    private void publishNotificationToGroupChat(ParkingUser parkingUser) {
         getMessagePublisher()
-                .sendSimpleMessageToGroup(String.format(RELEASE_MESSAGE_PATTERN, sharedSlot.getNumber(), parkingUser.toString(), parkingUser.getTelegramUserId()));
+                .sendSimpleMessageToGroup(String.format(RELEASE_MESSAGE_PATTERN, parkingUser.toString(), parkingUser.getTelegramUserId()));
     }
 
     private void publishNotificationToCurrentUser(Long chatId) {
