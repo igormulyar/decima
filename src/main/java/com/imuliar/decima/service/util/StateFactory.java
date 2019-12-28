@@ -1,6 +1,6 @@
 package com.imuliar.decima.service.util;
 
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
 package com.imuliar.decima.service.processors.patrician;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -27,14 +27,16 @@ import static com.imuliar.decima.service.util.Callbacks.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
 
+    private static final String MESSAGE_TEXT = EmojiParser.parseToUnicode(":sunglasses::sunglasses::sunglasses: \n*As a parking slot owner I want to...*\n");
+
     @Override
     public boolean isMatch(Update update) {
         return true;
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        List<VacantPeriod> sharingPeriods = getVacantPeriodRepository().findByUserAndDate(parkingUser.getId(), LocalDate.now());
+    protected void doProcess(Update update, Long chatId) {
+        List<VacantPeriod> sharingPeriods = getVacantPeriodRepository().findByUserIdAndDate(chatId.intValue(), LocalDate.now());
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
         if (CollectionUtils.isEmpty(sharingPeriods)) {
@@ -52,6 +54,7 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("See parking plan").setCallbackData(SHOW_PLAN))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
                 .build();
-        getMessagePublisher().sendMessageWithKeyboard(chatId, "*As a parking slot owner I want to...*", keyboard);
+
+        getMessagePublisher().sendMessageWithKeyboard(chatId, MESSAGE_TEXT, keyboard);
     }
 }

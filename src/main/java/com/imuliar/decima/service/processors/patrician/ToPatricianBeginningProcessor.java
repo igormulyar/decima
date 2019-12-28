@@ -1,13 +1,13 @@
 package com.imuliar.decima.service.processors.patrician;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
-import com.imuliar.decima.service.state.SessionState;
-import java.util.Optional;
+import com.imuliar.decima.service.session.SessionState;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
@@ -27,7 +27,7 @@ public class ToPatricianBeginningProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         getSession().getContext().clear();
         getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Action cancelled");
     }

@@ -1,8 +1,7 @@
 package com.imuliar.decima.service;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.session.UserSession;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Optional;
@@ -26,11 +25,10 @@ public interface UpdateProcessor {
     /**
      * Business logic of particular update processing
      *
-     * @param update      update received
-     * @param parkingUser parking user
+     * @param update update received
      * @return next session state if required
      */
-    Optional<SessionState> process(Update update, ParkingUser parkingUser);
+    Optional<SessionState> process(Update update);
 
     void setSession(UserSession userSession);
 

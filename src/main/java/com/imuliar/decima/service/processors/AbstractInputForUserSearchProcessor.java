@@ -1,8 +1,8 @@
 package com.imuliar.decima.service.processors;
 
-import com.imuliar.decima.entity.ParkingUser;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -25,8 +25,8 @@ public abstract class AbstractInputForUserSearchProcessor extends AbstractUpdate
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, "Type the slot number (EN):", new InlineKeyboardMarkupBuilder()
+    protected void doProcess(Update update, Long chatId) {
+        getMessagePublisher().sendMessageWithKeyboard(chatId, EmojiParser.parseToUnicode(":mag: :keyboard: Type the slot number (EN) :"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 

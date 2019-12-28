@@ -1,6 +1,6 @@
 package com.imuliar.decima.service.processors;
 
-import com.imuliar.decima.entity.ParkingUser;
+import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -25,15 +25,21 @@ public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdatePr
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         if (!regexpMsgEvaluating.apply(update, ALPHANUMERIC_SLOT_NUMBER_PATTERN)) {
             publishMessage(chatId, "Something wrong with input data format.");
+            return;
         }
 
         String slotNumber = update.getMessage().getText().trim();
-        Optional<ParkingUser> userFound = searchUser(slotNumber);
-        if (userFound.isPresent()) {
-            publishMessage(chatId, String.format("Slot *# %s* now is held by [%s](tg://user?id=%d)", slotNumber, userFound.get().toString(), userFound.get().getTelegramUserId()));
+        if(!getSlotRepository().findByNumber(slotNumber).isPresent()){
+            publishMessage(chatId, String.format("Slot # %s doesn't exist.", slotNumber));
+            return;
+        }
+
+        Optional<Integer> userIdFound = searchUserId(slotNumber);
+        if (userIdFound.isPresent()) {
+            publishMessage(chatId, String.format("Slot *# %s* now is held by [this user](tg://user?id=%d)", slotNumber, userIdFound.get()));
         } else {
             publishMessage(chatId, "Cannot find any user. Probably this slot is free for now.");
         }
@@ -44,11 +50,11 @@ public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdatePr
                 new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 
-    private Optional<ParkingUser> searchUser(String slotNumberCriterion) {
-        Optional<ParkingUser> booker = getUserRepository().findBooker(slotNumberCriterion, LocalDate.now());
-        if (booker.isPresent()) {
-            return booker;
+    private Optional<Integer> searchUserId(String slotNumberCriterion) {
+        Optional<Booking> booking = getBookingRepository().findBySlotNumberAndDate(slotNumberCriterion, LocalDate.now());
+        if (booking.isPresent()) {
+            return booking.map(Booking::getUserId);
         }
-        return getUserRepository().findEngagingOwner(slotNumberCriterion, LocalDate.now());
+        return getReservationRepository().findEngagingOwner(slotNumberCriterion, LocalDate.now());
     }
 }

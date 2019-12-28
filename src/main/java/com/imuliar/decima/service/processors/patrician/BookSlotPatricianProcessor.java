@@ -1,7 +1,6 @@
 package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Booking;
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -32,13 +31,13 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         String callbackString = update.getCallbackQuery().getData();
         List<String> splitStringData = Arrays.asList(callbackString.split("#"));
         Slot slot = getSlotRepository().findByNumber(splitStringData.get(0))
                 .orElseThrow(() -> new IllegalStateException("Booked slot should exist"));
         LocalDate bookingDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
-        Booking booking = new Booking(parkingUser, slot, bookingDate);
+        Booking booking = new Booking(chatId.intValue(), slot, bookingDate);
         getBookingRepository().save(booking);
         getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Successfully booked!");
     }

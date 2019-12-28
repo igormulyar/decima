@@ -18,22 +18,12 @@ import java.util.List;
 @Repository
 public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long> {
 
-    @Query("SELECT vp FROM VacantPeriod vp " +
-            "WHERE vp.user.id = :userId " +
-            "AND :date >= vp.periodStart AND :date <= periodEnd")
-    List<VacantPeriod> findByUserAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
+    List<VacantPeriod> findByUserId(Integer userId);
 
-    /**
-     * Check if user is supposed to park their car at specified day
-     *
-     * @param userId user entity id
-     * @param date   date as search criterion
-     * @return true if VacantPeriod record for the user exists and specified date is within the period's dates range, otherwise return false
-     */
-    @Query("SELECT COUNT(vp) > 0 FROM VacantPeriod vp " +
-            "WHERE vp.user.id = :userId " +
-            "AND :date >= vp.periodStart AND :date <= periodEnd")
-    Boolean isUserAbsent(@Param("userId") Long userId, @Param("date") LocalDate date);
+    @Query("SELECT vacantPeriod FROM VacantPeriod vacantPeriod " +
+            "WHERE vacantPeriod.userId = :userId " +
+            "AND :date >= vacantPeriod.periodStart AND :date <= vacantPeriod.periodEnd")
+    List<VacantPeriod> findByUserIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDate date);
 
     /**
      * Checks if passed arguments has intersections with existing vacant period representation in db
@@ -44,8 +34,7 @@ public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long
      * @return {@literal true} if has intersections, otherwise - {@literal false}
      */
     @Query("SELECT COUNT(vp) > 0 FROM VacantPeriod vp " +
-            "JOIN vp.user parkingUser " +
-            "WHERE parkingUser.telegramUserId = :telegramUserId " +
+            "WHERE vp.userId = :telegramUserId " +
             "AND (vp.periodEnd >= :startDate OR vp.periodStart <= :endDate) ")
     Boolean hasIntersections(@Param("telegramUserId") Integer telegramUserId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

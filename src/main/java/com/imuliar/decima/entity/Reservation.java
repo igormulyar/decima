@@ -3,6 +3,7 @@ package com.imuliar.decima.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.time.LocalDate;
 
 /**
  * <p>Represent the permanent slot reservation for particular user</p>
@@ -13,26 +14,28 @@ import javax.persistence.OneToOne;
 @Entity
 public class Reservation extends EntityFrame {
 
-    @OneToOne
-    private ParkingUser user;
+    @Column(nullable = false)
+    private Integer userId;
 
-    @OneToOne
+    @OneToOne(optional = false)
     private Slot slot;
+
+    private LocalDate lastPollTimestamp;
 
     public Reservation() {
     }
 
-    public Reservation(ParkingUser user, Slot slot) {
-        this.user = user;
+    public Reservation(Integer userId, Slot slot) {
+        this.userId = userId;
         this.slot = slot;
     }
 
-    public ParkingUser getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(ParkingUser user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Slot getSlot() {
@@ -41,5 +44,13 @@ public class Reservation extends EntityFrame {
 
     public void setSlot(Slot slot) {
         this.slot = slot;
+    }
+
+    public LocalDate getLastPollTimestamp() {
+        return lastPollTimestamp;
+    }
+
+    public void setLastPollTimestamp(LocalDate lastPollTimestamp) {
+        this.lastPollTimestamp = lastPollTimestamp;
     }
 }

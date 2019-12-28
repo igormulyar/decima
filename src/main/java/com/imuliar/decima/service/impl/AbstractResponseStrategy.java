@@ -1,10 +1,9 @@
 package com.imuliar.decima.service.impl;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.ResponseStrategy;
 import com.imuliar.decima.service.session.SessionProvider;
 import com.imuliar.decima.service.session.UserSession;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.StateFactory;
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -28,7 +27,7 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
     }
 
     @Override
-    public void response(Long chatId, ParkingUser parkingUser, Update update) {
+    public void response(Long chatId, Update update) {
         UserSession session = sessionProvider.provideSession(chatId);
         if (session.getCurrentState() == null) {
             SessionState initialState = generateInitialState();
@@ -36,7 +35,7 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
             initialState.setUserSession(session);
         }
 
-        session.getCurrentState().processUpdate(chatId, parkingUser, update);
+        session.getCurrentState().processUpdate(update);
     }
 
     protected abstract SessionState generateInitialState();

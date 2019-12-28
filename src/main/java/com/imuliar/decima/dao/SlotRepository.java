@@ -29,9 +29,8 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
             "AND slot NOT IN " +
             "(SELECT reservedSlot FROM Reservation reservation " +
             "JOIN reservation.slot reservedSlot " +
-            "WHERE reservation.user NOT IN " +
-            "(SELECT parkingUser FROM VacantPeriod vacantPeriod " +
-            "JOIN vacantPeriod.user parkingUser " +
+            "WHERE reservation.userId NOT IN " +
+            "(SELECT vacantPeriod.userId FROM VacantPeriod vacantPeriod " +
             "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd))")
     List<Slot> findFreeSlots(@Param("date") LocalDate date);
 

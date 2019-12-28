@@ -1,12 +1,7 @@
 package com.imuliar.decima.entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 /**
  * <p>Represents the record about booking a slot by user for specified date</p>
@@ -17,10 +12,8 @@ import javax.persistence.OneToOne;
 @Entity
 public class Booking extends EntityFrame {
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "PARKING_USER_ID",
-            foreignKey = @ForeignKey(name = "FK_BOOKING_PARKING_USER"))
-    private ParkingUser user;
+    @Column(nullable = false)
+    private Integer userId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "SLOT_ID", foreignKey = @ForeignKey(name = "FK_BOOKING_SLOT"))
@@ -32,18 +25,18 @@ public class Booking extends EntityFrame {
     public Booking() {
     }
 
-    public Booking(ParkingUser user, Slot slot, LocalDate date) {
-        this.user = user;
+    public Booking(Integer userId, Slot slot, LocalDate date) {
+        this.userId = userId;
         this.slot = slot;
         this.date = date;
     }
 
-    public ParkingUser getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(ParkingUser user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Slot getSlot() {

@@ -1,14 +1,12 @@
 package com.imuliar.decima.service;
 
-import com.imuliar.decima.entity.ParkingUser;
-
 /**
- * //TODO add description <p></p>
+ * <p>Get appropriate strategy for the chat</p>
  *
  * @author imuliar
- * @since //TODO specify version
+ * @since 0.0.1
  */
 public interface ResponseStrategyFactory {
 
-    ResponseStrategy getStrategy(ParkingUser parkingUser, Long chatId);
+    ResponseStrategy getStrategy(Integer userId, Long chatId);
 }

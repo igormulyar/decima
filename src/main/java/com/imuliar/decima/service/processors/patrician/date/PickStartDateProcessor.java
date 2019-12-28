@@ -1,8 +1,7 @@
 package com.imuliar.decima.service.processors.patrician.date;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -31,10 +30,10 @@ public class PickStartDateProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         LocalDate inputStartDate = LocalDate.parse(update.getCallbackQuery().getData(), DateTimeFormatter.ISO_DATE);
 
-        if(inputStartDate.isBefore(LocalDate.now())){
+        if (inputStartDate.isBefore(LocalDate.now())) {
             getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "You cannot pick prior date");
         } else {
             getSession().getContext().put(START_DATE_PROP, inputStartDate);
@@ -49,7 +48,7 @@ public class PickStartDateProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected Optional<SessionState> getNextState() {
-        if(getSession().getContext().get(START_DATE_PROP) == null){
+        if (getSession().getContext().get(START_DATE_PROP) == null) {
             return super.getNextState();
         } else {
             return Optional.of(getStateFactory().getPickEndDateState());

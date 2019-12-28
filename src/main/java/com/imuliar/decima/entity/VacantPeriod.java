@@ -3,6 +3,7 @@ package com.imuliar.decima.entity;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,23 +17,30 @@ import javax.persistence.ManyToOne;
 @Entity
 public class VacantPeriod extends EntityFrame {
 
+    @Column(nullable = false)
+    private Integer userId;
+
+    @Column(nullable = false)
     private LocalDate periodStart;
 
+    @Column(nullable = false)
     private LocalDate periodEnd;
-
-    @ManyToOne
-    @JoinColumn(name="USER_ID", nullable = false)
-    private ParkingUser user;
 
     public VacantPeriod() {
     }
 
-    public VacantPeriod(LocalDate periodStart, LocalDate periodEnd, ParkingUser user) {
-        Assert.isTrue(periodStart.isBefore(periodEnd) || periodStart.equals(periodEnd) ,
-                "Period start date cannot be later than period end date!");
+    public VacantPeriod(Integer userId, LocalDate periodStart, LocalDate periodEnd) {
+        this.userId = userId;
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
-        this.user = user;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public LocalDate getPeriodStart() {
@@ -49,13 +57,5 @@ public class VacantPeriod extends EntityFrame {
 
     public void setPeriodEnd(LocalDate periodEnd) {
         this.periodEnd = periodEnd;
-    }
-
-    public ParkingUser getUser() {
-        return user;
-    }
-
-    public void setUser(ParkingUser user) {
-        this.user = user;
     }
 }

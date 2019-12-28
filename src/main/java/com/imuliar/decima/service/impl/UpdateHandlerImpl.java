@@ -1,11 +1,8 @@
 package com.imuliar.decima.service.impl;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.AccessProvider;
-import com.imuliar.decima.service.ParkingUserService;
 import com.imuliar.decima.service.ResponseStrategyFactory;
 import com.imuliar.decima.service.UpdateHandler;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+
+import javax.annotation.PostConstruct;
 
 /**
  * <p>Handle input updates from telegram server and forward for appropriate processing</p>
@@ -25,8 +24,6 @@ public class UpdateHandlerImpl implements UpdateHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateHandlerImpl.class);
 
-    private ParkingUserService parkingUserService;
-
     private ResponseStrategyFactory responseStrategyFactory;
 
     private FakeDataLoader fakeDataLoader;
@@ -36,9 +33,8 @@ public class UpdateHandlerImpl implements UpdateHandler {
     private MessagePublisher messagePublisher;
 
     @Autowired
-    public UpdateHandlerImpl(ParkingUserService parkingUserService, ResponseStrategyFactory responseStrategyFactory,
-                             FakeDataLoader fakeDataLoader, AccessProvider accessProvider, MessagePublisher messagePublisher) {
-        this.parkingUserService = parkingUserService;
+    public UpdateHandlerImpl(ResponseStrategyFactory responseStrategyFactory, FakeDataLoader fakeDataLoader, AccessProvider accessProvider,
+                             MessagePublisher messagePublisher) {
         this.responseStrategyFactory = responseStrategyFactory;
         this.fakeDataLoader = fakeDataLoader;
         this.accessProvider = accessProvider;
@@ -58,15 +54,14 @@ public class UpdateHandlerImpl implements UpdateHandler {
         Long chatId = resolveChatId(update);
 
         if (accessProvider.isPermitted(telegramUser)) {
-            ParkingUser parkingUser = parkingUserService.findOrCreateParkingUser(telegramUser);
             responseStrategyFactory
-                    .getStrategy(parkingUser, chatId)
-                    .response(chatId, parkingUser, update);
+                    .getStrategy(telegramUser.getId(), chatId)
+                    .response(chatId, update);
         } else {
             messagePublisher.sendSimpleMessage(chatId, "ACCESS DENIED");
         }
 
-        LOGGER.info("TELEGRAM UPDATE PROCESSED");
+        LOGGER.debug("TELEGRAM UPDATE PROCESSED");
     }
 
     private Long resolveChatId(Update update) {

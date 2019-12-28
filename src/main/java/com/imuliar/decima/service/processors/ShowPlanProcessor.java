@@ -1,6 +1,5 @@
 package com.imuliar.decima.service.processors;
 
-import com.imuliar.decima.entity.ParkingUser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class ShowPlanProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         getMessagePublisher().sendSimpleMessage(chatId, getPlanImageUrl());
     }
 }

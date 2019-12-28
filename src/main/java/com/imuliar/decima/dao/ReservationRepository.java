@@ -1,15 +1,16 @@
 package com.imuliar.decima.dao;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.Slot;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>Access to {@link Reservation} records</p>
@@ -18,14 +19,15 @@ import org.springframework.stereotype.Repository;
  * @since 0.0.1
  */
 @Repository
+@Transactional
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    Optional<Reservation> findByUser(ParkingUser parkingUser);
+    Optional<Reservation> findByUserId(Integer userId);
 
-    @Query("SELECT r FROM Reservation r " +
-            "JOIN r.user u " +
-            "WHERE u.telegramUserId = :telegramUserId")
-    Optional<Reservation> findByTelegramUserId(@Param("telegramUserId") Integer telegramUserId);
-
-    List<Reservation> findBySlot(Slot slot);
+    @Query("SELECT reservation.userId FROM Reservation reservation " +
+            "JOIN reservation.slot slot " +
+            "WHERE slot.number = :slotNumber AND reservation.userId NOT IN (" +
+            "SELECT vacantPeriod.userId FROM VacantPeriod vacantPeriod " +
+            "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd)")
+    Optional<Integer> findEngagingOwner(@Param("slotNumber") String slotNumber, @Param("date") LocalDate date);
 }

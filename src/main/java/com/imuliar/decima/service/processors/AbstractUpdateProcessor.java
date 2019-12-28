@@ -1,11 +1,10 @@
 package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.dao.*;
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.session.UserSession;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.StateFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,20 +56,17 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
     private SlotRepository slotRepository;
 
     @Autowired
-    private ParkingUserRepository userRepository;
-
-    @Autowired
     private BookingRepository bookingRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<SessionState> process(@Nonnull Update update, @Nonnull ParkingUser parkingUser) {
+    public Optional<SessionState> process(@Nonnull Update update) {
         Assert.notNull(update, "update is NULL");
         Assert.notNull(update, "parkingUser is NULL");
         Long chatId = resolveChatId(update);
-        doProcess(update, parkingUser, chatId);
+        doProcess(update, chatId);
         return getNextState();
     }
 
@@ -89,5 +85,5 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
                 : update.getCallbackQuery().getMessage().getChatId();
     }
 
-    protected abstract void doProcess(Update update, ParkingUser parkingUser, Long chatId);
+    protected abstract void doProcess(Update update, Long chatId);
 }

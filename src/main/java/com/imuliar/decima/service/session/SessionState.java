@@ -1,11 +1,9 @@
-package com.imuliar.decima.service.state;
+package com.imuliar.decima.service.session;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.UpdateProcessor;
-import com.imuliar.decima.service.session.UserSession;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.List;
 
 /**
  * <p>Encapsulates common properties and behavior for child states</p>
@@ -19,18 +17,17 @@ public class SessionState {
 
     private UserSession userSession;
 
-    @Autowired
     public SessionState(List<UpdateProcessor> updateProcessors) {
         this.updateProcessors = updateProcessors;
     }
 
-    public void processUpdate(Long chatId, ParkingUser parkingUser, Update update) {
+    public void processUpdate(Update update) {
         getUpdateProcessors().stream()
                 .filter(processor -> processor.isMatch(update))
                 .peek(p -> p.setSession(userSession))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Cannot find applicable processor to handle input update!"))
-                .process(update, parkingUser)
+                .process(update)
                 .ifPresent(this::proceedToNextState);
     }
 

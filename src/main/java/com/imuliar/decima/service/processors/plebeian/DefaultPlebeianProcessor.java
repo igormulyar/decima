@@ -1,7 +1,6 @@
 package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.entity.Booking;
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -31,8 +30,8 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        Optional<Booking> bookingFound = getBookingRepository().findByUserAndDate(parkingUser, LocalDate.now());
+    protected void doProcess(Update update, Long chatId) {
+        Optional<Booking> bookingFound = getBookingRepository().findByUserIdAndDate(chatId.intValue(), LocalDate.now());
         if (bookingFound.isPresent()) {
             String bookedSlotNumber = bookingFound.get().getSlot().getNumber();
             displayForAlreadyBooked(chatId, bookedSlotNumber);

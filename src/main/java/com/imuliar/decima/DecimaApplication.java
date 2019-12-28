@@ -1,7 +1,7 @@
 package com.imuliar.decima;
 
 import com.imuliar.decima.service.UpdateProcessor;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

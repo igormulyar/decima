@@ -1,6 +1,5 @@
 package com.imuliar.decima.service.processors.patrician.date;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +20,7 @@ import static com.imuliar.decima.service.util.Callbacks.MONTH_FORWARD_CALLBACK;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MonthForwardProcessor extends AbstractUpdateProcessor{
+public class MonthForwardProcessor extends AbstractUpdateProcessor {
 
     @Override
     public boolean isMatch(Update update) {
@@ -29,8 +28,8 @@ public class MonthForwardProcessor extends AbstractUpdateProcessor{
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        LocalDate contextViewDate = (LocalDate)getSession().getContext().get(CALENDAR_VIEW_DATE_PROP);
+    protected void doProcess(Update update, Long chatId) {
+        LocalDate contextViewDate = (LocalDate) getSession().getContext().get(CALENDAR_VIEW_DATE_PROP);
         LocalDate monthForward = contextViewDate.plusMonths(1);
         getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, monthForward);
         String msg = (String) getSession().getContext().get(PICK_DATE_MSG_PROP);

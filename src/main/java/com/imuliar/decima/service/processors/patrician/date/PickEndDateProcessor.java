@@ -1,8 +1,7 @@
 package com.imuliar.decima.service.processors.patrician.date;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -15,9 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.imuliar.decima.service.session.ContextPropertyNames.END_DATE_PROP;
-import static com.imuliar.decima.service.session.ContextPropertyNames.PICK_DATE_MSG_PROP;
-import static com.imuliar.decima.service.session.ContextPropertyNames.START_DATE_PROP;
+import static com.imuliar.decima.service.session.ContextPropertyNames.*;
 import static com.imuliar.decima.service.util.Callbacks.SAVE_VACANT_PERIOD;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 import static com.imuliar.decima.service.util.RegexPatterns.DATE_MATCHING_PATTERN;
@@ -38,13 +35,13 @@ public class PickEndDateProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         LocalDate inputEndDate = LocalDate.parse(update.getCallbackQuery().getData(), DateTimeFormatter.ISO_DATE);
         LocalDate inputStartDate = (LocalDate) getSession().getContext().get(START_DATE_PROP);
 
         if (inputEndDate.isBefore(inputStartDate)) {
             getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "End date should be equal or greater than start date");
-        } else if (getVacantPeriodRepository().hasIntersections(parkingUser.getTelegramUserId(), inputStartDate, inputEndDate)) {
+        } else if (getVacantPeriodRepository().hasIntersections(chatId.intValue(), inputStartDate, inputEndDate)) {
             getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Has intersections with existent sharing periods! Select another date please");
         } else {
             getSession().getContext().put(END_DATE_PROP, inputEndDate);

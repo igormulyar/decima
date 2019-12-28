@@ -1,7 +1,6 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.dao.ReservationRepository;
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.service.ResponseStrategy;
 import com.imuliar.decima.service.ResponseStrategyFactory;
@@ -44,11 +43,11 @@ public class ResponseStrategyFactoryImpl implements ResponseStrategyFactory {
     }
 
     @Override
-    public ResponseStrategy getStrategy(ParkingUser parkingUser, Long chatId) {
+    public ResponseStrategy getStrategy(Integer userId, Long chatId) {
         if (chatId.longValue() == groupChatId.longValue()) {
             return groupChatResponseStrategy;
         }
-        Optional<Reservation> reservation = reservationRepository.findByUser(parkingUser);
+        Optional<Reservation> reservation = reservationRepository.findByUserId(userId);
         return reservation.isPresent()
                 ? slotOwnerResponseStrategy
                 : ordinaryResponseStrategy;

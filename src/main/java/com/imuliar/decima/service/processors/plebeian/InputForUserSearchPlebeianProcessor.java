@@ -1,7 +1,7 @@
 package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.service.processors.AbstractInputForUserSearchProcessor;
-import com.imuliar.decima.service.state.SessionState;
+import com.imuliar.decima.service.session.SessionState;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

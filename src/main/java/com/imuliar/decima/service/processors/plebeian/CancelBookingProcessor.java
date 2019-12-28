@@ -1,6 +1,5 @@
 package com.imuliar.decima.service.processors.plebeian;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -27,8 +26,8 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
-        getBookingRepository().deleteBooking(parkingUser.getTelegramUserId(), LocalDate.now());
+    protected void doProcess(Update update, Long chatId) {
+        getBookingRepository().removeByUserIdAndDate(chatId.intValue(), LocalDate.now());
         getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Booking has been dropped.");
     }
 }

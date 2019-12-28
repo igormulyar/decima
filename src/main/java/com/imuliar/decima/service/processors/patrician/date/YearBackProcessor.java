@@ -1,6 +1,5 @@
 package com.imuliar.decima.service.processors.patrician.date;
 
-import com.imuliar.decima.entity.ParkingUser;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -30,7 +29,7 @@ public class YearBackProcessor extends AbstractUpdateProcessor {
     }
 
     @Override
-    protected void doProcess(Update update, ParkingUser parkingUser, Long chatId) {
+    protected void doProcess(Update update, Long chatId) {
         LocalDate contextViewDate = (LocalDate) getSession().getContext().get(CALENDAR_VIEW_DATE_PROP);
         LocalDate yearBack = contextViewDate.minusYears(1);
         getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, yearBack);

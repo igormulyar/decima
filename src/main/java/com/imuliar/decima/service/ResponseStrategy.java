@@ -1,6 +1,5 @@
 package com.imuliar.decima.service;
 
-import com.imuliar.decima.entity.ParkingUser;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -11,6 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public interface ResponseStrategy {
 
-    void response(Long chatId, ParkingUser parkingUser, Update update);
+    void response(Long chatId, Update update);
 
 }
