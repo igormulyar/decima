@@ -20,10 +20,27 @@ public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long
 
     List<VacantPeriod> findByUserId(Integer userId);
 
+    /**
+     * Find all vacant periods that cover specified date
+     * @param userId user telegram identifier
+     * @param date date as a search criterion
+     * @return list
+     */
     @Query("SELECT vacantPeriod FROM VacantPeriod vacantPeriod " +
             "WHERE vacantPeriod.userId = :userId " +
             "AND :date >= vacantPeriod.periodStart AND :date <= vacantPeriod.periodEnd")
     List<VacantPeriod> findByUserIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDate date);
+
+    /**
+     * Find all vacant periods that cover specified date or are scheduled next after the specified date
+     * @param userId user telegram identifier
+     * @param date date as a search criterion
+     * @return list
+     */
+    @Query("SELECT vacantPeriod FROM VacantPeriod vacantPeriod " +
+            "WHERE vacantPeriod.userId = :userId " +
+            "AND :date <= vacantPeriod.periodEnd")
+    List<VacantPeriod> findNotExpired(@Param("userId") Integer userId, @Param("date") LocalDate date);
 
     /**
      * Checks if passed arguments has intersections with existing vacant period representation in db
@@ -35,6 +52,7 @@ public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long
      */
     @Query("SELECT COUNT(vp) > 0 FROM VacantPeriod vp " +
             "WHERE vp.userId = :telegramUserId " +
-            "AND (vp.periodEnd >= :startDate OR vp.periodStart <= :endDate) ")
+            "AND (vp.periodStart <= :startDate AND vp.periodEnd >= :startDate  OR " +
+            "vp.periodStart <= :endDate AND vp.periodEnd >= :endDate) ")
     Boolean hasIntersections(@Param("telegramUserId") Integer telegramUserId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

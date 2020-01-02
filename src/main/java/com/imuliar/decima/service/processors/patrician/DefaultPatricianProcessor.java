@@ -4,6 +4,8 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static com.imuliar.decima.service.util.Callbacks.*;
+import static com.imuliar.decima.service.util.Callbacks.ASK_SLOT_FOR_USER_SEARCH;
+import static com.imuliar.decima.service.util.Callbacks.LIST_VACANT_PERIODS;
+import static com.imuliar.decima.service.util.Callbacks.SET_FREE_TODAY;
+import static com.imuliar.decima.service.util.Callbacks.SET_SHARING_PERIOD;
+import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p></p>
@@ -40,16 +44,15 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
         if (CollectionUtils.isEmpty(sharingPeriods)) {
-            keyboardBuilder
-                    .addButton(new InlineKeyboardButton().setText("Share my slot today").setCallbackData(SET_FREE_TODAY))
-                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD))
-                    .addButtonAtNewRaw(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(SHOW_VACANT_PERIODS));
-
+            keyboardBuilder.addButton(new InlineKeyboardButton().setText("Share my slot today").setCallbackData(SET_FREE_TODAY));
+            if (!getVacantPeriodRepository().findNotExpired(chatId.intValue(), LocalDate.now()).isEmpty()) {
+                keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(LIST_VACANT_PERIODS));
+            }
         } else {
-            keyboardBuilder
-                    .addButton(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(SHOW_VACANT_PERIODS));
+            keyboardBuilder.addButton(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(LIST_VACANT_PERIODS));
         }
         InlineKeyboardMarkup keyboard = keyboardBuilder
+                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("Find current slot holder").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("See parking plan").setCallbackData(SHOW_PLAN))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))

@@ -23,4 +23,6 @@ public class RegexPatterns {
 
     public static final Pattern ALPHANUMERIC_SLOT_NUMBER_PATTERN = Pattern.compile("([a-zA-Z0-9_-]){1,3}");
 
+    public static final Pattern PERIOD_ID_PATTERN = Pattern.compile("periodId:\\d+");
+
 }

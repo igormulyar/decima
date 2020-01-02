@@ -36,4 +36,7 @@ public abstract class StateFactory {
 
     @Lookup("confirmSharingPeriodState")
     public abstract SessionState getConfirmSharingPeriodState();
+
+    @Lookup("listPeriodsState")
+    public abstract SessionState getListPeriodsState();
 }

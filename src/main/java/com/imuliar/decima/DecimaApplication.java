@@ -41,8 +41,8 @@ public abstract class DecimaApplication {
         updateProcessors.add(inputForUserSearchPlebeianProcessor());
         updateProcessors.add(showPlanProcessor());
         updateProcessors.add(sharePatricianSlotProcessor());
-        updateProcessors.add(defaultPlebeianProcessor());
 
+        updateProcessors.add(defaultPlebeianProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -55,8 +55,9 @@ public abstract class DecimaApplication {
         updateProcessors.add(inputForUserSearchPatricianProcessor());
         updateProcessors.add(showPlanProcessor());
         updateProcessors.add(setSharingPeriodProcessor());
-        updateProcessors.add(defaultPatricianProcessor());
+        updateProcessors.add(listPeriodsPatricianProcessor());
 
+        updateProcessors.add(defaultPatricianProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -108,6 +109,15 @@ public abstract class DecimaApplication {
         List<UpdateProcessor> updateProcessors = new ArrayList<>();
         updateProcessors.add(toPatricianBeginningProcessor());
         updateProcessors.add(saveVacantPeriodProcessor());
+        return new SessionState(updateProcessors);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SessionState listPeriodsState(){
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(toPatricianBeginningProcessor());
+        updateProcessors.add(manipulatePeriodPatricianProcessor());
         return new SessionState(updateProcessors);
     }
 
@@ -177,4 +187,10 @@ public abstract class DecimaApplication {
 
     @Lookup("saveVacantPeriodProcessor")
     abstract UpdateProcessor saveVacantPeriodProcessor();
+
+    @Lookup("listPeriodsPatricianProcessor")
+    abstract UpdateProcessor listPeriodsPatricianProcessor();
+
+    @Lookup("manipulatePeriodPatricianProcessor")
+    abstract UpdateProcessor manipulatePeriodPatricianProcessor();
 }
