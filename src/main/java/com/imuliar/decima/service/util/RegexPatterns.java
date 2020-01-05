@@ -25,4 +25,6 @@ public class RegexPatterns {
 
     public static final Pattern PERIOD_ID_PATTERN = Pattern.compile("periodId:\\d+");
 
+    public static final Pattern PERIOD_REMOVE_PATTERN = Pattern.compile("remove_period_id:\\d+");
+
 }

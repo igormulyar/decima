@@ -40,7 +40,7 @@ public class FakeDataLoader {
 
     public void loadData() {
         if (reservationRepository.findAll().isEmpty()) {
-            Slot iSlot = new Slot("5f");
+            /*Slot iSlot = new Slot("5f");
             Slot freeSlot = new Slot("6f");
             Slot freeSlot2 = new Slot("7f");
             slotRepository.save(iSlot);
@@ -48,7 +48,7 @@ public class FakeDataLoader {
             slotRepository.save(freeSlot2);
 
             Reservation iUserReservation = new Reservation(iUserId, iSlot);
-            reservationRepository.save(iUserReservation);
+            reservationRepository.save(iUserReservation);*/
         }
     }
 }

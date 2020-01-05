@@ -35,14 +35,19 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
     protected void doProcess(Update update, Long chatId) {
         List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
         if (CollectionUtils.isEmpty(freeSlots)) {
-            publishNotFoundPopupMessage(update);
+            publishNotFoundMessage(chatId);
         } else {
             bookRandomSlot(chatId, freeSlots);
         }
     }
 
-    private void publishNotFoundPopupMessage(Update update) {
-        getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Can't find free slot for parking :(");
+    private void publishNotFoundMessage(Long chatId) {
+        getMessagePublisher().sendMessageWithKeyboard(chatId, "There are not available slot for now. \n" +
+                "But you we can poll slot owners if they're going to park thir cars today.",
+                new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton("Poll slot owners!").setCallbackData(POLL))
+                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING))
+                .build());
     }
 
     private void bookRandomSlot(Long chatId, List<Slot> freeSlots) {

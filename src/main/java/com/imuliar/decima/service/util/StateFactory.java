@@ -39,4 +39,7 @@ public abstract class StateFactory {
 
     @Lookup("listPeriodsState")
     public abstract SessionState getListPeriodsState();
+
+    @Lookup("managePeriodState")
+    public abstract SessionState getManagePeriodState();
 }

@@ -58,7 +58,7 @@ public class PickEndDateProcessor extends AbstractUpdateProcessor {
     @Override
     protected Optional<SessionState> getNextState() {
         Map<String, Object> context = getSession().getContext();
-        if (context.get(START_DATE_PROP) == null && context.get(END_DATE_PROP) == null) {
+        if (context.get(END_DATE_PROP) == null) {
             return super.getNextState();
         } else {
             return Optional.of(getStateFactory().getConfirmSharingPeriodState());
