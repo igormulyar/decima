@@ -30,4 +30,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "SELECT vacantPeriod.userId FROM VacantPeriod vacantPeriod " +
             "WHERE vacantPeriod.periodStart <= :date AND :date <= vacantPeriod.periodEnd)")
     Optional<Integer> findEngagingOwner(@Param("slotNumber") String slotNumber, @Param("date") LocalDate date);
+
+    @Query("SELECT reservation FROM Reservation reservation " +
+            "WHERE reservation.lastPollTimestamp <> :date ")
+    List<Reservation> findUnpolled(@Param("date") LocalDate now);
 }

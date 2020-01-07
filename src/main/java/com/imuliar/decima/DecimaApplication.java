@@ -41,6 +41,7 @@ public abstract class DecimaApplication {
         updateProcessors.add(inputForUserSearchPlebeianProcessor());
         updateProcessors.add(showPlanProcessor());
         updateProcessors.add(sharePatricianSlotProcessor());
+        updateProcessors.add(doThePollPlebeianProcessor());
 
         updateProcessors.add(defaultPlebeianProcessor());
         return new SessionState(updateProcessors);
@@ -207,4 +208,10 @@ public abstract class DecimaApplication {
 
     @Lookup("cancelSharingPatricianProcessor")
     abstract UpdateProcessor cancelSharingPatricianProcessor();
+
+    @Lookup("doThePollPlebeianProcessor")
+    abstract UpdateProcessor doThePollPlebeianProcessor();
+
+    @Lookup("yesPatricianProcessor")
+    abstract UpdateProcessor yesPatricianProcessor();
 }
