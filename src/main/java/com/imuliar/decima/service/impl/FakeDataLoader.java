@@ -5,6 +5,7 @@ import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.Slot;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,23 @@ public class FakeDataLoader {
     static final LocalDate TODAY = LocalDate.now();
     static final LocalDate YESTERDAY = TODAY.minusDays(1);
 
-    @Value("${fake.user.id.a}")
+    @Value("${fake.user.id.alina}")
     private Integer aUserId;
 
-    @Value("${fake.user.id.i}")
+    @Value("${fake.user.id.igor}")
     private Integer iUserId;
+
+    @Value("${fake.user.id.nastya}")
+    private Integer nastyaId;
+
+    @Value("${fake.user.id.diana}")
+    private Integer dianaId;
+
+    @Value("${fake.user.id.alexandr}")
+    private Integer alexandrId;
+
+    @Value("${fake.user.id.luda}")
+    private Integer ludaId;
 
     @Autowired
     private SlotRepository slotRepository;
@@ -40,15 +53,16 @@ public class FakeDataLoader {
 
     public void loadData() {
         if (reservationRepository.findAll().isEmpty()) {
-            /*Slot iSlot = new Slot("5f");
-            Slot freeSlot = new Slot("6f");
-            Slot freeSlot2 = new Slot("7f");
-            slotRepository.save(iSlot);
-            slotRepository.save(freeSlot);
-            slotRepository.save(freeSlot2);
 
-            Reservation iUserReservation = new Reservation(iUserId, iSlot);
-            reservationRepository.save(iUserReservation);*/
+            Slot alexandrSlot = new Slot("1f");
+            Slot nastyaSlot = new Slot("2f");
+            Slot freeSlot = new Slot("3f");
+            Stream.of(alexandrSlot, nastyaSlot, freeSlot).forEach(s -> slotRepository.save(s));
+
+            Reservation alexReservation = new Reservation(alexandrId, alexandrSlot);
+            Reservation nastyaReservation = new Reservation(nastyaId, nastyaSlot);
+            Stream.of(alexReservation, nastyaReservation).forEach(r -> reservationRepository.save(r));
+
         }
     }
 }
