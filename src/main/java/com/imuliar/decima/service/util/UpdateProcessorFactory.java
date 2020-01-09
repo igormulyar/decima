@@ -52,6 +52,9 @@ public abstract class UpdateProcessorFactory {
     @Lookup("toPatricianBeginningProcessor")
     public abstract UpdateProcessor toPatricianBeginningProcessor();
 
+    @Lookup("toPlebeianBeginningProcessor")
+    public abstract UpdateProcessor toPlebeianBeginningProcessor();
+
     @Lookup("yearBackProcessor")
     public abstract UpdateProcessor yearBackProcessor();
 

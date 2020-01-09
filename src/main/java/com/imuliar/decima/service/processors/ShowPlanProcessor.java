@@ -1,11 +1,14 @@
 package com.imuliar.decima.service.processors;
 
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p>Publish link to the plan of parking</p>
@@ -24,6 +27,7 @@ public class ShowPlanProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        getMessagePublisher().sendSimpleMessage(chatId, getPlanImageUrl());
+        getMessagePublisher().sendMessageWithKeyboard(chatId, getPlanImageUrl(), new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 }

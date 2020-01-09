@@ -3,6 +3,7 @@ package com.imuliar.decima.service.processors.plebeian;
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
-        String message = String.format("Today you hold the slot *# %s*. \nChoose the action.", bookedSlotNumber);
+        String message = String.format(EmojiParser.parseToUnicode(":sunglasses:\nToday you hold the slot *# %s*. \nChoose the action."), bookedSlotNumber);
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Find slot holder").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
                 .addButton(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN))
@@ -51,7 +52,7 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     private void displayInitialMessage(Long chatId) {
-        String message = "*Choose the action, please.*";
+        String message = EmojiParser.parseToUnicode(":label: \n*Choose the action, please. :arrow_down:*\n");
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT))
                 .addButton(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))

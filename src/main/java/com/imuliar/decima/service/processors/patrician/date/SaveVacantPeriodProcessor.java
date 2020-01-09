@@ -46,9 +46,6 @@ public class SaveVacantPeriodProcessor extends AbstractUpdateProcessor {
         getVacantPeriodRepository().save(vacantPeriod);
         getMessagePublisher().sendMessageWithKeyboard(chatId, String.format("You've successfully set your slot shared from %s to %s.", startDate.toString(), endDate.toString()),
                 new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("To beginning").setCallbackData(TO_BEGINNING)).build());
-        String groupChatMsg = EmojiParser.parseToUnicode(String.format(":information_source: BOT NOTIFICATION:\n[Someone](tg://user?id=%d) has shared their slot " +
-                        "for the period from %s to %s.", userId, startDate.toString(), endDate.toString()));
-        getMessagePublisher().sendSimpleMessageToGroup(groupChatMsg);
     }
 
     @Override

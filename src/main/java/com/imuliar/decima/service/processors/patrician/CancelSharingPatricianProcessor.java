@@ -44,7 +44,9 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
 
         Optional<Booking> possibleBooking = getBookingRepository().findBySlotNumberAndDate(reservation.getSlot().getNumber(), LocalDate.now());
 
-        if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
+        if(possibleBooking.isPresent() && period.getPeriodStart().equals(period.getPeriodEnd())){
+            //TODO propose to find free slot anywhere else
+        } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
             period.setPeriodStart(LocalDate.now().plusDays(1));
             getVacantPeriodRepository().save(period);
             String msg = String.format("Your slot is already engaged - you cannot cancel sharing for today.\n" +

@@ -4,6 +4,7 @@ import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,8 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
     }
 
     private void publishNotFoundMessage(Long chatId) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, "There are not available slot for now. \n" +
-                "But you we can poll slot owners if they're going to park thir cars today.",
+        getMessagePublisher().sendMessageWithKeyboard(chatId, "Can't find any free slot for you. \n" +
+                "But you we can ask slot owners if they're going to park thir cars today.",
                 new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton("Poll slot owners!").setCallbackData(POLL))
                 .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING))
@@ -54,7 +55,8 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
         Slot slotToBeBooked = freeSlots.get(freeSlots.size() - 1);
         Booking booking = new Booking(chatId.intValue(), slotToBeBooked, LocalDate.now());
         getBookingRepository().save(booking);
-        String message = String.format("The slot *# %s* is booked for you. You can park your car there today.\n ***\n***\n %s", slotToBeBooked.getNumber(), getPlanImageUrl());
+        String message = String.format(EmojiParser.parseToUnicode(":star:\nThe slot *# %s* is booked for you. You can park your car there today.\n ***\n***\n %s"),
+                slotToBeBooked.getNumber(), getPlanImageUrl());
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Cancel booking").setCallbackData(CANCEL_MY_BOOKING))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))

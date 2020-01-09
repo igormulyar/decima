@@ -1,4 +1,4 @@
-package com.imuliar.decima.service.processors.patrician;
+package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
@@ -14,14 +14,14 @@ import java.util.Optional;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
- * <p>Return to the initial Patrician state</p>
+ * <p>Return to the initial Plebeian state</p>
  *
  * @author imuliar
  * @since 0.0.1
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ToPatricianBeginningProcessor extends AbstractUpdateProcessor {
+public class ToPlebeianBeginningProcessor extends AbstractUpdateProcessor {
 
     @Override
     public boolean isMatch(Update update) {
@@ -38,6 +38,6 @@ public class ToPatricianBeginningProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected Optional<SessionState> getNextState() {
-        return Optional.of(getStateFactory().getSlotOwnerInitialState());
+        return Optional.of(getStateFactory().getOrdinaryInitialState());
     }
 }

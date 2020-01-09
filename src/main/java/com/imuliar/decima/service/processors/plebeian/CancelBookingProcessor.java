@@ -1,14 +1,18 @@
 package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.LocalDate;
 
 import static com.imuliar.decima.service.util.Callbacks.CANCEL_MY_BOOKING;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p>Process "cancel booking" action</p>
@@ -28,6 +32,9 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
     @Override
     protected void doProcess(Update update, Long chatId) {
         getBookingRepository().removeByUserIdAndDate(chatId.intValue(), LocalDate.now());
-        getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Booking has been dropped.");
+        getMessagePublisher().sendMessageWithKeyboard(chatId, EmojiParser.parseToUnicode("Your booking has been successfully dropped.:x:"),
+                new InlineKeyboardMarkupBuilder()
+                        .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+
     }
 }

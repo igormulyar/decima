@@ -57,7 +57,8 @@ public class StateConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public SessionState engagingUserSearchPlebeianState(){
-        List<UpdateProcessor> updateProcessors = createPatricianCommonProcessors();
+        List<UpdateProcessor> updateProcessors = new ArrayList<>();
+        updateProcessors.add(processorFactory.toPlebeianBeginningProcessor());
         updateProcessors.add(processorFactory.searchUserBySlotPlebeianProcessor());
         return new SessionState(updateProcessors);
     }
