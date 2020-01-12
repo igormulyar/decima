@@ -32,6 +32,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Optional<Integer> findEngagingOwner(@Param("slotNumber") String slotNumber, @Param("date") LocalDate date);
 
     @Query("SELECT reservation FROM Reservation reservation " +
-            "WHERE reservation.lastPollTimestamp <> :date ")
-    List<Reservation> findUnpolled(@Param("date") LocalDate now);
+            "WHERE reservation.lastPollTimestamp IS NULL OR reservation.lastPollTimestamp <> :date ")
+    List<Reservation> findUnpolled(@Param("date") LocalDate date);
 }

@@ -41,8 +41,10 @@ public class PickEndDateProcessor extends AbstractUpdateProcessor {
 
         if (inputEndDate.isBefore(inputStartDate)) {
             getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "End date should be equal or greater than start date");
+            getSession().getContext().remove(END_DATE_PROP);
         } else if (getVacantPeriodRepository().hasIntersections(chatId.intValue(), inputStartDate, inputEndDate)) {
             getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Has intersections with existent sharing periods! Select another date please");
+            getSession().getContext().remove(END_DATE_PROP);
         } else {
             getSession().getContext().put(END_DATE_PROP, inputEndDate);
 

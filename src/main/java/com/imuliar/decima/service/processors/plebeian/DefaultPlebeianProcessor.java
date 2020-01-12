@@ -4,6 +4,7 @@ import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ import static com.imuliar.decima.service.util.Callbacks.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
 
+    @Autowired
+    private DefaultPlebeianViewPublisher defaultPlebeianViewPublisher;
+
     @Override
     public boolean isMatch(Update update) {
         return true;
@@ -32,30 +36,6 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        Optional<Booking> bookingFound = getBookingRepository().findByUserIdAndDate(chatId.intValue(), LocalDate.now());
-        if (bookingFound.isPresent()) {
-            String bookedSlotNumber = bookingFound.get().getSlot().getNumber();
-            displayForAlreadyBooked(chatId, bookedSlotNumber);
-        } else {
-            displayInitialMessage(chatId);
-        }
-    }
-
-    private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber) {
-        String message = String.format(EmojiParser.parseToUnicode(":sunglasses:\nToday you hold the slot *# %s*. \nChoose the action."), bookedSlotNumber);
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton().setText("Find slot holder").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
-                .addButton(new InlineKeyboardButton().setText("Show parking plan").setCallbackData(SHOW_PLAN))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Drop booking").setCallbackData(CANCEL_MY_BOOKING))
-                .addButton(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
-                .build());
-    }
-
-    private void displayInitialMessage(Long chatId) {
-        String message = EmojiParser.parseToUnicode(":label: \n*Choose the action, please. :arrow_down:*\n");
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton().setText("Find parking slot").setCallbackData(FIND_FREE_SLOT))
-                .addButton(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
-                .build());
+        defaultPlebeianViewPublisher.publish(chatId);
     }
 }

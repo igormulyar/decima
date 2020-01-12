@@ -50,9 +50,10 @@ public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long
      * @param endDate        end period criterion
      * @return {@literal true} if has intersections, otherwise - {@literal false}
      */
-    @Query("SELECT COUNT(vp) > 0 FROM VacantPeriod vp " +
+    @Query("SELECT COUNT(vp) > 0 FROM VacantPeriod vp  " +
             "WHERE vp.userId = :telegramUserId " +
-            "AND (vp.periodStart <= :startDate AND vp.periodEnd >= :startDate  OR " +
-            "vp.periodStart <= :endDate AND vp.periodEnd >= :endDate) ")
+            "AND ((:startDate >= vp.periodStart AND :startDate <= vp.periodEnd) " +
+            "OR (:endDate >= vp.periodStart AND :endDate <= vp.periodEnd)" +
+            "OR (:startDate <= vp.periodStart AND :endDate >= vp.periodEnd)) ")
     Boolean hasIntersections(@Param("telegramUserId") Integer telegramUserId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

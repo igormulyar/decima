@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static com.imuliar.decima.service.util.Callbacks.*;
 
 /**
- * <p></p>
+ * <p>Handle user's request to poll slot owners</p>
  *
  * @author imuliar
  * @since 0.0.1
@@ -39,10 +39,7 @@ public class DoThePollPlebeianProcessor extends AbstractUpdateProcessor {
                             .addButtonAtNewRaw(new InlineKeyboardButton("NO! I'd like to share my slot with others!").setCallbackData(NO))
                             .build());
         }
-        getMessagePublisher().sendMessageWithKeyboard(chatId, "Ok, I'll make a poll to find users who are not going to park today. " +
-                        "You can try to request a slot for you later.",
-                new InlineKeyboardMarkupBuilder()
-                        .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING))
-                        .build());
+        getMessagePublisher().sendMsgWithBackBtn(chatId, "Ok, I'll make a poll to find users who are not going to park today. " +
+                        "You can try to request a slot for you later.");
     }
 }

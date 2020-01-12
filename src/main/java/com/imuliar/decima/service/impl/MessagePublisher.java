@@ -1,6 +1,7 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.DecimaBot;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -60,12 +61,17 @@ public class MessagePublisher {
                 .setReplyMarkup(keyboardMarkup));
     }
 
+    public void sendMsgWithBackBtn(Long chatId, String message) {
+        sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+    }
+
     public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup) {
         sendMessageWithKeyboard(Long.valueOf(groupChatId), message, keyboardMarkup);
     }
 
     public void sendSimpleMessageToGroup(String message) {
-        sendSimpleMessage(Long.valueOf(groupChatId), message);
+        //sendSimpleMessage(Long.valueOf(groupChatId), message);
     }
 
     public void popUpNotify(String callbackQueryId, String messageText) {

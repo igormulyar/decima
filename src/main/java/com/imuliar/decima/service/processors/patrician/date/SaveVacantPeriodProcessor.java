@@ -1,5 +1,6 @@
 package com.imuliar.decima.service.processors.patrician.date;
 
+import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
@@ -43,6 +44,12 @@ public class SaveVacantPeriodProcessor extends AbstractUpdateProcessor {
         Integer userId = chatId.intValue();
 
         VacantPeriod vacantPeriod = new VacantPeriod(userId, startDate, endDate);
+        if(startDate.equals(LocalDate.now())){
+            Reservation reservation = getReservationRepository().findByUserId(userId)
+                    .orElseThrow(() -> new IllegalStateException("Cannot find reservation by slot owner id"));
+            reservation.setLastPollTimestamp(LocalDate.now());
+            getReservationRepository().save(reservation);
+        }
         getVacantPeriodRepository().save(vacantPeriod);
         getMessagePublisher().sendMessageWithKeyboard(chatId, String.format("You've successfully set your slot shared from %s to %s.", startDate.toString(), endDate.toString()),
                 new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("To beginning").setCallbackData(TO_BEGINNING)).build());

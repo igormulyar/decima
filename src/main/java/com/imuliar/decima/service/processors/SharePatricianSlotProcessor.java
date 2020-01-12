@@ -4,6 +4,7 @@ import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
 
-    private static final String RELEASE_MESSAGE_PATTERN = ":information_source: BOT NOTIFICATION:\n[Someone](tg://user?id=%d) has shared their slot for today.";
+    @Value("${decima.bot.id}")
+    private Integer botId;
 
     @Override
     public boolean isMatch(Update update) {
@@ -54,8 +56,9 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
     }
 
     private void publishNotificationToGroupChat(Integer userId) {
+        String message = ":information_source: [BOT NOTIFICATION](tg://user?id=%d) :\n[Someone](tg://user?id=%d) has shared their slot for today.";
         getMessagePublisher()
-                .sendSimpleMessageToGroup(EmojiParser.parseToUnicode(String.format(RELEASE_MESSAGE_PATTERN, userId)));
+                .sendSimpleMessageToGroup(EmojiParser.parseToUnicode(String.format(message, botId, userId)));
     }
 
     private void publishNotificationToCurrentUser(Long chatId) {

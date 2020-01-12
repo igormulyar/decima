@@ -6,6 +6,8 @@ import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,8 @@ import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
 
-    private static final String MESSAGE_TEXT = EmojiParser.parseToUnicode(":sunglasses::sunglasses::sunglasses: \n*As a parking slot owner I want to...*\n");
+    @Autowired
+    private DefaultPatricianViewPublisher defaultPatricianViewPublisher;
 
     @Override
     public boolean isMatch(Update update) {
@@ -40,24 +43,6 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        List<VacantPeriod> sharingPeriods = getVacantPeriodRepository().findByUserIdAndDate(chatId.intValue(), LocalDate.now());
-
-        InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
-        if (CollectionUtils.isEmpty(sharingPeriods)) {
-            keyboardBuilder.addButton(new InlineKeyboardButton().setText("Share my slot today").setCallbackData(SET_FREE_TODAY));
-            if (!getVacantPeriodRepository().findNotExpired(chatId.intValue(), LocalDate.now()).isEmpty()) {
-                keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(LIST_VACANT_PERIODS));
-            }
-        } else {
-            keyboardBuilder.addButton(new InlineKeyboardButton().setText("List my sharing periods").setCallbackData(LIST_VACANT_PERIODS));
-        }
-        InlineKeyboardMarkup keyboard = keyboardBuilder
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Set slot sharing period").setCallbackData(SET_SHARING_PERIOD))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Find current slot holder").setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("See parking plan").setCallbackData(SHOW_PLAN))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
-                .build();
-
-        getMessagePublisher().sendMessageWithKeyboard(chatId, MESSAGE_TEXT, keyboard);
+        defaultPatricianViewPublisher.publish(chatId);
     }
 }

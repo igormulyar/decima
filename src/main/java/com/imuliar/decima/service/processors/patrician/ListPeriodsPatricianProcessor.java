@@ -5,6 +5,7 @@ import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -36,6 +37,7 @@ public class ListPeriodsPatricianProcessor extends AbstractUpdateProcessor {
     protected void doProcess(Update update, Long chatId) {
 
         List<VacantPeriod> scheduledPeriods = getVacantPeriodRepository().findNotExpired(chatId.intValue(), LocalDate.now());
+        scheduledPeriods.sort(Comparator.comparing(VacantPeriod::getPeriodStart));
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
         for(VacantPeriod period : scheduledPeriods){
