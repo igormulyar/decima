@@ -1,6 +1,7 @@
 package com.imuliar.decima.service.session;
 
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
  * <p>Service provides a new or existent {@link UserSession} if not expired yet</p>
@@ -10,5 +11,5 @@ import org.springframework.stereotype.Service;
  */
 public interface SessionProvider {
 
-    UserSession provideSession(Long chatId);
+    UserSession provideSession(Update update);
 }

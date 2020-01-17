@@ -28,6 +28,6 @@ public class ShowPlanProcessor extends AbstractUpdateProcessor {
     @Override
     protected void doProcess(Update update, Long chatId) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, getPlanImageUrl(), new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 }

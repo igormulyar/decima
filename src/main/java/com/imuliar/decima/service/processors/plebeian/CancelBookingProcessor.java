@@ -35,9 +35,9 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
         int userId = chatId.intValue();
         if (getBookingRepository().findByUserIdAndDate(userId, LocalDate.now()).isPresent()) {
             getBookingRepository().removeByUserIdAndDate(userId, LocalDate.now());
-            getMessagePublisher().sendMessageWithKeyboard(chatId, EmojiParser.parseToUnicode("Your booking has been successfully dropped.:x:"),
+            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.drop_booking_confirmed"),
                     new InlineKeyboardMarkupBuilder()
-                            .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                            .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
             getMessagePublisher().sendSimpleMessageToGroup(EmojiParser.parseToUnicode(String.format(RELEASE_MESSAGE_PATTERN, userId)));
         }
     }

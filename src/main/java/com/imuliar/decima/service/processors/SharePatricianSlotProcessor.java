@@ -65,6 +65,6 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
         String message = EmojiParser.parseToUnicode(":clap: You've successfully shared your parking slot with other users.\n By the end of this day it can be engaged by any other user " +
                 "and you woun't be able to cancel sharing.");
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 }

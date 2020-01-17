@@ -22,7 +22,7 @@ public class GroupChatResponseStrategy extends AbstractResponseStrategy {
     }
 
     @Override
-    public void response(Long chatId, Update update) {
+    public void response(Update update) {
         //temporary disable processing of updates from the group chat
         //generateInitialState().processUpdate(update);
     }

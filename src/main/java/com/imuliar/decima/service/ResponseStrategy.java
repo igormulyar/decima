@@ -10,6 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public interface ResponseStrategy {
 
-    void response(Long chatId, Update update);
+    void response(Update update);
 
 }

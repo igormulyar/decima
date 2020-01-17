@@ -2,6 +2,7 @@ package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.dao.*;
 import com.imuliar.decima.service.UpdateProcessor;
+import com.imuliar.decima.service.impl.DecimaMessageSourceFacade;
 import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.session.UserSession;
 import com.imuliar.decima.service.session.SessionState;
@@ -58,6 +59,9 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private DecimaMessageSourceFacade messageSourceFacade;
+
     /**
      * {@inheritDoc}
      */
@@ -68,6 +72,14 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
         Long chatId = resolveChatId(update);
         doProcess(update, chatId);
         return getNextState();
+    }
+
+    protected String getMsg(String code){
+        return messageSourceFacade.getMsg(code, session.getLangCode());
+    }
+
+    protected String getMsg(String code, String[] params){
+        return messageSourceFacade.getMsg(code, session.getLangCode(), params);
     }
 
     /**

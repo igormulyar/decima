@@ -27,7 +27,7 @@ public abstract class AbstractInputForUserSearchProcessor extends AbstractUpdate
     @Override
     protected void doProcess(Update update, Long chatId) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, EmojiParser.parseToUnicode(":mag: :keyboard: Type the slot number (EN) :"), new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 
     @Override

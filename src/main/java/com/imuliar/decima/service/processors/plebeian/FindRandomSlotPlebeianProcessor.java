@@ -47,7 +47,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
                 "But you we can ask slot owners if they're going to park thir cars today.",
                 new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton("Poll slot owners!").setCallbackData(POLL))
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING))
+                .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());
     }
 
@@ -59,7 +59,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
                 slotToBeBooked.getNumber(), getPlanImageUrl());
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText("Cancel booking").setCallbackData(CANCEL_MY_BOOKING))
-                .addButtonAtNewRaw(new InlineKeyboardButton().setText("Back").setCallbackData(TO_BEGINNING))
+                .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());
     }
 }

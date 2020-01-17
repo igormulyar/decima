@@ -23,6 +23,8 @@ public class UserSession {
 
     private SessionState currentState;
 
+    private String langCode;
+
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -45,5 +47,13 @@ public class UserSession {
 
     public void setContext(Map<String, Object> context) {
         this.context = context;
+    }
+
+    public String getLangCode() {
+        return langCode;
+    }
+
+    public void setLangCode(String langCode) {
+        this.langCode = langCode;
     }
 }

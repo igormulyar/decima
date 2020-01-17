@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 /**
  * <p>Default implementation of {@link SessionProvider}</p>
@@ -31,14 +33,17 @@ public abstract class SessionProviderImpl implements SessionProvider {
     private Map<Long, UserSession> userSessionPool = new ConcurrentHashMap<>();
 
     @Override
-    public UserSession provideSession(Long chatId) {
+    public UserSession provideSession(Update update) {
         clearExpiredSessions();
 
+        Long chatId = resolveChatId(update);
         UserSession session = userSessionPool.get(chatId);
         if (session != null) {
             session.setUpdateTime(LocalDateTime.now());
         } else {
+            User user = resolveTelegramUser(update);
             session = getUserSession();
+            session.setLangCode(user.getLanguageCode());
             session.setContext(new HashMap<>());
             userSessionPool.put(chatId, session);
         }
@@ -51,6 +56,18 @@ public abstract class SessionProviderImpl implements SessionProvider {
         userSessionPool = userSessionPool.entrySet().stream()
                 .filter(notExpired)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1, ConcurrentHashMap::new));
+    }
+
+    private Long resolveChatId(Update update) {
+        return update.hasMessage()
+                ? update.getMessage().getChatId()
+                : update.getCallbackQuery().getMessage().getChatId();
+    }
+
+    private User resolveTelegramUser(Update update) {
+        return update.getMessage() != null
+                ? update.getMessage().getFrom()
+                : update.getCallbackQuery().getFrom();
     }
 
     @Lookup

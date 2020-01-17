@@ -27,8 +27,8 @@ public abstract class AbstractResponseStrategy implements ResponseStrategy {
     }
 
     @Override
-    public void response(Long chatId, Update update) {
-        UserSession session = sessionProvider.provideSession(chatId);
+    public void response(Update update) {
+        UserSession session = sessionProvider.provideSession(update);
         if (session.getCurrentState() == null) {
             SessionState initialState = generateInitialState();
             session.setCurrentState(initialState);
