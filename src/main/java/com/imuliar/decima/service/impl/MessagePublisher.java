@@ -2,10 +2,17 @@ package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.DecimaBot;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -15,11 +22,12 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.*;
-
-import static com.imuliar.decima.service.util.Callbacks.*;
+import static com.imuliar.decima.service.util.Callbacks.EMPTY_CALLBACK;
+import static com.imuliar.decima.service.util.Callbacks.MONTH_BACK_CALLBACK;
+import static com.imuliar.decima.service.util.Callbacks.MONTH_FORWARD_CALLBACK;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
+import static com.imuliar.decima.service.util.Callbacks.YEAR_BACK_CALLBACK;
+import static com.imuliar.decima.service.util.Callbacks.YEAR_FORWARD_CALLBACK;
 import static java.lang.Math.toIntExact;
 
 /**
@@ -71,7 +79,7 @@ public class MessagePublisher {
     }
 
     public void sendSimpleMessageToGroup(String message) {
-        //sendSimpleMessage(Long.valueOf(groupChatId), message);
+        sendSimpleMessage(Long.valueOf(groupChatId), message);
     }
 
     public void popUpNotify(String callbackQueryId, String messageText) {
@@ -98,6 +106,14 @@ public class MessagePublisher {
                 .setMessageId(toIntExact(messageId))
                 .setText(text)
                 .setReplyMarkup(buildCalendarMarkup(calendarViewDate)));
+    }
+
+    public void reRenderMessage(Long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+        bot.sendBotResponse(new EditMessageText()
+                .setChatId(chatId)
+                .setMessageId(toIntExact(messageId))
+                .setText(text)
+                .setReplyMarkup(keyboard));
     }
 
     private InlineKeyboardMarkup buildCalendarMarkup(LocalDate date) {

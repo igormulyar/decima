@@ -1,6 +1,7 @@
 package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Reservation;
+import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import com.vdurmont.emoji.EmojiParser;
@@ -34,13 +35,20 @@ public class NoPatricianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        Reservation reservation = getReservationRepository().findByUserId(chatId.intValue())
+        LocalDate today = LocalDate.now();
+        int userId = chatId.intValue();
+        if(getVacantPeriodRepository().findByUserIdAndDate(userId, today).isEmpty()){
+            VacantPeriod vacantPeriod = new VacantPeriod(userId, today, today);
+            getVacantPeriodRepository().save(vacantPeriod);
+
+            publishNotificationToCurrentUser(chatId);
+            publishNotificationToGroupChat(userId);
+        }
+
+        Reservation reservation = getReservationRepository().findByUserId(userId)
                 .orElseThrow(() -> new IllegalStateException("Cannot find reservation for current slot owner"));
         reservation.setLastPollTimestamp(LocalDate.now());
         getReservationRepository().save(reservation);
-
-        publishNotificationToCurrentUser(chatId);
-        publishNotificationToGroupChat(chatId.intValue());
     }
 
     private void publishNotificationToGroupChat(Integer userId) {

@@ -116,6 +116,7 @@ public class StateConfig {
     public SessionState managePeriodState(){
         List<UpdateProcessor> updateProcessors = createPatricianCommonProcessors();
         updateProcessors.add(processorFactory.cancelSharingPatricianProcessor());
+        updateProcessors.add(processorFactory.findRandomSlotPatricianProcessor());
         return new SessionState(updateProcessors);
     }
 

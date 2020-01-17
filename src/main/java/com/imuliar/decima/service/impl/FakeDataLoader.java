@@ -55,15 +55,17 @@ public class FakeDataLoader {
         if (reservationRepository.findAll().isEmpty()) {
 
             Slot alexandrSlot = new Slot("1f");
-            Slot nastyaSlot = new Slot("2f");
+            Slot dianaSlot = new Slot("2f");
             Slot freeSlot = new Slot("3f");
             Slot igorSlot = new Slot("4f");
-            Stream.of(alexandrSlot, nastyaSlot, freeSlot).forEach(s -> slotRepository.save(s));
+            Slot ludaSlot = new Slot("5f");
+            Stream.of(alexandrSlot, dianaSlot, ludaSlot).forEach(s -> slotRepository.save(s));
 
             Reservation alexReservation = new Reservation(alexandrId, alexandrSlot);
-            Reservation nastyaReservation = new Reservation(nastyaId, nastyaSlot);
+            Reservation dianaSlotReservation = new Reservation(dianaId, dianaSlot);
+            Reservation ludaReservation = new Reservation(ludaId, ludaSlot);
             Reservation igorReservation = new Reservation(iUserId, igorSlot);
-            Stream.of(alexReservation, nastyaReservation).forEach(r -> reservationRepository.save(r));
+            Stream.of(alexReservation, dianaSlotReservation, ludaReservation).forEach(r -> reservationRepository.save(r));
 
         }
     }

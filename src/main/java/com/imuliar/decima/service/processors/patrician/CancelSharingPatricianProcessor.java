@@ -6,16 +6,16 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Optional;
-
+import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 import static com.imuliar.decima.service.util.RegexPatterns.PERIOD_REMOVE_PATTERN;
 
@@ -44,8 +44,12 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
 
         Optional<Booking> possibleBooking = getBookingRepository().findBySlotNumberAndDate(reservation.getSlot().getNumber(), LocalDate.now());
 
-        if(possibleBooking.isPresent() && period.getPeriodStart().equals(period.getPeriodEnd())){
-            //TODO propose to find free slot anywhere else
+        if (possibleBooking.isPresent() && period.getPeriodStart().equals(period.getPeriodEnd())) {
+            String msg = "Unfortunately, the slot you shared before has already booked until the end of the day.\n" +
+                    "You cannot cancel sharing it.";
+            getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
+                    .addButton(new InlineKeyboardButton("Find another free slot for me").setCallbackData(FIND_FREE_SLOT))
+                    .addButtonAtNewRaw(new InlineKeyboardButton("Cancel").setCallbackData(TO_BEGINNING)).build());
         } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
             period.setPeriodStart(LocalDate.now().plusDays(1));
             getVacantPeriodRepository().save(period);

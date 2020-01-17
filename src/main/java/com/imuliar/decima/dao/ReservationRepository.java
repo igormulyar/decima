@@ -1,16 +1,14 @@
 package com.imuliar.decima.dao;
 
 import com.imuliar.decima.entity.Reservation;
-import com.imuliar.decima.entity.Slot;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * <p>Access to {@link Reservation} records</p>
@@ -32,6 +30,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Optional<Integer> findEngagingOwner(@Param("slotNumber") String slotNumber, @Param("date") LocalDate date);
 
     @Query("SELECT reservation FROM Reservation reservation " +
-            "WHERE reservation.lastPollTimestamp IS NULL OR reservation.lastPollTimestamp <> :date ")
+            "WHERE reservation.lastPollTimestamp IS NULL OR reservation.lastPollTimestamp <> :date " +
+            "AND reservation.userId NOT IN (" +
+            "SELECT vacantPeriod.userId FROM VacantPeriod vacantPeriod " +
+            "WHERE :date >= vacantPeriod.periodStart AND :date <= vacantPeriod.periodEnd)")
     List<Reservation> findUnpolled(@Param("date") LocalDate date);
 }

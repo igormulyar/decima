@@ -2,13 +2,16 @@ package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 import static com.imuliar.decima.service.util.Callbacks.YES;
 
 /**
@@ -31,10 +34,11 @@ public class YesPatricianProcessor extends AbstractUpdateProcessor {
         LocalDate today = LocalDate.now();
         Reservation reservation = getReservationRepository().findByUserId(chatId.intValue())
                 .orElseThrow(() -> new IllegalStateException("Cannot find reservation for current slot owner"));
-        if(!reservation.getLastPollTimestamp().equals(today)){
+        if(reservation.getLastPollTimestamp()== null || !reservation.getLastPollTimestamp().equals(today)){
             reservation.setLastPollTimestamp(today);
             getReservationRepository().save(reservation);
-            getMessagePublisher().sendMsgWithBackBtn(chatId, "Answer accepted. Thank you!");
+            getMessagePublisher().reRenderMessage(chatId, update.getCallbackQuery().getMessage().getMessageId(), "Answer accepted. Thank you!",
+                    new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
         }
     }
 }

@@ -93,4 +93,7 @@ public abstract class UpdateProcessorFactory {
 
     @Lookup("noPatricianProcessor")
     public abstract UpdateProcessor noPatricianProcessor();
+
+    @Lookup("findRandomSlotPatricianProcessor")
+    public abstract UpdateProcessor findRandomSlotPatricianProcessor();
 }
