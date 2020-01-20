@@ -36,6 +36,6 @@ public class DefaultPlebeianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        defaultPlebeianViewPublisher.publish(chatId);
+        defaultPlebeianViewPublisher.publish(chatId, getSession().getLangCode());
     }
 }

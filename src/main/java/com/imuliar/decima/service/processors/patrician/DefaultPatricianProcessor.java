@@ -43,6 +43,6 @@ public class DefaultPatricianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        defaultPatricianViewPublisher.publish(chatId);
+        defaultPatricianViewPublisher.publish(chatId, session.getLangCode());
     }
 }

@@ -2,15 +2,12 @@ package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
-import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
@@ -34,7 +31,7 @@ public class ToPatricianBeginningProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        defaultPatricianViewPublisher.publish(chatId);
+        defaultPatricianViewPublisher.publish(chatId, getSession().getLangCode());
     }
 
     @Override

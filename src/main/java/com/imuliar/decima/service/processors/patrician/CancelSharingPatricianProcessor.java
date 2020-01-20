@@ -45,27 +45,22 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
         Optional<Booking> possibleBooking = getBookingRepository().findBySlotNumberAndDate(reservation.getSlot().getNumber(), LocalDate.now());
 
         if (possibleBooking.isPresent() && period.getPeriodStart().equals(period.getPeriodEnd())) {
-            String msg = "Unfortunately, the slot you shared before has already booked until the end of the day.\n" +
-                    "You cannot cancel sharing it.";
-            getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
-                    .addButton(new InlineKeyboardButton("Find another free slot for me").setCallbackData(FIND_FREE_SLOT))
-                    .addButtonAtNewRaw(new InlineKeyboardButton("Cancel").setCallbackData(TO_BEGINNING)).build());
+            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.pat_cant_cancel"), new InlineKeyboardMarkupBuilder()
+                    .addButton(new InlineKeyboardButton(getMsg("btn.find_another_slot")).setCallbackData(FIND_FREE_SLOT))
+                    .addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.cancel")).setCallbackData(TO_BEGINNING)).build());
         } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
             period.setPeriodStart(LocalDate.now().plusDays(1));
             getVacantPeriodRepository().save(period);
-            String msg = String.format("Your slot is already engaged - you cannot cancel sharing for today.\n" +
-                            "Slot availability record changed : sharing period is %s - %s",
-                    period.getPeriodStart().toString(), period.getPeriodEnd().toString());
-            publishMessage(chatId, msg);
+            publishMessage(chatId, getMsg("msg.period_record_changed", new String[] {period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
         } else {
             getVacantPeriodRepository().delete(period);
-            publishMessage(chatId, String.format("Slot sharing cancelled for the period:\n%s - %s\n", period.getPeriodStart().toString(), period.getPeriodEnd().toString()));
+            publishMessage(chatId, getMsg("msg.period_canceled", new String[]{period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
         }
     }
 
     private void publishMessage(Long chatId, String msg) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 
     private boolean hasIntersection(VacantPeriod vacantPeriod, Booking booking) {

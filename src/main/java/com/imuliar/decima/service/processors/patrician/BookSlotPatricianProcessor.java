@@ -39,6 +39,6 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
         LocalDate bookingDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
         Booking booking = new Booking(chatId.intValue(), slot, bookingDate);
         getBookingRepository().save(booking);
-        getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Successfully booked!");
+        getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("btn.pat_booked"));
     }
 }
