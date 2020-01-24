@@ -47,10 +47,9 @@ public class ListPeriodsPatricianProcessor extends AbstractUpdateProcessor {
             String buttonCallback = String.format(PERIOD_ID_TPL, period.getId());
             keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton(buttonLabel).setCallbackData(buttonCallback));
         }
-        keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING));
+        keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING));
 
-        String msg = "Your slot is available for booking by other parking users for the next periods:";
-        getMessagePublisher().sendMessageWithKeyboard(chatId, msg, keyboardBuilder.build());
+        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.list_periods"), keyboardBuilder.build());
     }
 
     @Override

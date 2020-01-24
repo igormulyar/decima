@@ -32,7 +32,7 @@ public class SetSharingPeriodProcessor extends AbstractUpdateProcessor {
     @Override
     protected void doProcess(Update update, Long chatId) {
         getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, LocalDate.now());
-        String msg = "Select the start date of slot sharing period";
+        String msg = getMsg("msg.select_start_date");
         getSession().getContext().put(PICK_DATE_MSG_PROP, msg);
         getMessagePublisher().publishCalendar(chatId, msg, LocalDate.now());
     }

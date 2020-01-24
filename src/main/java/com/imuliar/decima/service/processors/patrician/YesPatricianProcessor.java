@@ -37,8 +37,8 @@ public class YesPatricianProcessor extends AbstractUpdateProcessor {
         if(reservation.getLastPollTimestamp()== null || !reservation.getLastPollTimestamp().equals(today)){
             reservation.setLastPollTimestamp(today);
             getReservationRepository().save(reservation);
-            getMessagePublisher().reRenderMessage(chatId, update.getCallbackQuery().getMessage().getMessageId(), "Answer accepted. Thank you!",
-                    new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+            getMessagePublisher().reRenderMessage(chatId, update.getCallbackQuery().getMessage().getMessageId(), getMsg("msg.answer_accepted"),
+                    new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
         }
     }
 }

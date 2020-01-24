@@ -51,8 +51,8 @@ public class SaveVacantPeriodProcessor extends AbstractUpdateProcessor {
             getReservationRepository().save(reservation);
         }
         getVacantPeriodRepository().save(vacantPeriod);
-        getMessagePublisher().sendMessageWithKeyboard(chatId, String.format("You've successfully set your slot shared from %s to %s.", startDate.toString(), endDate.toString()),
-                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("To beginning").setCallbackData(TO_BEGINNING)).build());
+        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.set_period_shared", new String[]{startDate.toString(), endDate.toString()}),
+                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton(getMsg("btn.to_beginning")).setCallbackData(TO_BEGINNING)).build());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
-import com.vdurmont.emoji.EmojiParser;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -30,11 +29,10 @@ public class FindRandomSlotPatricianProcessor extends AbstractUpdateProcessor {
     @Override
     protected void doProcess(Update update, Long chatId) {
         List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
-        if(freeSlots.isEmpty()){
-            getMessagePublisher().sendMsgWithBackBtn(chatId, EmojiParser.parseToUnicode("Can't find any free slot :pensive:"));
+        if (freeSlots.isEmpty()) {
+            getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.cant_find_free"));
         } else {
-            String msg = String.format("Congrats! :party: \nYou've got a slot # %s. \nYou can park your car there today", freeSlots.get(0).getNumber());
-            getMessagePublisher().sendMsgWithBackBtn(chatId, EmojiParser.parseToUnicode(msg));
+            getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.book_success", new String[]{freeSlots.get(0).getNumber()}));
         }
     }
 }

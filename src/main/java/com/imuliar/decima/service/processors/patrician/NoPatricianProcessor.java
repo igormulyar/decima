@@ -57,9 +57,7 @@ public class NoPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     private void publishNotificationToCurrentUser(Long chatId) {
-        String message = EmojiParser.parseToUnicode(":clap: You've successfully shared your parking slot with other users.\n By the end of this day it can be engaged by any other user " +
-                "and you woun't be able to cancel sharing.");
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.pat_press_no"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 }
