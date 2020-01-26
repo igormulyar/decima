@@ -2,12 +2,13 @@ package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 

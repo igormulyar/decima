@@ -33,13 +33,12 @@ public class DoThePollPlebeianProcessor extends AbstractUpdateProcessor {
 
         LocalDate today = LocalDate.now();
         for (Reservation reservation : getReservationRepository().findUnpolled(today)) {
-            getMessagePublisher().sendMessageWithKeyboard(reservation.getUserId().longValue(), today.toString() + " POLL\n Are you going to park today?",
+            getMessagePublisher().sendMessageWithKeyboard(reservation.getUserId().longValue(), getMsg("msg.poll_gonna_park", new String[]{today.toString()}),
                     new InlineKeyboardMarkupBuilder()
-                            .addButton(new InlineKeyboardButton("YES! I'm gonna park").setCallbackData(YES))
-                            .addButtonAtNewRaw(new InlineKeyboardButton("NO! I'd like to share my slot with others!").setCallbackData(NO))
+                            .addButton(new InlineKeyboardButton(getMsg("btn.yes_gonna_park")).setCallbackData(YES))
+                            .addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.no_slot_free_today")).setCallbackData(NO))
                             .build());
         }
-        getMessagePublisher().sendMsgWithBackBtn(chatId, "Ok, I'll make a poll to find users who are not going to park today. " +
-                        "You can try to request a slot for you later.");
+        getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.poll_triggered"));
     }
 }

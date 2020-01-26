@@ -4,19 +4,18 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import static com.imuliar.decima.service.util.Callbacks.LIST_VACANT_PERIODS;
-import static com.imuliar.decima.service.util.Callbacks.PERIOD_ID_TPL;
-import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
+import static com.imuliar.decima.service.util.Callbacks.*;
 
 /**
  * <p>Display the list of scheduled vacant periods</p>
@@ -40,7 +39,7 @@ public class ListPeriodsPatricianProcessor extends AbstractUpdateProcessor {
         scheduledPeriods.sort(Comparator.comparing(VacantPeriod::getPeriodStart));
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
-        for(VacantPeriod period : scheduledPeriods){
+        for (VacantPeriod period : scheduledPeriods) {
             LocalDate start = period.getPeriodStart();
             LocalDate end = period.getPeriodEnd();
             String buttonLabel = start.equals(end) ? start.toString() : String.format("%s - %s", period.getPeriodStart().toString(), period.getPeriodEnd().toString());

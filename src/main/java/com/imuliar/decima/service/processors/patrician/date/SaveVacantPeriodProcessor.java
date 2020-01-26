@@ -5,7 +5,6 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class SaveVacantPeriodProcessor extends AbstractUpdateProcessor {
         Integer userId = chatId.intValue();
 
         VacantPeriod vacantPeriod = new VacantPeriod(userId, startDate, endDate);
-        if(startDate.equals(LocalDate.now())){
+        if (startDate.equals(LocalDate.now())) {
             Reservation reservation = getReservationRepository().findByUserId(userId)
                     .orElseThrow(() -> new IllegalStateException("Cannot find reservation by slot owner id"));
             reservation.setLastPollTimestamp(LocalDate.now());

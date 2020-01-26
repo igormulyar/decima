@@ -7,9 +7,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.LocalDate;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 import static com.imuliar.decima.service.util.Callbacks.YES;
@@ -34,7 +34,7 @@ public class YesPatricianProcessor extends AbstractUpdateProcessor {
         LocalDate today = LocalDate.now();
         Reservation reservation = getReservationRepository().findByUserId(chatId.intValue())
                 .orElseThrow(() -> new IllegalStateException("Cannot find reservation for current slot owner"));
-        if(reservation.getLastPollTimestamp()== null || !reservation.getLastPollTimestamp().equals(today)){
+        if (reservation.getLastPollTimestamp() == null || !reservation.getLastPollTimestamp().equals(today)) {
             reservation.setLastPollTimestamp(today);
             getReservationRepository().save(reservation);
             getMessagePublisher().reRenderMessage(chatId, update.getCallbackQuery().getMessage().getMessageId(), getMsg("msg.answer_accepted"),

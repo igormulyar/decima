@@ -2,12 +2,13 @@ package com.imuliar.decima.service.processors.patrician;
 
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
-import java.time.LocalDate;
-import java.util.List;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 

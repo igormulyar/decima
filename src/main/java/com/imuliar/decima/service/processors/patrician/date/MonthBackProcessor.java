@@ -29,7 +29,7 @@ public class MonthBackProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        LocalDate contextViewDate = (LocalDate)getSession().getContext().get(CALENDAR_VIEW_DATE_PROP);
+        LocalDate contextViewDate = (LocalDate) getSession().getContext().get(CALENDAR_VIEW_DATE_PROP);
         LocalDate monthBack = contextViewDate.minusMonths(1);
         getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, monthBack);
         String msg = (String) getSession().getContext().get(PICK_DATE_MSG_PROP);

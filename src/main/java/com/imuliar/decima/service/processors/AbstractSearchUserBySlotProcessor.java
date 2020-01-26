@@ -27,27 +27,27 @@ public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdatePr
     @Override
     protected void doProcess(Update update, Long chatId) {
         if (!regexpMsgEvaluating.apply(update, ALPHANUMERIC_SLOT_NUMBER_PATTERN)) {
-            publishMessage(chatId, "Something wrong with input data format.");
+            publishMessage(chatId, getMsg("msg.wrong_data_format"));
             return;
         }
 
         String slotNumber = update.getMessage().getText().trim();
-        if(!getSlotRepository().findByNumber(slotNumber).isPresent()){
-            publishMessage(chatId, String.format("Slot # %s doesn't exist.", slotNumber));
+        if (!getSlotRepository().findByNumber(slotNumber).isPresent()) {
+            publishMessage(chatId, getMsg("msg.slot_doesnt_exist", new String[]{slotNumber}));
             return;
         }
 
         Optional<Integer> userIdFound = searchUserId(slotNumber);
         if (userIdFound.isPresent()) {
-            publishMessage(chatId, String.format("Slot *# %s* now is held by [this user](tg://user?id=%d)", slotNumber, userIdFound.get()));
+            publishMessage(chatId, getMsg("msg.slot_held_by", new String[]{slotNumber, userIdFound.get().toString()}));
         } else {
-            publishMessage(chatId, "Cannot find any user. Probably this slot is free for now.");
+            publishMessage(chatId, getMsg("msg.user_not_found"));
         }
     }
 
     private void publishMessage(Long chatId, String msg) {
         getMessagePublisher().sendMessageWithKeyboard(chatId, msg,
-                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+                new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 
     private Optional<Integer> searchUserId(String slotNumberCriterion) {

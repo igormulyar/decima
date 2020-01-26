@@ -42,7 +42,7 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
                 .orElseThrow(() -> new IllegalStateException("This update should be processed by slot owner and reservation should exist"));
 
         if (getVacantPeriodRepository().hasIntersections(chatId.intValue(), LocalDate.now(), LocalDate.now())) {
-            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "Your slot is already shared today");
+            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.slot_already_shared"));
         } else {
             VacantPeriod vacantPeriod = new VacantPeriod(chatId.intValue(), LocalDate.now(), LocalDate.now());
             getVacantPeriodRepository().save(vacantPeriod);
@@ -62,9 +62,7 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
     }
 
     private void publishNotificationToCurrentUser(Long chatId) {
-        String message = EmojiParser.parseToUnicode(":clap: You've successfully shared your parking slot with other users.\n By the end of this day it can be engaged by any other user " +
-                "and you woun't be able to cancel sharing.");
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.your_slot_shared"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 }

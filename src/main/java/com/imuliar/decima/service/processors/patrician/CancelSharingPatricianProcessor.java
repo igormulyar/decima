@@ -6,14 +6,15 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Optional;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
@@ -51,7 +52,7 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
         } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
             period.setPeriodStart(LocalDate.now().plusDays(1));
             getVacantPeriodRepository().save(period);
-            publishMessage(chatId, getMsg("msg.period_record_changed", new String[] {period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
+            publishMessage(chatId, getMsg("msg.period_record_changed", new String[]{period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
         } else {
             getVacantPeriodRepository().delete(period);
             publishMessage(chatId, getMsg("msg.period_canceled", new String[]{period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));

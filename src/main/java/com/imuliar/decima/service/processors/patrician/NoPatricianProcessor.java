@@ -37,7 +37,7 @@ public class NoPatricianProcessor extends AbstractUpdateProcessor {
     protected void doProcess(Update update, Long chatId) {
         LocalDate today = LocalDate.now();
         int userId = chatId.intValue();
-        if(getVacantPeriodRepository().findByUserIdAndDate(userId, today).isEmpty()){
+        if (getVacantPeriodRepository().findByUserIdAndDate(userId, today).isEmpty()) {
             VacantPeriod vacantPeriod = new VacantPeriod(userId, today, today);
             getVacantPeriodRepository().save(vacantPeriod);
 

@@ -5,7 +5,6 @@ import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.service.impl.DecimaMessageSourceFacade;
 import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -14,8 +13,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.*;
-import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
-import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p>Publish default message for patrician</p>
@@ -35,7 +32,7 @@ public class DefaultPlebeianViewPublisher {
     @Autowired
     private DecimaMessageSourceFacade msgSource;
 
-    void publish(Long chatId, String langCode){
+    void publish(Long chatId, String langCode) {
         Optional<Booking> bookingFound = bookingRepository.findByUserIdAndDate(chatId.intValue(), LocalDate.now());
         if (bookingFound.isPresent()) {
             String bookedSlotNumber = bookingFound.get().getSlot().getNumber();

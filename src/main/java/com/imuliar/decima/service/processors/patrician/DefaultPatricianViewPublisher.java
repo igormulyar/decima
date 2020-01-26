@@ -5,7 +5,6 @@ import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.impl.DecimaMessageSourceFacade;
 import com.imuliar.decima.service.impl.MessagePublisher;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -16,8 +15,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.imuliar.decima.service.util.Callbacks.*;
-import static com.imuliar.decima.service.util.Callbacks.SHOW_PLAN;
-import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p>Publish view message and buttons for default patrician state</p>
@@ -41,7 +38,7 @@ public class DefaultPatricianViewPublisher {
         this.msgSource = msgSource;
     }
 
-    void publish(Long chatId, String langCode){
+    void publish(Long chatId, String langCode) {
         List<VacantPeriod> sharingPeriods = vacantPeriodRepository.findByUserIdAndDate(chatId.intValue(), LocalDate.now());
 
         InlineKeyboardMarkupBuilder keyboardBuilder = new InlineKeyboardMarkupBuilder();
