@@ -1,8 +1,10 @@
 package com.imuliar.decima.service.processors.plebeian;
 
 import com.imuliar.decima.entity.Reservation;
+import com.imuliar.decima.service.impl.PollingService;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ import static com.imuliar.decima.service.util.Callbacks.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DoThePollPlebeianProcessor extends AbstractUpdateProcessor {
 
+    @Autowired
+    private PollingService pollingService;
+
     @Override
     public boolean isMatch(Update update) {
         return callbackMatching.apply(update, POLL);
@@ -30,15 +35,7 @@ public class DoThePollPlebeianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-
-        LocalDate today = LocalDate.now();
-        for (Reservation reservation : getReservationRepository().findUnpolled(today)) {
-            getMessagePublisher().sendMessageWithKeyboard(reservation.getUserId().longValue(), getMsg("msg.poll_gonna_park", new String[]{today.toString()}),
-                    new InlineKeyboardMarkupBuilder()
-                            .addButton(new InlineKeyboardButton(getMsg("btn.yes_gonna_park")).setCallbackData(YES))
-                            .addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.no_slot_free_today")).setCallbackData(NO))
-                            .build());
-        }
+        pollingService.doThePoll(update);
         getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.poll_triggered"));
     }
 }

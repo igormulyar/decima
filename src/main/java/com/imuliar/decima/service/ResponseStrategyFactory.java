@@ -1,5 +1,7 @@
 package com.imuliar.decima.service;
 
+import org.telegram.telegrambots.meta.api.objects.User;
+
 /**
  * <p>Get appropriate strategy for the chat</p>
  *
@@ -8,5 +10,5 @@ package com.imuliar.decima.service;
  */
 public interface ResponseStrategyFactory {
 
-    ResponseStrategy getStrategy(Integer userId, Long chatId);
+    ResponseStrategy getStrategy(User user, Long chatId);
 }

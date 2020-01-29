@@ -22,6 +22,8 @@ public class Reservation extends EntityFrame {
 
     private LocalDate lastPollTimestamp;
 
+    private String languageCode;
+
     public Reservation() {
     }
 
@@ -52,5 +54,13 @@ public class Reservation extends EntityFrame {
 
     public void setLastPollTimestamp(LocalDate lastPollTimestamp) {
         this.lastPollTimestamp = lastPollTimestamp;
+    }
+
+    public String getLanguageCode() {
+        return languageCode;
+    }
+
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
     }
 }

@@ -25,16 +25,16 @@ public class DecimaMessageSourceFacade {
     }
 
     public String getMsg(String code, String localeCode) {
-        return getPrepared(code, new Object[]{}, localeCode);
+        return getPrepared(code, new String[]{}, localeCode);
     }
 
     public String getMsg(String code, String localeCode, String[] params) {
-        return getPrepared(code, new Object[]{}, localeCode);
+        return getPrepared(code, params, localeCode);
     }
 
-    private String getPrepared(String code, Object[] msgParams, String localeCode) {
+    private String getPrepared(String code, String[] msgParams, String localeCode) {
         Locale locale = parseLocale(localeCode);
-        String rawMessage = messageSource.getMessage(code, new Object[]{}, locale);
+        String rawMessage = messageSource.getMessage(code, msgParams, locale);
         return EmojiParser.parseToUnicode(rawMessage);
     }
 

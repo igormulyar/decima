@@ -1,6 +1,7 @@
 package com.imuliar.decima.dao;
 
 import com.imuliar.decima.entity.VacantPeriod;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,7 @@ import java.util.List;
  * @since 0.0.1
  */
 @Repository
+@Transactional
 public interface VacantPeriodRepository extends JpaRepository<VacantPeriod, Long> {
 
     List<VacantPeriod> findByUserId(Integer userId);

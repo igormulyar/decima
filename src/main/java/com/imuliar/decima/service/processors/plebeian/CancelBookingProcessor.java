@@ -39,7 +39,6 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
             getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.drop_booking_confirmed"),
                     new InlineKeyboardMarkupBuilder()
                             .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
-            getMessagePublisher().sendSimpleMessageToGroup(EmojiParser.parseToUnicode(String.format(RELEASE_MESSAGE_PATTERN, userId)));
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 /**
  * <p>Resolves appropriate strategy for processing update</p>
@@ -43,11 +44,12 @@ public class ResponseStrategyFactoryImpl implements ResponseStrategyFactory {
     }
 
     @Override
-    public ResponseStrategy getStrategy(Integer userId, Long chatId) {
+    public ResponseStrategy getStrategy(User user, Long chatId) {
         if (chatId.longValue() == groupChatId.longValue()) {
             return groupChatResponseStrategy;
         }
-        Optional<Reservation> reservation = reservationRepository.findByUserId(userId);
+        Optional<Reservation> reservation = reservationRepository.findByUserId(user.getId());
+        reservation.ifPresent(r -> r.setLanguageCode(user.getLanguageCode()));
         return reservation.isPresent()
                 ? slotOwnerResponseStrategy
                 : ordinaryResponseStrategy;

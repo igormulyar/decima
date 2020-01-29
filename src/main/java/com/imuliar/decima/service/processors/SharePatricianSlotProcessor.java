@@ -48,17 +48,10 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
             getVacantPeriodRepository().save(vacantPeriod);
 
             publishNotificationToCurrentUser(chatId);
-            publishNotificationToGroupChat(chatId.intValue());
         }
 
         reservation.setLastPollTimestamp(LocalDate.now());
         getReservationRepository().save(reservation);
-    }
-
-    private void publishNotificationToGroupChat(Integer userId) {
-        String message = ":information_source: [BOT NOTIFICATION](tg://user?id=%d) :\n[Someone](tg://user?id=%d) has shared their slot for today.";
-        getMessagePublisher()
-                .sendSimpleMessageToGroup(EmojiParser.parseToUnicode(String.format(message, botId, userId)));
     }
 
     private void publishNotificationToCurrentUser(Long chatId) {

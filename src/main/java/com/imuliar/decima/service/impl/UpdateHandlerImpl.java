@@ -55,7 +55,7 @@ public class UpdateHandlerImpl implements UpdateHandler {
 
         if (accessProvider.isPermitted(telegramUser)) {
             responseStrategyFactory
-                    .getStrategy(telegramUser.getId(), chatId)
+                    .getStrategy(telegramUser, chatId)
                     .response(update);
         } else {
             messagePublisher.sendSimpleMessage(chatId, "ACCESS DENIED");
