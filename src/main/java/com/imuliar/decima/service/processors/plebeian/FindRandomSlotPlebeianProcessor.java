@@ -55,7 +55,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
 
         String message = getMsg("msg.slot_booked", new String[]{slotToBeBooked.getNumber(), getPlanImageUrl()});
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton().setText(getMsg("btn.cancel_booking")).setCallbackData(CANCEL_MY_BOOKING))
+                .addButton(new InlineKeyboardButton().setText(getMsg("btn.drop_booking")).setCallbackData(CANCEL_MY_BOOKING))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());
     }
