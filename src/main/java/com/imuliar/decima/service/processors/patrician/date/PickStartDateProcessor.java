@@ -40,7 +40,7 @@ public class PickStartDateProcessor extends AbstractUpdateProcessor {
             getSession().getContext().put(START_DATE_PROP, inputStartDate);
 
             getSession().getContext().put(CALENDAR_VIEW_DATE_PROP, LocalDate.now());
-            String msg = getMsg("msg.start_date_selected", new String[]{inputStartDate.toString()});
+            String msg = getMsg("msg.start_date_selected", inputStartDate.toString());
             getSession().getContext().put(PICK_DATE_MSG_PROP, msg);
             getMessagePublisher().publishCalendar(chatId, msg, LocalDate.now());
         }

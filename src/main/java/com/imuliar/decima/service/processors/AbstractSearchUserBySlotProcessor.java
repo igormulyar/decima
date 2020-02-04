@@ -33,13 +33,13 @@ public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdatePr
 
         String slotNumber = update.getMessage().getText().trim();
         if (!getSlotRepository().findByNumber(slotNumber).isPresent()) {
-            publishMessage(chatId, getMsg("msg.slot_doesnt_exist", new String[]{slotNumber}));
+            publishMessage(chatId, getMsg("msg.slot_doesnt_exist", slotNumber));
             return;
         }
 
         Optional<Integer> userIdFound = searchUserId(slotNumber);
         if (userIdFound.isPresent()) {
-            publishMessage(chatId, getMsg("msg.slot_held_by", new String[]{slotNumber, userIdFound.get().toString()}));
+            publishMessage(chatId, getMsg("msg.slot_held_by", slotNumber, userIdFound.get().toString()));
         } else {
             publishMessage(chatId, getMsg("msg.user_not_found"));
         }

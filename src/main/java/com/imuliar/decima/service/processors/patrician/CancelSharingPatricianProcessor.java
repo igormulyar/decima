@@ -52,10 +52,10 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
         } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
             period.setPeriodStart(LocalDate.now().plusDays(1));
             getVacantPeriodRepository().save(period);
-            publishMessage(chatId, getMsg("msg.period_record_changed", new String[]{period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
+            publishMessage(chatId, getMsg("msg.period_record_changed", period.getPeriodStart().toString(), period.getPeriodEnd().toString()));
         } else {
             getVacantPeriodRepository().delete(period);
-            publishMessage(chatId, getMsg("msg.period_canceled", new String[]{period.getPeriodStart().toString(), period.getPeriodEnd().toString()}));
+            publishMessage(chatId, getMsg("msg.period_canceled", period.getPeriodStart().toString(), period.getPeriodEnd().toString()));
         }
     }
 

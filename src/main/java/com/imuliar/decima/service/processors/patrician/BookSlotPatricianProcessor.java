@@ -3,17 +3,18 @@ package com.imuliar.decima.service.processors.patrician;
 import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
+import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.imuliar.decima.service.util.RegexPatterns.BOOK_MATCHING_PATTERN;
+import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p></p>
@@ -27,18 +28,25 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
 
     @Override
     public boolean isMatch(Update update) {
-        return regexpEvaluating.apply(update, BOOK_MATCHING_PATTERN);
+        return callbackMatching.apply(update, FIND_FREE_SLOT);
     }
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        String callbackString = update.getCallbackQuery().getData();
-        List<String> splitStringData = Arrays.asList(callbackString.split("#"));
-        Slot slot = getSlotRepository().findByNumber(splitStringData.get(0))
-                .orElseThrow(() -> new IllegalStateException("Booked slot should exist"));
-        LocalDate bookingDate = LocalDate.parse(splitStringData.get(2), DateTimeFormatter.ISO_DATE);
-        Booking booking = new Booking(chatId.intValue(), slot, bookingDate);
-        getBookingRepository().save(booking);
-        getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.pat_booked"));
+        List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
+        if (CollectionUtils.isEmpty(freeSlots)) {
+            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.can't_find"), new InlineKeyboardMarkupBuilder()
+                    .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
+                    .build());
+        } else {
+            Slot slotToBeBooked = freeSlots.get(freeSlots.size() - 1);
+            Booking booking = new Booking(chatId.intValue(), slotToBeBooked, LocalDate.now());
+            getBookingRepository().save(booking);
+
+            String message = getMsg("msg.slot_booked", slotToBeBooked.getNumber(), getPlanImageUrl());
+            getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+                    .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
+                    .build());
+        }
     }
 }

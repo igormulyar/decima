@@ -49,7 +49,7 @@ public class StateConfig {
         updateProcessors.add(processorFactory.showPlanProcessor());
         updateProcessors.add(processorFactory.setSharingPeriodProcessor());
         updateProcessors.add(processorFactory.listPeriodsPatricianProcessor());
-
+        updateProcessors.add(processorFactory.cancelBookingProcessor());
         updateProcessors.add(processorFactory.defaultPatricianProcessor());
         return new SessionState(updateProcessors);
     }
@@ -116,7 +116,6 @@ public class StateConfig {
     public SessionState managePeriodState(){
         List<UpdateProcessor> updateProcessors = createPatricianCommonProcessors();
         updateProcessors.add(processorFactory.cancelSharingPatricianProcessor());
-        updateProcessors.add(processorFactory.findRandomSlotPatricianProcessor());
         return new SessionState(updateProcessors);
     }
 

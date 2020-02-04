@@ -52,7 +52,7 @@ public class NoPatricianProcessor extends AbstractUpdateProcessor {
                 User requester = possibleRequester.get();
                 Booking booking = new Booking(requester.getId(), plebeianSlot, today);
                 getBookingRepository().save(booking);
-                String msgForRequester = getMessageSourceFacade().getMsg("msg.pleb_shared_for_you", requester.getLanguageCode(), new String[]{userId.toString(), plebeianSlot.getNumber()});
+                String msgForRequester = getMessageSourceFacade().getMsg("msg.pleb_shared_for_you", requester.getLanguageCode(), userId.toString(), plebeianSlot.getNumber());
                 getMessagePublisher().sendMsgWithBackBtn(requester.getId().longValue(), msgForRequester);
             }
         }

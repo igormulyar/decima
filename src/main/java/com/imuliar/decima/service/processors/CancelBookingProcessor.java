@@ -1,15 +1,12 @@
-package com.imuliar.decima.service.processors.plebeian;
+package com.imuliar.decima.service.processors;
 
-import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
+import java.time.LocalDate;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.time.LocalDate;
 
 import static com.imuliar.decima.service.util.Callbacks.CANCEL_MY_BOOKING;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;

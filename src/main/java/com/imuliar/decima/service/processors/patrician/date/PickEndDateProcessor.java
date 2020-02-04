@@ -48,7 +48,7 @@ public class PickEndDateProcessor extends AbstractUpdateProcessor {
         } else {
             getSession().getContext().put(END_DATE_PROP, inputEndDate);
 
-            String msg = getMsg("msg.end_date_selected", new String[]{inputEndDate.toString(), inputStartDate.toString(), inputEndDate.toString()});
+            String msg = getMsg("msg.end_date_selected", inputEndDate.toString(), inputStartDate.toString(), inputEndDate.toString());
             getSession().getContext().put(PICK_DATE_MSG_PROP, msg);
             getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
                     .addButton(new InlineKeyboardButton("Confirm").setCallbackData(SAVE_VACANT_PERIOD))

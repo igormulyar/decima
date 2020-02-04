@@ -43,7 +43,7 @@ public class DefaultPlebeianViewPublisher {
     }
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber, String langCode) {
-        String message = msgSource.getMsg("msg.bleb_you_hold", langCode, new String[]{bookedSlotNumber});
+        String message = msgSource.getMsg("msg.bleb_you_hold", langCode, bookedSlotNumber);
         messagePublisher.sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText(msgSource.getMsg("btn.find_holder", langCode)).setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(msgSource.getMsg("btn.show_plan", langCode)).setCallbackData(SHOW_PLAN))

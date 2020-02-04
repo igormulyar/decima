@@ -78,7 +78,7 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
         return messageSourceFacade.getMsg(code, session.getLangCode());
     }
 
-    protected String getMsg(String code, String[] params){
+    protected String getMsg(String code, String... params){
         return messageSourceFacade.getMsg(code, session.getLangCode(), params);
     }
 

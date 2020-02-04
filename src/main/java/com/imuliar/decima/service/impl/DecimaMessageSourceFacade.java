@@ -28,7 +28,7 @@ public class DecimaMessageSourceFacade {
         return getPrepared(code, new String[]{}, localeCode);
     }
 
-    public String getMsg(String code, String localeCode, String[] params) {
+    public String getMsg(String code, String localeCode, String... params) {
         return getPrepared(code, params, localeCode);
     }
 
