@@ -3,6 +3,7 @@ package com.imuliar.decima;
 import com.imuliar.decima.service.UpdateHandler;
 import java.io.Serializable;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -32,6 +35,9 @@ public class DecimaBot extends TelegramLongPollingBot {
 
     @Value("${decima.bottoken}")
     private String botToken;
+
+    @Value("${decima.groupChatId}")
+    private Long groupChatId;
 
     private UpdateHandler updateHandler;
 

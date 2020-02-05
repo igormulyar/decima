@@ -60,14 +60,14 @@ public class FakeDataLoader {
             Slot igorSlot = new Slot("4");
             Slot ludaSlot = new Slot("5");
             Slot nastyaSlot = new Slot("6");
-            Stream.of(alexandrSlot, nastyaSlot, igorSlot).forEach(s -> slotRepository.save(s));
+            Stream.of(alexandrSlot, dianaSlot, nastyaSlot, ludaSlot).forEach(s -> slotRepository.save(s));
 
             Reservation alexReservation = new Reservation(alexandrId, alexandrSlot);
             Reservation dianaSlotReservation = new Reservation(dianaId, dianaSlot);
             Reservation ludaReservation = new Reservation(ludaId, ludaSlot);
             Reservation igorReservation = new Reservation(iUserId, igorSlot);
             Reservation nastyaReservation = new Reservation(nastyaId, nastyaSlot);
-            Stream.of(alexReservation, nastyaReservation, igorReservation).forEach(r -> reservationRepository.save(r));
+            Stream.of(alexReservation, dianaSlotReservation, nastyaReservation, ludaReservation).forEach(r -> reservationRepository.save(r));
         }
     }
 }

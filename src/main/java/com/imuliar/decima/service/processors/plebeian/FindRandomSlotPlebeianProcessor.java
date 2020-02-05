@@ -33,11 +33,15 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
-        if (CollectionUtils.isEmpty(freeSlots)) {
-            publishNotFoundMessage(chatId);
+        if(!getBookingRepository().findByUserIdAndDate(chatId.intValue(), LocalDate.now()).isPresent()){
+            List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
+            if (CollectionUtils.isEmpty(freeSlots)) {
+                publishNotFoundMessage(chatId);
+            } else {
+                bookRandomSlot(chatId, freeSlots);
+            }
         } else {
-            bookRandomSlot(chatId, freeSlots);
+            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.already_have_booked"));
         }
     }
 
