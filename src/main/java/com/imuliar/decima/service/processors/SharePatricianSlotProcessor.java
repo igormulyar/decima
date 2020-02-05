@@ -55,7 +55,7 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
         } else {
             VacantPeriod vacantPeriod = new VacantPeriod(userId, today, today);
             getVacantPeriodRepository().save(vacantPeriod);
-            getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.pat_press_no"));
+            publishNotificationToCurrentUser(update);
 
             Optional<User> possibleRequester = bookingRequestsSupplier.pullOutRandomRequester();
             if(possibleRequester.isPresent()){
@@ -65,14 +65,15 @@ public class SharePatricianSlotProcessor extends AbstractUpdateProcessor {
                 String msgForRequester = getMessageSourceFacade().getMsg("msg.pleb_shared_for_you", requester.getLanguageCode(), userId.toString(), plebeianSlot.getNumber());
                 getMessagePublisher().sendMsgWithBackBtn(requester.getId().longValue(), msgForRequester);
             }
+
         }
 
         reservation.setLastPollTimestamp(LocalDate.now());
         getReservationRepository().save(reservation);
     }
 
-    private void publishNotificationToCurrentUser(Long chatId) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.your_slot_shared"), new InlineKeyboardMarkupBuilder()
+    protected void publishNotificationToCurrentUser(Update update) {
+        getMessagePublisher().sendMessageWithKeyboard(update.getCallbackQuery().getMessage().getChatId(), getMsg("msg.your_slot_shared"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 }
