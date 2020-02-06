@@ -5,8 +5,6 @@ import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,8 +25,6 @@ import static com.imuliar.decima.service.util.Callbacks.YES;
 @Service
 public class PollingService {
 
-    private boolean hasPostponedRequests;
-
     @Autowired
     private Map<Integer, User> slotRequestBuffer;
 
@@ -43,6 +39,7 @@ public class PollingService {
 
     /**
      * <p>Process direct request to poll patricians</p>
+     *
      * @param update telegram update dto
      */
     public void doThePoll(Update update) {
@@ -51,8 +48,6 @@ public class PollingService {
 
         if (isWithinActiveTimeRange()) {
             runTask();
-        } else {
-            hasPostponedRequests = true;
         }
     }
 
@@ -62,7 +57,7 @@ public class PollingService {
      */
     @Scheduled(cron = "0 0 7 * * ?")
     void runBySchedule() {
-        if (hasPostponedRequests) {
+        if (!slotRequestBuffer.isEmpty()) {
             runTask();
         }
     }
@@ -72,7 +67,6 @@ public class PollingService {
      */
     @Scheduled(cron = "0 0 0 * * ?")
     void resetPostponedRequests() {
-        hasPostponedRequests = false;
         slotRequestBuffer.clear();
     }
 
@@ -85,8 +79,6 @@ public class PollingService {
                             .addButtonAtNewRaw(new InlineKeyboardButton(messageSource.getMsg("btn.no_slot_free_today", res.getLanguageCode())).setCallbackData(NO))
                             .build());
         }
-
-        hasPostponedRequests = false;
     }
 
     private boolean isWithinActiveTimeRange() {

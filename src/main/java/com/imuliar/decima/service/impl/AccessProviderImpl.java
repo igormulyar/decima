@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -36,6 +37,7 @@ public class AccessProviderImpl implements AccessProvider {
      * @param telegramUser telegram user to be examined
      * @return {@literal TRUE} if user is a valid group member, {@literal FALSE} if not
      */
+    @Cacheable(cacheNames = "userAccess", keyGenerator = "userAccessCacheKeyGenerator")
     @Override
     public boolean isPermitted(User telegramUser) {
         Assert.notNull(telegramUser, "telegramUser is NULL");
