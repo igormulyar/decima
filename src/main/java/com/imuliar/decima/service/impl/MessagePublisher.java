@@ -96,6 +96,15 @@ public class MessagePublisher {
                 .setPhoto(imageUrl));
     }
 
+    public void sendHtml(Long chatId, String htmlString) {
+        bot.sendBotResponse(new SendMessage()
+                .setChatId(chatId)
+                .disableWebPagePreview()
+                .setText(htmlString)
+                .setParseMode(ParseMode.HTML)
+        );
+    }
+
     public void publishCalendar(Long chatId, String message, LocalDate calendarViewDate) {
         sendMessageWithKeyboard(chatId, message, buildCalendarMarkup(calendarViewDate));
     }

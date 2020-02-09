@@ -38,6 +38,7 @@ public class FindRandomSlotPatricianProcessor extends AbstractUpdateProcessor {
             if (freeSlots.isEmpty()) {
                 getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.cant_find_free"));
             } else {
+                getMessagePublisher().sendImage(chatId, "", getPlanImageUrl());
                 getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.book_success", freeSlots.get(0).getNumber()));
             }
         } else {

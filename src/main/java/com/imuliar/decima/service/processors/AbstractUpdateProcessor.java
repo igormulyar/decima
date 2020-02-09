@@ -68,7 +68,6 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
     @Override
     public Optional<SessionState> process(@Nonnull Update update) {
         Assert.notNull(update, "update is NULL");
-        Assert.notNull(update, "parkingUser is NULL");
         Long chatId = resolveChatId(update);
         doProcess(update, chatId);
         return getNextState();

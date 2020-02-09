@@ -57,7 +57,8 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
         Booking booking = new Booking(chatId.intValue(), slotToBeBooked, LocalDate.now());
         getBookingRepository().save(booking);
 
-        String message = getMsg("msg.slot_booked", slotToBeBooked.getNumber(), getPlanImageUrl());
+        getMessagePublisher().sendImage(chatId, "", getPlanImageUrl());
+        String message = getMsg("msg.slot_booked", slotToBeBooked.getNumber());
         getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText(getMsg("btn.drop_booking")).setCallbackData(CANCEL_MY_BOOKING))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
