@@ -88,6 +88,14 @@ public class MessagePublisher {
                 .setPhoto(imageUrl));
     }
 
+    public void sendImageWithKeyboard(Long chatId, String caption, String imageUrl, InlineKeyboardMarkup keyboardMarkup) {
+        bot.sendPhoto(new SendPhoto()
+                .setChatId(chatId)
+                .setCaption(caption)
+                .setPhoto(imageUrl)
+                .setReplyMarkup(keyboardMarkup));
+    }
+
     public void publishCalendar(Long chatId, String message, LocalDate calendarViewDate) {
         sendMessageWithKeyboard(chatId, message, buildCalendarMarkup(calendarViewDate));
     }
