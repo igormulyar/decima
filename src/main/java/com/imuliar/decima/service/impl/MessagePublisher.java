@@ -74,14 +74,6 @@ public class MessagePublisher {
                 .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
     }
 
-    public void sendMessageWithKeyboardToGroup(String message, InlineKeyboardMarkup keyboardMarkup) {
-        sendMessageWithKeyboard(Long.valueOf(groupChatId), message, keyboardMarkup);
-    }
-
-    public void sendSimpleMessageToGroup(String message) {
-        sendSimpleMessage(Long.valueOf(groupChatId), message);
-    }
-
     public void popUpNotify(String callbackQueryId, String messageText) {
         bot.sendBotResponse(new AnswerCallbackQuery()
                 .setCallbackQueryId(callbackQueryId)
@@ -94,15 +86,6 @@ public class MessagePublisher {
                 .setChatId(chatId)
                 .setCaption(caption)
                 .setPhoto(imageUrl));
-    }
-
-    public void sendHtml(Long chatId, String htmlString) {
-        bot.sendBotResponse(new SendMessage()
-                .setChatId(chatId)
-                .disableWebPagePreview()
-                .setText(htmlString)
-                .setParseMode(ParseMode.HTML)
-        );
     }
 
     public void publishCalendar(Long chatId, String message, LocalDate calendarViewDate) {

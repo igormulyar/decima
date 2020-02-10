@@ -4,14 +4,15 @@ import com.imuliar.decima.entity.Booking;
 import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import java.time.LocalDate;
-import java.util.List;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static com.imuliar.decima.service.util.Callbacks.FIND_FREE_SLOT;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;

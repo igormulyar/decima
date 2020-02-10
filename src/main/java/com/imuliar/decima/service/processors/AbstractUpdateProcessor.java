@@ -1,11 +1,14 @@
 package com.imuliar.decima.service.processors;
 
-import com.imuliar.decima.dao.*;
+import com.imuliar.decima.dao.BookingRepository;
+import com.imuliar.decima.dao.ReservationRepository;
+import com.imuliar.decima.dao.SlotRepository;
+import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.service.UpdateProcessor;
 import com.imuliar.decima.service.impl.DecimaMessageSourceFacade;
 import com.imuliar.decima.service.impl.MessagePublisher;
-import com.imuliar.decima.service.session.UserSession;
 import com.imuliar.decima.service.session.SessionState;
+import com.imuliar.decima.service.session.UserSession;
 import com.imuliar.decima.service.util.StateFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -73,11 +76,11 @@ public abstract class AbstractUpdateProcessor implements UpdateProcessor {
         return getNextState();
     }
 
-    protected String getMsg(String code){
+    protected String getMsg(String code) {
         return messageSourceFacade.getMsg(code, session.getLangCode());
     }
 
-    protected String getMsg(String code, String... params){
+    protected String getMsg(String code, String... params) {
         return messageSourceFacade.getMsg(code, session.getLangCode(), params);
     }
 

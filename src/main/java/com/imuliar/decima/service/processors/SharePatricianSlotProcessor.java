@@ -6,10 +6,7 @@ import com.imuliar.decima.entity.Slot;
 import com.imuliar.decima.entity.VacantPeriod;
 import com.imuliar.decima.service.impl.BookingRequestsSupplier;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static com.imuliar.decima.service.util.Callbacks.SET_FREE_TODAY;
 import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;

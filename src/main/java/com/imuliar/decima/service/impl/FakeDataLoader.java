@@ -5,12 +5,12 @@ import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.dao.VacantPeriodRepository;
 import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.entity.Slot;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 /**
  * <p>Load fake data for development purposes</p>
