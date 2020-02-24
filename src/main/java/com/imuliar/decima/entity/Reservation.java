@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 public class Reservation extends EntityFrame {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Integer userId;
 
     @OneToOne(optional = false)
