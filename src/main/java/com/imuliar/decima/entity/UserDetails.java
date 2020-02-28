@@ -21,7 +21,6 @@ public class UserDetails extends EntityFrame {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
     public UserDetails() {

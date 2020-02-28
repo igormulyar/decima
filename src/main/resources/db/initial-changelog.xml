@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    
+    <changeSet id="1" author="imuliar">
+        <createTable tableName="BOOKING">
+            <column name="ID" type="java.sql.Types.BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="java.sql.Types.INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SLOT_ID" type="java.sql.Types.BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE" type="java.sql.Types.DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="imuliar">
+        <createTable tableName="RESERVATION">
+            <column name="ID" type="java.sql.Types.BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="java.sql.Types.INTEGER">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="SLOT_ID" type="java.sql.Types.BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_POLL_TIMESTAMP" type="java.sql.Types.DATE"/>
+            <column name="LANGUAGE_CODE" type="java.sql.Types.VARCHAR(10)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="imuliar">
+        <createTable tableName="SLOT">
+            <column name="ID" type="java.sql.Types.BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NUMBER" type="java.sql.Types.VARCHAR(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="imuliar">
+        <createTable tableName="VACANT_PERIOD">
+            <column name="ID" type="java.sql.Types.BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="java.sql.Types.INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERIOD_START" type="java.sql.Types.DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERIOD_END" type="java.sql.Types.DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="imuliar">
+        <addForeignKeyConstraint baseTableName="BOOKING" baseColumnNames="SLOT_ID" constraintName="FK_BOOKING_SLOT" referencedTableName="SLOT"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="RESERVATION" baseColumnNames="SLOT_ID" constraintName="FK_RESERVATION_SLOT" referencedTableName="SLOT"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="6" author="imuliar">
+        <createTable tableName="USER_DETAILS">
+            <column name="ID" type="java.sql.Types.BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TELEGRAM_ID" type="java.sql.Types.INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE_NUMBER" type="java.sql.Types.VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

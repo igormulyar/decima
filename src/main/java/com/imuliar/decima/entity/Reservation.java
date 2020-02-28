@@ -2,6 +2,8 @@ package com.imuliar.decima.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
@@ -18,6 +20,7 @@ public class Reservation extends EntityFrame {
     private Integer userId;
 
     @OneToOne(optional = false)
+    @JoinColumn(name = "SLOT_ID", foreignKey = @ForeignKey(name = "FK_RESERVATION_SLOT"))
     private Slot slot;
 
     private LocalDate lastPollTimestamp;
