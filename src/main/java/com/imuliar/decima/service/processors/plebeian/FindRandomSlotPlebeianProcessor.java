@@ -42,12 +42,12 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
                 bookRandomSlot(chatId, freeSlots);
             }
         } else {
-            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.already_have_booked"));
+            getMessagePublisher().showPopUpNotification(update.getCallbackQuery().getId(), getMsg("alert.already_have_booked"));
         }
     }
 
     private void publishNotFoundMessage(Long chatId) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.can't_find_but_can_poll"), new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessage(chatId, getMsg("msg.can't_find_but_can_poll"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.lets_poll")).setCallbackData(POLL))
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());
@@ -60,7 +60,7 @@ public class FindRandomSlotPlebeianProcessor extends AbstractUpdateProcessor {
 
         getMessagePublisher().sendImage(chatId, "", getPlanImageUrl());
         String message = getMsg("msg.slot_booked", slotToBeBooked.getNumber());
-        getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessage(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText(getMsg("btn.drop_booking")).setCallbackData(CANCEL_MY_BOOKING))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());

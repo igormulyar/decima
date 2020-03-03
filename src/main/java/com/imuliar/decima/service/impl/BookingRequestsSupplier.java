@@ -20,7 +20,7 @@ public class BookingRequestsSupplier {
     @Autowired
     private Map<Integer, User> slotRequestBuffer;
 
-    public synchronized Optional<User> pullOutRandomRequester(){
+    public Optional<User> pullOutRandomRequester(){
         LinkedList<User> users = new LinkedList<>(slotRequestBuffer.values());
         Collections.shuffle(users);
         Optional<User> randomRequestingUser = Optional.ofNullable(users.poll());

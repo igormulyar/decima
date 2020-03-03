@@ -1,6 +1,5 @@
 package com.imuliar.decima.service.processors.plebeian;
 
-import com.imuliar.decima.entity.Reservation;
 import com.imuliar.decima.service.impl.PollingService;
 import com.imuliar.decima.service.processors.AbstractUpdateProcessor;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
@@ -11,9 +10,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.time.LocalDate;
-
-import static com.imuliar.decima.service.util.Callbacks.*;
+import static com.imuliar.decima.service.util.Callbacks.POLL;
+import static com.imuliar.decima.service.util.Callbacks.TO_BEGINNING;
 
 /**
  * <p>Handle user's request to poll slot owners</p>
@@ -36,6 +34,7 @@ public class DoThePollPlebeianProcessor extends AbstractUpdateProcessor {
     @Override
     protected void doProcess(Update update, Long chatId) {
         pollingService.doThePoll(update);
-        getMessagePublisher().sendMsgWithBackBtn(chatId, getMsg("msg.poll_triggered"));
+        getMessagePublisher().sendMessage(chatId, getMsg("msg.poll_triggered"), new InlineKeyboardMarkupBuilder()
+                .addButton(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 }

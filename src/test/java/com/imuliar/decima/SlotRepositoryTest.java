@@ -1,4 +1,4 @@
-package com.imuliar.decima.itest.dao;
+package com.imuliar.decima;
 
 import com.imuliar.decima.dao.SlotRepository;
 import com.imuliar.decima.entity.*;

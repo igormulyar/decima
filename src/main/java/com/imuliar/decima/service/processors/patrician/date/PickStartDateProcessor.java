@@ -34,7 +34,7 @@ public class PickStartDateProcessor extends AbstractUpdateProcessor {
         LocalDate inputStartDate = LocalDate.parse(update.getCallbackQuery().getData(), DateTimeFormatter.ISO_DATE);
 
         if (inputStartDate.isBefore(LocalDate.now())) {
-            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), "You cannot pick prior date");
+            getMessagePublisher().showPopUpNotification(update.getCallbackQuery().getId(), "You cannot pick prior date");
             getSession().getContext().remove(START_DATE_PROP);
         } else {
             getSession().getContext().put(START_DATE_PROP, inputStartDate);

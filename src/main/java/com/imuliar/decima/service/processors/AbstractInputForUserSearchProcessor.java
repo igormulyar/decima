@@ -2,7 +2,6 @@ package com.imuliar.decima.service.processors;
 
 import com.imuliar.decima.service.session.SessionState;
 import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
-import com.vdurmont.emoji.EmojiParser;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -26,7 +25,7 @@ public abstract class AbstractInputForUserSearchProcessor extends AbstractUpdate
 
     @Override
     protected void doProcess(Update update, Long chatId) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.enter_slot_number"), new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessage(chatId, getMsg("msg.enter_slot_number"), new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 

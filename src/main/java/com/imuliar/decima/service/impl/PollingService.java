@@ -73,7 +73,7 @@ public class PollingService {
     private void runTask() {
         LocalDate today = LocalDate.now();
         for (Reservation res : reservationRepository.findUnpolled(today)) {
-            messagePublisher.sendMessageWithKeyboard(res.getUserId().longValue(), messageSource.getMsg("msg.poll_gonna_park", res.getLanguageCode(), today.toString()),
+            messagePublisher.sendMessage(res.getUserId().longValue(), messageSource.getMsg("msg.poll_gonna_park", res.getLanguageCode(), today.toString()),
                     new InlineKeyboardMarkupBuilder()
                             .addButton(new InlineKeyboardButton(messageSource.getMsg("btn.yes_gonna_park", res.getLanguageCode())).setCallbackData(YES))
                             .addButtonAtNewRaw(new InlineKeyboardButton(messageSource.getMsg("btn.no_slot_free_today", res.getLanguageCode())).setCallbackData(NO))

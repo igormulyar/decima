@@ -1,7 +1,6 @@
 package com.imuliar.decima.service.impl;
 
 import com.imuliar.decima.DecimaBot;
-import com.imuliar.decima.service.util.InlineKeyboardMarkupBuilder;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class MessagePublisher {
         this.bot = decimaBot;
     }
 
-    public void sendSimpleMessage(Long chatId, String message) {
+    public void sendMessage(Long chatId, String message) {
         bot.sendBotResponse(new SendMessage()
                 .enableMarkdown(true)
                 .setChatId(chatId)
@@ -60,7 +59,7 @@ public class MessagePublisher {
                 .setText(message));
     }
 
-    public void sendMessageWithKeyboard(Long chatId, String message, InlineKeyboardMarkup keyboardMarkup) {
+    public void sendMessage(Long chatId, String message, InlineKeyboardMarkup keyboardMarkup) {
         bot.sendBotResponse(new SendMessage()
                 .enableMarkdown(true)
                 .setChatId(chatId)
@@ -69,12 +68,15 @@ public class MessagePublisher {
                 .setReplyMarkup(keyboardMarkup));
     }
 
-    public void sendMsgWithBackBtn(Long chatId, String message) {
-        sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
-                .addButton(new InlineKeyboardButton("Back").setCallbackData(TO_BEGINNING)).build());
+    public void reRenderMessage(Long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+        bot.sendBotResponse(new EditMessageText()
+                .setChatId(chatId)
+                .setMessageId(toIntExact(messageId))
+                .setText(text)
+                .setReplyMarkup(keyboard));
     }
 
-    public void popUpNotify(String callbackQueryId, String messageText) {
+    public void showPopUpNotification(String callbackQueryId, String messageText) {
         bot.sendBotResponse(new AnswerCallbackQuery()
                 .setCallbackQueryId(callbackQueryId)
                 .setShowAlert(true)
@@ -97,7 +99,7 @@ public class MessagePublisher {
     }
 
     public void publishCalendar(Long chatId, String message, LocalDate calendarViewDate) {
-        sendMessageWithKeyboard(chatId, message, buildCalendarMarkup(calendarViewDate));
+        sendMessage(chatId, message, buildCalendarMarkup(calendarViewDate));
     }
 
     public void reRenderCalendar(Long chatId, int messageId, String text, LocalDate calendarViewDate) {
@@ -106,14 +108,6 @@ public class MessagePublisher {
                 .setMessageId(toIntExact(messageId))
                 .setText(text)
                 .setReplyMarkup(buildCalendarMarkup(calendarViewDate)));
-    }
-
-    public void reRenderMessage(Long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
-        bot.sendBotResponse(new EditMessageText()
-                .setChatId(chatId)
-                .setMessageId(toIntExact(messageId))
-                .setText(text)
-                .setReplyMarkup(keyboard));
     }
 
     private InlineKeyboardMarkup buildCalendarMarkup(LocalDate date) {

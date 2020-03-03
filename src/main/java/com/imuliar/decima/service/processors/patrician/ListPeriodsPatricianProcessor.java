@@ -48,7 +48,7 @@ public class ListPeriodsPatricianProcessor extends AbstractUpdateProcessor {
         }
         keyboardBuilder.addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING));
 
-        getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.list_periods"), keyboardBuilder.build());
+        getMessagePublisher().sendMessage(chatId, getMsg("msg.list_periods"), keyboardBuilder.build());
     }
 
     @Override

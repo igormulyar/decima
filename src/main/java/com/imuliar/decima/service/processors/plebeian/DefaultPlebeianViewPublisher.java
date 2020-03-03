@@ -44,7 +44,7 @@ public class DefaultPlebeianViewPublisher {
 
     private void displayForAlreadyBooked(Long chatId, String bookedSlotNumber, String langCode) {
         String message = msgSource.getMsg("msg.bleb_you_hold", langCode, bookedSlotNumber);
-        messagePublisher.sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+        messagePublisher.sendMessage(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText(msgSource.getMsg("btn.find_holder", langCode)).setCallbackData(ASK_SLOT_FOR_USER_SEARCH))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(msgSource.getMsg("btn.show_plan", langCode)).setCallbackData(SHOW_PLAN))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(msgSource.getMsg("btn.drop_booking", langCode)).setCallbackData(CANCEL_MY_BOOKING))
@@ -54,7 +54,7 @@ public class DefaultPlebeianViewPublisher {
 
     private void displayInitialMessage(Long chatId, String langCode) {
         String message = msgSource.getMsg("msg.pleb_choose_action", langCode);
-        messagePublisher.sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+        messagePublisher.sendMessage(chatId, message, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton().setText(msgSource.getMsg("btn.find_slot", langCode)).setCallbackData(FIND_FREE_SLOT))
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(msgSource.getMsg("btn.back", langCode)).setCallbackData(TO_BEGINNING))
                 .build());

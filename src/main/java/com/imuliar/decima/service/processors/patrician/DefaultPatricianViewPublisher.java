@@ -75,6 +75,6 @@ public class DefaultPatricianViewPublisher {
                 .addButtonAtNewRaw(new InlineKeyboardButton().setText(msgSource.getMsg("btn.back", langCode)).setCallbackData(TO_BEGINNING))
                 .build();
 
-        messagePublisher.sendMessageWithKeyboard(chatId, messageText, keyboard);
+        messagePublisher.sendMessage(chatId, messageText, keyboard);
     }
 }

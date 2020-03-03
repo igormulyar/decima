@@ -46,7 +46,7 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
         Optional<Booking> possibleBooking = getBookingRepository().findBySlotNumberAndDate(reservation.getSlot().getNumber(), LocalDate.now());
 
         if (possibleBooking.isPresent() && period.getPeriodStart().equals(period.getPeriodEnd())) {
-            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.pat_cant_cancel"), new InlineKeyboardMarkupBuilder()
+            getMessagePublisher().sendMessage(chatId, getMsg("msg.pat_cant_cancel"), new InlineKeyboardMarkupBuilder()
                     .addButton(new InlineKeyboardButton(getMsg("btn.find_another_slot")).setCallbackData(FIND_FREE_SLOT))
                     .addButtonAtNewRaw(new InlineKeyboardButton(getMsg("btn.cancel")).setCallbackData(TO_BEGINNING)).build());
         } else if (possibleBooking.isPresent() && hasIntersection(period, possibleBooking.get())) {
@@ -60,7 +60,7 @@ public class CancelSharingPatricianProcessor extends AbstractUpdateProcessor {
     }
 
     private void publishMessage(Long chatId, String msg) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessage(chatId, msg, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 

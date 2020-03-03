@@ -46,7 +46,7 @@ public abstract class AbstractSearchUserBySlotProcessor extends AbstractUpdatePr
     }
 
     private void publishMessage(Long chatId, String msg) {
-        getMessagePublisher().sendMessageWithKeyboard(chatId, msg,
+        getMessagePublisher().sendMessage(chatId, msg,
                 new InlineKeyboardMarkupBuilder().addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
     }
 

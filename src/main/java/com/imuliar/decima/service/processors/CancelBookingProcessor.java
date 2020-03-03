@@ -44,7 +44,7 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
         if (bookingToDrop.isPresent()) {
             Slot slot = bookingToDrop.get().getSlot();
             getBookingRepository().removeByUserIdAndDate(userId, today);
-            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.drop_booking_confirmed"),
+            getMessagePublisher().sendMessage(chatId, getMsg("msg.drop_booking_confirmed"),
                     new InlineKeyboardMarkupBuilder()
                             .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
 
@@ -54,7 +54,8 @@ public class CancelBookingProcessor extends AbstractUpdateProcessor {
                 Booking booking = new Booking(requester.getId(), slot, today);
                 getBookingRepository().save(booking);
                 String msgForRequester = getMessageSourceFacade().getMsg("msg.pleb_shared_for_you", requester.getLanguageCode(), userId.toString(), slot.getNumber());
-                getMessagePublisher().sendMsgWithBackBtn(requester.getId().longValue(), msgForRequester);
+                getMessagePublisher().sendMessage(requester.getId().longValue(), msgForRequester, new InlineKeyboardMarkupBuilder()
+                        .addButton(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING)).build());
             }
         }
     }

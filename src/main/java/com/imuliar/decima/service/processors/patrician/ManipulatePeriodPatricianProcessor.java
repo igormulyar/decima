@@ -38,7 +38,7 @@ public class ManipulatePeriodPatricianProcessor extends AbstractUpdateProcessor 
         VacantPeriod vacantPeriod = getVacantPeriodRepository().findById(periodId)
                 .orElseThrow(() -> new IllegalStateException("Cannot find vacant period by id: " + periodId));
         String msg = getMsg("msg.manipulate_period", vacantPeriod.getPeriodStart().toString(), vacantPeriod.getPeriodEnd().toString());
-        getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
+        getMessagePublisher().sendMessage(chatId, msg, new InlineKeyboardMarkupBuilder()
                 .addButton(new InlineKeyboardButton(getMsg("btn.cancel_sharing")).setCallbackData(String.format(PERIOD_REMOVE_TPL, periodId)))
                 .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                 .build());

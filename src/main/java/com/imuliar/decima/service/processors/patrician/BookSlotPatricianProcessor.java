@@ -36,7 +36,7 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
     protected void doProcess(Update update, Long chatId) {
         List<Slot> freeSlots = getSlotRepository().findFreeSlots(LocalDate.now());
         if (CollectionUtils.isEmpty(freeSlots)) {
-            getMessagePublisher().sendMessageWithKeyboard(chatId, getMsg("msg.can't_find"), new InlineKeyboardMarkupBuilder()
+            getMessagePublisher().sendMessage(chatId, getMsg("msg.can't_find"), new InlineKeyboardMarkupBuilder()
                     .addButton(new InlineKeyboardButton(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                     .build());
         } else {
@@ -46,7 +46,7 @@ public class BookSlotPatricianProcessor extends AbstractUpdateProcessor {
 
             getMessagePublisher().sendImage(chatId, "", getPlanImageUrl());
             String message = getMsg("msg.slot_booked", slotToBeBooked.getNumber());
-            getMessagePublisher().sendMessageWithKeyboard(chatId, message, new InlineKeyboardMarkupBuilder()
+            getMessagePublisher().sendMessage(chatId, message, new InlineKeyboardMarkupBuilder()
                     .addButtonAtNewRaw(new InlineKeyboardButton().setText(getMsg("btn.back")).setCallbackData(TO_BEGINNING))
                     .build());
         }

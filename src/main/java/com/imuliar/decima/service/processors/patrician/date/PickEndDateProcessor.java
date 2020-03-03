@@ -40,17 +40,17 @@ public class PickEndDateProcessor extends AbstractUpdateProcessor {
         LocalDate inputStartDate = (LocalDate) getSession().getContext().get(START_DATE_PROP);
 
         if (inputEndDate.isBefore(inputStartDate)) {
-            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.prior_date_err"));
+            getMessagePublisher().showPopUpNotification(update.getCallbackQuery().getId(), getMsg("alert.prior_date_err"));
             getSession().getContext().remove(END_DATE_PROP);
         } else if (getVacantPeriodRepository().hasIntersections(chatId.intValue(), inputStartDate, inputEndDate)) {
-            getMessagePublisher().popUpNotify(update.getCallbackQuery().getId(), getMsg("alert.has_intersections_err"));
+            getMessagePublisher().showPopUpNotification(update.getCallbackQuery().getId(), getMsg("alert.has_intersections_err"));
             getSession().getContext().remove(END_DATE_PROP);
         } else {
             getSession().getContext().put(END_DATE_PROP, inputEndDate);
 
             String msg = getMsg("msg.end_date_selected", inputEndDate.toString(), inputStartDate.toString(), inputEndDate.toString());
             getSession().getContext().put(PICK_DATE_MSG_PROP, msg);
-            getMessagePublisher().sendMessageWithKeyboard(chatId, msg, new InlineKeyboardMarkupBuilder()
+            getMessagePublisher().sendMessage(chatId, msg, new InlineKeyboardMarkupBuilder()
                     .addButton(new InlineKeyboardButton("Confirm").setCallbackData(SAVE_VACANT_PERIOD))
                     .addButton(new InlineKeyboardButton("Cancel").setCallbackData(TO_BEGINNING)).build());
         }
